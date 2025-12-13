@@ -13,11 +13,11 @@ export const leadsChartData = [
 
 export const leadsChartConfig = {
   newLeads: {
-    label: "New Leads",
+    label: "Người theo dõi mới",
     color: "var(--chart-1)",
   },
   disqualified: {
-    label: "Disqualified",
+    label: "Bỏ theo dõi",
     color: "var(--chart-3)",
   },
   background: {
@@ -42,18 +42,18 @@ export const proposalsChartConfig = {
 } as ChartConfig;
 
 export const revenueChartData = [
-  { month: "Jul 2024", revenue: 6700 },
-  { month: "Aug 2024", revenue: 7100 },
-  { month: "Sep 2024", revenue: 6850 },
-  { month: "Oct 2024", revenue: 7500 },
-  { month: "Nov 2024", revenue: 8000 },
-  { month: "Dec 2024", revenue: 8300 },
-  { month: "Jan 2025", revenue: 7900 },
-  { month: "Feb 2025", revenue: 8400 },
-  { month: "Mar 2025", revenue: 8950 },
-  { month: "Apr 2025", revenue: 9700 },
-  { month: "May 2025", revenue: 11200 },
-  { month: "Jun 2025", revenue: 9500 },
+  { month: "Tháng 7 2024", revenue: 6700 },
+  { month: "Tháng 8 2024", revenue: 7100 },
+  { month: "Tháng 9 2024", revenue: 6850 },
+  { month: "Tháng 10 2024", revenue: 7500 },
+  { month: "Tháng 11 2024", revenue: 8000 },
+  { month: "Tháng 12 2024", revenue: 8300 },
+  { month: "Tháng 1 2025", revenue: 7900 },
+  { month: "Tháng 2 2025", revenue: 8400 },
+  { month: "Tháng 3 2025", revenue: 8950 },
+  { month: "Tháng 4 2025", revenue: 9700 },
+  { month: "Tháng 5 2025", revenue: 11200 },
+  { month: "Tháng 6 2025", revenue: 9500 },
 ];
 
 export const revenueChartConfig = {
@@ -76,34 +76,34 @@ export const leadsBySourceChartConfig = {
     label: "Leads",
   },
   website: {
-    label: "Website",
+    label: "Mạng xã hội",
     color: "var(--chart-1)",
   },
   referral: {
-    label: "Referral",
+    label: "Hồ sơ",
     color: "var(--chart-2)",
   },
   social: {
-    label: "Social Media",
+    label: "Tìm kiếm",
     color: "var(--chart-3)",
   },
   cold: {
-    label: "Cold Outreach",
+    label: "Hashtag",
     color: "var(--chart-4)",
   },
   other: {
-    label: "Other",
+    label: "Khác",
     color: "var(--chart-5)",
   },
 } as ChartConfig;
 
 export const projectRevenueChartData = [
-  { name: "MVP Development", actual: 82000, target: 90000 },
-  { name: "Consultation", actual: 48000, target: 65000 },
-  { name: "Framer Sites", actual: 34000, target: 45000 },
-  { name: "DevOps Support", actual: 77000, target: 90000 },
-  { name: "LLM Training", actual: 68000, target: 80000 },
-  { name: "Product Launch", actual: 52000, target: 70000 },
+  { name: "Xu hướng", actual: 82000, target: 90000 },
+  { name: "Hướng dẫn", actual: 48000, target: 65000 },
+  { name: "Debut", actual: 34000, target: 45000 },
+  { name: "Livestream", actual: 77000, target: 90000 },
+  { name: "Quảng cáo", actual: 68000, target: 80000 },
+  { name: "Hợp tác", actual: 52000, target: 70000 },
 ].map((row) => ({
   ...row,
   remaining: Math.max(0, row.target - row.actual),
@@ -111,11 +111,11 @@ export const projectRevenueChartData = [
 
 export const projectRevenueChartConfig = {
   actual: {
-    label: "Actual",
+    label: "Thực tế",
     color: "var(--chart-1)",
   },
   remaining: {
-    label: "Remaining",
+    label: "Còn lại",
     color: "var(--chart-2)",
   },
   label: {
@@ -125,10 +125,10 @@ export const projectRevenueChartConfig = {
 
 export const salesPipelineChartData = [
   { stage: "Leads", value: 680, fill: "var(--chart-1)" },
-  { stage: "Qualified", value: 480, fill: "var(--chart-2)" },
-  { stage: "Proposal Sent", value: 210, fill: "var(--chart-3)" },
-  { stage: "Negotiation", value: 120, fill: "var(--chart-4)" },
-  { stage: "Won", value: 45, fill: "var(--chart-5)" },
+  { stage: "Engaged", value: 480, fill: "var(--chart-2)" },
+  { stage: "Clicks", value: 210, fill: "var(--chart-3)" },
+  { stage: "Add to cart", value: 120, fill: "var(--chart-4)" },
+  { stage: "Sales", value: 45, fill: "var(--chart-5)" },
 ];
 
 export const salesPipelineChartConfig = {
@@ -143,35 +143,35 @@ export const salesPipelineChartConfig = {
 
 export const regionSalesData = [
   {
-    region: "North America",
+    region: "Việt Nam",
     sales: 37800,
     percentage: 31,
     growth: "-3.2%",
     isPositive: false,
   },
   {
-    region: "Europe",
+    region: "Trung Quốc",
     sales: 40100,
     percentage: 34,
     growth: "+9.4%",
     isPositive: true,
   },
   {
-    region: "Asia Pacific",
+    region: "Nhật Bản",
     sales: 30950,
     percentage: 26,
     growth: "+12.8%",
     isPositive: true,
   },
   {
-    region: "Latin America",
+    region: "Hàn Quốc",
     sales: 12200,
     percentage: 7,
     growth: "-1.7%",
     isPositive: false,
   },
   {
-    region: "Middle East & Africa",
+    region: "Mỹ",
     sales: 2450,
     percentage: 2,
     growth: "+6.0%",
@@ -182,28 +182,28 @@ export const regionSalesData = [
 export const actionItems = [
   {
     id: 1,
-    title: "Send kickoff docs",
-    desc: "Send onboarding documents and timeline",
-    due: "Due today",
-    priority: "High",
+    title: "Gửi tài liệu khởi động",
+    desc: "Gửi tài liệu khởi động và timeline xây kênh",
+    due: "Hôm nay",
+    priority: "Cao",
     priorityColor: "bg-red-100 text-red-700",
     checked: false,
   },
   {
     id: 2,
-    title: "Demo call for SaaS MVP",
-    desc: "Book Zoom call with client",
-    due: "Due tomorrow",
-    priority: "Medium",
+    title: "Khám kênh đối thủ",
+    desc: "Mở qua zoom để phân tích đối thủ",
+    due: "Cuối tuần",
+    priority: "Trung bình",
     priorityColor: "bg-yellow-100 text-yellow-700",
     checked: true,
   },
   {
     id: 3,
-    title: "Update case study",
-    desc: "Add latest LLM project",
-    due: "Due this week",
-    priority: "Low",
+    title: "Theo dõi số liệu kênh học viên",
+    desc: "Cập nhật số liệu hàng tuần",
+    due: "Cuối tuần",
+    priority: "Thấp",
     priorityColor: "bg-green-100 text-green-700",
     checked: false,
   },

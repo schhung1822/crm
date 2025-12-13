@@ -15,10 +15,10 @@ function CurrencySelector(props: { defaultValue: string }) {
         <SelectValue placeholder="Currency" />
       </SelectTrigger>
       <SelectContent>
+        <SelectItem value="aed">VNĐ</SelectItem>
         <SelectItem value="usd">USD</SelectItem>
         <SelectItem value="eur">EUR</SelectItem>
-        <SelectItem value="gbp">GBP</SelectItem>
-        <SelectItem value="aed">AED</SelectItem>
+        <SelectItem value="cny">CNY</SelectItem>
       </SelectContent>
     </Select>
   );
@@ -28,7 +28,7 @@ export function CurrencyExchange() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Currency Exchange</CardTitle>
+        <CardTitle>Chuyển đổi tiền tệ</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="overflow-hidden rounded-lg border shadow-sm">
@@ -50,7 +50,7 @@ export function CurrencyExchange() {
           <div className="space-y-2 py-6 text-center tabular-nums">
             <p className="text-4xl">{formatCurrency(100.0)}</p>
             <p className="text-muted-foreground text-xs font-medium">
-              Available: <span className="text-foreground">{formatCurrency(13100.06)}</span>
+              Có sẵn: <span className="text-foreground">{formatCurrency(13100.06)}</span>
             </p>
           </div>
           <div className="bg-muted border-t py-1 text-center text-xs tabular-nums">
@@ -60,20 +60,20 @@ export function CurrencyExchange() {
 
         <div className="space-y-2 text-xs">
           <div className="flex items-center justify-between">
-            <span>Tax (2%)</span>
+            <span>Thuế (2%)</span>
             <span className="font-medium tabular-nums">{formatCurrency(2)}</span>
           </div>
           <div className="flex items-center justify-between">
-            <span>Exchange Fee (1%)</span>
+            <span>Phí chuyển đổi (1%)</span>
             <span className="font-medium tabular-nums">{formatCurrency(1)}</span>
           </div>
           <div className="flex items-center justify-between">
-            <span>Total Amount</span>
+            <span>Tổng số tiền</span>
             <span className="font-medium">{formatCurrency(82.77, { currency: "EUR" })}</span>
           </div>
         </div>
         <Button variant="outline" className="w-full">
-          <RefreshCw /> Exchange
+          <RefreshCw /> Chuyển đổi
         </Button>
       </CardContent>
     </Card>

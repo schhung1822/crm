@@ -23,23 +23,22 @@ export function TableCards() {
     <div className="grid grid-cols-1 gap-4 *:data-[slot=card]:shadow-xs">
       <Card>
         <CardHeader>
-          <CardTitle>Recent Leads</CardTitle>
-          <CardDescription>Track and manage your latest leads and their status.</CardDescription>
+          <CardTitle>Video gần đây</CardTitle>
+          <CardDescription>Theo dõi và quản lý video gần đây của bạn.</CardDescription>
           <CardAction>
             <div className="flex items-center gap-2">
               <DataTableViewOptions table={table} />
               <Button variant="outline" size="sm">
                 <Download />
-                <span className="hidden lg:inline">Export</span>
+                <span className="hidden lg:inline">Xuất</span>
               </Button>
             </div>
           </CardAction>
         </CardHeader>
         <CardContent className="flex size-full flex-col gap-4">
-          <div className="overflow-hidden rounded-md border">
+          <div className="overflow-hidden rounded-md">
             <DataTable table={table} columns={recentLeadsColumns} />
           </div>
-          <DataTablePagination table={table} />
         </CardContent>
       </Card>
     </div>

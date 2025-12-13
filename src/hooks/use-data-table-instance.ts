@@ -9,7 +9,7 @@ import {
   getFacetedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
-  getPaginationRowModel,
+  // ❌ bỏ getPaginationRowModel
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
@@ -27,39 +27,46 @@ export function useDataTableInstance<TData, TValue>({
   data,
   columns,
   enableRowSelection = true,
-  defaultPageIndex,
-  defaultPageSize,
+  defaultPageIndex = 0,
+  defaultPageSize = 10,
   getRowId,
 }: UseDataTableInstanceProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] =
+    React.useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [pagination, setPagination] = React.useState({
-    pageIndex: defaultPageIndex ?? 0,
-    pageSize: defaultPageSize ?? 10,
-  });
 
   const table = useReactTable({
     data,
     columns,
+    // KHÔNG đưa pagination vào đây nữa, vì ta phân trang bên ngoài
     state: {
       sorting,
       columnVisibility,
       rowSelection,
       columnFilters,
-      pagination,
     },
+    // optional: nếu muốn dùng giá trị mặc định ở chỗ khác
+    initialState: {
+      pagination: {
+        pageIndex: defaultPageIndex,
+        pageSize: defaultPageSize,
+      },
+    },
+
     enableRowSelection,
-    getRowId: getRowId ?? ((row) => (row as any).id.toString()),
+    getRowId: getRowId ?? ((row) => (row as any).id?.toString() ?? ""),
+
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
-    onPaginationChange: setPagination,
+
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    // ❌ bỏ getPaginationRowModel – để table.getRowModel() trả về toàn bộ 120 row
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),

@@ -29,8 +29,8 @@ const recentPayments = [
   {
     id: 1,
     icon: siPaypal,
-    title: "Advance Payment",
-    subtitle: "Received via PayPal for Website Project",
+    title: "API tiktok",
+    subtitle: "Nhận qua PayPal cho dự án Website Tool TikTok",
     type: "credit",
     amount: 1200,
     date: "Jul 8",
@@ -38,8 +38,8 @@ const recentPayments = [
   {
     id: 2,
     icon: siOpenai,
-    title: "ChatGPT Subscription",
-    subtitle: "OpenAI monthly subscription",
+    title: "ChatGPT",
+    subtitle: "Đăng ký hàng tháng OpenAI",
     type: "debit",
     amount: 20,
     date: "Jul 7",
@@ -47,8 +47,8 @@ const recentPayments = [
   {
     id: 3,
     icon: siVercel,
-    title: "Vercel Team Subscription",
-    subtitle: "Vercel cloud hosting charges",
+    title: "Vercel Hosting",
+    subtitle: "Chi phí lưu trữ đám mây Vercel",
     type: "debit",
     amount: 160,
     date: "Jul 4",
@@ -57,7 +57,7 @@ const recentPayments = [
     id: 4,
     icon: siFigma,
     title: "Figma Pro",
-    subtitle: "Figma professional plan",
+    subtitle: "Gói chuyên nghiệp Figma",
     type: "debit",
     amount: 35,
     date: "Jul 2",
@@ -68,8 +68,8 @@ export function AccountOverview() {
   return (
     <Card className="shadow-xs">
       <CardHeader className="items-center">
-        <CardTitle>My Cards</CardTitle>
-        <CardDescription>Your card summary, balance, and recent transactions in one view.</CardDescription>
+        <CardTitle>Thẻ của tôi</CardTitle>
+        <CardDescription>Tổng quan về thẻ, số dư và các giao dịch gần đây của bạn trong một cái nhìn.</CardDescription>
         <CardAction>
           <Button size="icon" variant="outline">
             <Plus className="size-4" />
@@ -79,9 +79,9 @@ export function AccountOverview() {
       <CardContent>
         <Tabs className="gap-4" defaultValue="virtual">
           <TabsList className="w-full">
-            <TabsTrigger value="virtual">Virtual</TabsTrigger>
+            <TabsTrigger value="virtual">Thẻ ảo</TabsTrigger>
             <TabsTrigger value="physical" disabled>
-              Physical
+              Thẻ vật lý
             </TabsTrigger>
           </TabsList>
           <TabsContent value="virtual">
@@ -93,7 +93,7 @@ export function AccountOverview() {
                 <div className="absolute top-1/2 w-full -translate-y-1/2">
                   <div className="flex items-end justify-between px-6">
                     <span className="text-accent font-mono text-lg leading-none font-medium tracking-wide uppercase">
-                      Arham Khan
+                      DUONG MANH HUNG
                     </span>
                     <ChipSVG />
                   </div>
@@ -102,43 +102,43 @@ export function AccountOverview() {
 
               <div className="space-y-2 text-sm">
                 <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground">Card Number</span>
-                  <span className="font-medium tabular-nums">•••• •••• 5416</span>
+                  <span className="text-muted-foreground">Số thẻ</span>
+                  <span className="font-medium tabular-nums">•••• •••• 2143</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground">Expiry Date</span>
-                  <span className="font-medium tabular-nums">06/09</span>
+                  <span className="text-muted-foreground">Ngày hết hạn</span>
+                  <span className="font-medium tabular-nums">06/30</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground">CVC</span>
                   <span className="font-medium">•••</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground">Spending Limit</span>
-                  <span className="font-medium tabular-nums">$62,000.00</span>
+                  <span className="text-muted-foreground">Giới hạn chi tiêu</span>
+                  <span className="font-medium tabular-nums">62.000.00đ</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground">Available Balance</span>
-                  <span className="font-medium tabular-nums">$13,100.06</span>
+                  <span className="text-muted-foreground">Số dư khả dụng</span>
+                  <span className="font-medium tabular-nums">28.100.06đ</span>
                 </div>
               </div>
 
               <div className="flex gap-2">
                 <Button className="flex-1" variant="outline" size="sm">
-                  Freeze Card
+                  Đóng băng thẻ
                 </Button>
                 <Button className="flex-1" variant="outline" size="sm">
-                  Set Limit
+                  Đặt giới hạn
                 </Button>
                 <Button className="flex-1" variant="outline" size="sm">
-                  More
+                  Thêm
                 </Button>
               </div>
 
               <Separator />
 
               <div className="space-y-4">
-                <h6 className="text-muted-foreground text-sm uppercase">Recent Payments</h6>
+                <h6 className="text-muted-foreground text-sm uppercase">Thanh toán gần đây</h6>
 
                 <div className="space-y-4">
                   {recentPayments.map((transaction) => (
@@ -167,12 +167,12 @@ export function AccountOverview() {
                 </div>
 
                 <Button className="w-full" size="sm" variant="outline">
-                  View All Payments
+                  Xem tất cả các khoản thanh toán
                 </Button>
               </div>
             </div>
           </TabsContent>
-          <TabsContent value="physical">Physical card details are currently unavailable</TabsContent>
+          <TabsContent value="physical">Chi tiêu thẻ vật lý hiện không khả dụng</TabsContent>
         </Tabs>
       </CardContent>
     </Card>

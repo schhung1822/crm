@@ -26,15 +26,15 @@ const chartData = [
 
 const chartConfig = {
   scheduled: {
-    label: "Scheduled",
+    label: "Lên lịch",
     color: "var(--chart-1)",
   },
   expenses: {
-    label: "Expenses",
+    label: "Chi tiêu",
     color: "var(--chart-2)",
   },
   income: {
-    label: "Income",
+    label: "Thu nhập",
     color: "var(--chart-3)",
   },
 } as ChartConfig;
@@ -46,17 +46,17 @@ export function FinancialOverview() {
   return (
     <Card className="shadow-xs">
       <CardHeader>
-        <CardTitle>Financial Overview</CardTitle>
-        <CardDescription>Track your income, expenses, and scheduled amounts at a glance.</CardDescription>
+        <CardTitle>Tổng quan tài chính</CardTitle>
+        <CardDescription>Theo dõi thu nhập, chi tiêu và số tiền đã lên lịch của bạn một cách nhanh chóng.</CardDescription>
         <CardAction>
           <Select defaultValue="last-year">
             <SelectTrigger>
-              <SelectValue placeholder="Select period" />
+              <SelectValue placeholder="Chọn khoảng thời gian" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="last-year">Last Year</SelectItem>
-              <SelectItem value="last-month">Last Month</SelectItem>
-              <SelectItem value="ytd">Year to Date</SelectItem>
+              <SelectItem value="last-year">Năm trước</SelectItem>
+              <SelectItem value="last-month">Tháng trước</SelectItem>
+              <SelectItem value="ytd">Đầu năm đến nay</SelectItem>
             </SelectContent>
           </Select>
         </CardAction>
@@ -69,7 +69,7 @@ export function FinancialOverview() {
               <ArrowDownLeft className="stroke-chart-1 size-6" />
             </div>
             <div>
-              <p className="text-muted-foreground text-xs uppercase">Income</p>
+              <p className="text-muted-foreground text-xs uppercase">Thu nhập</p>
               <p className="font-medium tabular-nums">{formatCurrency(totalIncome, { noDecimals: true })}</p>
             </div>
           </div>
@@ -79,7 +79,7 @@ export function FinancialOverview() {
               <ArrowUpRight className="stroke-chart-2 size-6" />
             </div>
             <div>
-              <p className="text-muted-foreground text-xs uppercase">Expenses</p>
+              <p className="text-muted-foreground text-xs uppercase">Chi tiêu</p>
               <p className="font-medium tabular-nums">{formatCurrency(totalExpenses, { noDecimals: true })}</p>
             </div>
           </div>
@@ -89,7 +89,7 @@ export function FinancialOverview() {
               <CalendarCheck className="stroke-chart-3 size-6" />
             </div>
             <div>
-              <p className="text-muted-foreground text-xs uppercase">Scheduled</p>
+              <p className="text-muted-foreground text-xs uppercase">Đã lên lịch</p>
               <p className="font-medium tabular-nums">{formatCurrency(totalScheduled, { noDecimals: true })}</p>
             </div>
           </div>

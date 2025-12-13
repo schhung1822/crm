@@ -48,15 +48,12 @@ export function SearchDialog() {
         onClick={() => setOpen(true)}
       >
         <Search className="size-4" />
-        Search
-        <kbd className="bg-muted inline-flex h-5 items-center gap-1 rounded border px-1.5 text-[10px] font-medium select-none">
-          <span className="text-xs">⌘</span>J
-        </kbd>
+        Tìm kiếm
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Search dashboards, users, and more…" />
+        <CommandInput placeholder="Tìm kiếm bảng điều khiển, người dùng và hơn thế nữa…" />
         <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandEmpty>Không tìm thấy kết quả.</CommandEmpty>
           {[...new Set(searchItems.map((item) => item.group))].map((group, i) => (
             <React.Fragment key={group}>
               {i !== 0 && <CommandSeparator />}

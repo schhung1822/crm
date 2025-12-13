@@ -75,7 +75,7 @@ export const recentLeadsColumns: ColumnDef<z.infer<typeof recentLeadSchema>>[] =
     cell: () => (
       <Button variant="ghost" className="text-muted-foreground flex size-8" size="icon">
         <EllipsisVertical />
-        <span className="sr-only">Open menu</span>
+        <span className="sr-only">Mở menu</span>
       </Button>
     ),
     enableSorting: false,

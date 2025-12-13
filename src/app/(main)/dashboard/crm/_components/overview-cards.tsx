@@ -23,8 +23,8 @@ export function OverviewCards() {
     <div className="grid grid-cols-1 gap-4 *:data-[slot=card]:shadow-xs sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
       <Card>
         <CardHeader>
-          <CardTitle>New Leads</CardTitle>
-          <CardDescription>Last Month</CardDescription>
+          <CardTitle>Người theo dõi mới</CardTitle>
+          <CardDescription>Tháng trước</CardDescription>
         </CardHeader>
         <CardContent className="size-full">
           <ChartContainer className="size-full min-h-24" config={leadsChartConfig}>
@@ -50,8 +50,8 @@ export function OverviewCards() {
 
       <Card className="overflow-hidden pb-0">
         <CardHeader>
-          <CardTitle>Proposals Sent</CardTitle>
-          <CardDescription>Last Month</CardDescription>
+          <CardTitle>Video đã đăng</CardTitle>
+          <CardDescription>Tháng trước</CardDescription>
         </CardHeader>
         <CardContent className="flex-1 p-0">
           <ChartContainer className="size-full min-h-24" config={proposalsChartConfig}>
@@ -88,10 +88,10 @@ export function OverviewCards() {
         </CardHeader>
         <CardContent className="flex size-full flex-col justify-between">
           <div className="space-y-1.5">
-            <CardTitle>Revenue</CardTitle>
-            <CardDescription>Last 6 Months</CardDescription>
+            <CardTitle>Doanh thu từ Tiktok</CardTitle>
+            <CardDescription>6 Tháng qua</CardDescription>
           </div>
-          <p className="text-2xl font-medium tabular-nums">$56,050</p>
+          <p className="text-2xl font-medium tabular-nums">56.050.000đ</p>
           <div className="w-fit rounded-md bg-green-500/10 px-2 py-1 text-xs font-medium text-green-500">+22.2%</div>
         </CardContent>
       </Card>
@@ -104,18 +104,18 @@ export function OverviewCards() {
         </CardHeader>
         <CardContent className="flex size-full flex-col justify-between">
           <div className="space-y-1.5">
-            <CardTitle>Projects Won</CardTitle>
-            <CardDescription>Last 6 Months</CardDescription>
+            <CardTitle>Lượt tương tác</CardTitle>
+            <CardDescription>6 Tháng qua</CardDescription>
           </div>
-          <p className="text-2xl font-medium tabular-nums">136</p>
+          <p className="text-2xl font-medium tabular-nums">826</p>
           <div className="text-destructive bg-destructive/10 w-fit rounded-md px-2 py-1 text-xs font-medium">-2.5%</div>
         </CardContent>
       </Card>
 
       <Card className="col-span-1 xl:col-span-2">
         <CardHeader>
-          <CardTitle>Revenue Growth</CardTitle>
-          <CardDescription>Year to Date (YTD)</CardDescription>
+          <CardTitle>Tăng trưởng lượt xem</CardTitle>
+          <CardDescription>Từ đầu năm</CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer config={revenueChartConfig} className="h-24 w-full">
@@ -143,7 +143,7 @@ export function OverviewCards() {
           </ChartContainer>
         </CardContent>
         <CardFooter>
-          <p className="text-muted-foreground text-sm">+35% growth since last year</p>
+          <p className="text-muted-foreground text-sm">+35% tăng trưởng so với năm ngoái</p>
         </CardFooter>
       </Card>
     </div>

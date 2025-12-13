@@ -20,7 +20,7 @@ export function InsightCards() {
     <div className="grid grid-cols-1 gap-4 *:data-[slot=card]:shadow-xs sm:grid-cols-2 xl:grid-cols-5">
       <Card className="col-span-1 xl:col-span-2">
         <CardHeader>
-          <CardTitle>Leads by Source</CardTitle>
+          <CardTitle>Người theo dõi theo nguồn</CardTitle>
         </CardHeader>
         <CardContent className="max-h-48">
           <ChartContainer config={leadsBySourceChartConfig} className="size-full">
@@ -56,7 +56,7 @@ export function InsightCards() {
                             {totalLeads.toLocaleString()}
                           </tspan>
                           <tspan x={viewBox.cx} y={(viewBox.cy ?? 0) + 24} className="fill-muted-foreground">
-                            Leads
+                              Người theo dõi
                           </tspan>
                         </text>
                       );
@@ -87,17 +87,17 @@ export function InsightCards() {
         </CardContent>
         <CardFooter className="gap-2">
           <Button size="sm" variant="outline" className="basis-1/2">
-            View Full Report
+            Xem báo cáo đầy đủ
           </Button>
           <Button size="sm" variant="outline" className="basis-1/2">
-            Download CSV
+            Tải xuống CSV
           </Button>
         </CardFooter>
       </Card>
 
       <Card className="col-span-1 xl:col-span-3">
         <CardHeader>
-          <CardTitle>Project Revenue vs. Target</CardTitle>
+          <CardTitle>Doanh thu theo nội dung so với mục tiêu</CardTitle>
         </CardHeader>
         <CardContent className="size-full max-h-52">
           <ChartContainer config={projectRevenueChartConfig} className="size-full">
@@ -146,7 +146,7 @@ export function InsightCards() {
           </ChartContainer>
         </CardContent>
         <CardFooter>
-          <p className="text-muted-foreground text-xs">Average progress: 78% · 2 projects above target</p>
+          <p className="text-muted-foreground text-xs">Tiến độ đạt 78% · 2 nội dung vượt mục tiêu</p>
         </CardFooter>
       </Card>
     </div>

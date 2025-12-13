@@ -17,7 +17,7 @@ export function OperationalCards() {
     <div className="grid grid-cols-1 gap-4 *:data-[slot=card]:shadow-xs sm:grid-cols-2 xl:grid-cols-3">
       <Card>
         <CardHeader>
-          <CardTitle>Sales Pipeline</CardTitle>
+          <CardTitle>Phễu chuyển đổi Tiktok</CardTitle>
         </CardHeader>
         <CardContent className="size-full">
           <ChartContainer config={salesPipelineChartConfig} className="size-full">
@@ -30,13 +30,13 @@ export function OperationalCards() {
           </ChartContainer>
         </CardContent>
         <CardFooter>
-          <p className="text-muted-foreground text-xs">Leads increased by 18.2% since last month.</p>
+          <p className="text-muted-foreground text-xs">Tăng trưởng 21% so với tháng trước.</p>
         </CardFooter>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>Sales by Region</CardTitle>
+          <CardTitle>Lượt xem theo khu vực</CardTitle>
           <CardDescription className="font-medium tabular-nums">
             {formatCurrency(totalSales, { noDecimals: true })}
           </CardDescription>
@@ -71,16 +71,16 @@ export function OperationalCards() {
         </CardContent>
         <CardFooter>
           <div className="text-muted-foreground flex justify-between gap-1 text-xs">
-            <span>{regionSalesData.length} regions tracked</span>
+            <span>{regionSalesData.length} khu vực được theo dõi</span>
             <span>•</span>
-            <span>{regionSalesData.filter((r) => r.isPositive).length} regions growing</span>
+            <span>{regionSalesData.filter((r) => r.isPositive).length} khu vực tăng trưởng</span>
           </div>
         </CardFooter>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>Action Items</CardTitle>
+          <CardTitle>Việc cần làm Tiktok</CardTitle>
         </CardHeader>
         <CardContent>
           <ul className="space-y-2.5">
@@ -92,9 +92,9 @@ export function OperationalCards() {
                   <span
                     className={cn(
                       "w-fit rounded-md px-2 py-1 text-xs font-medium",
-                      item.priority === "High" && "text-destructive bg-destructive/20",
-                      item.priority === "Medium" && "bg-yellow-500/20 text-yellow-500",
-                      item.priority === "Low" && "bg-green-500/20 text-green-500",
+                      item.priority === "Cao" && "text-destructive bg-destructive/20",
+                      item.priority === "Trung bình" && "bg-yellow-500/20 text-yellow-500",
+                      item.priority === "Thấp" && "bg-green-500/20 text-green-500",
                     )}
                   >
                     {item.priority}
