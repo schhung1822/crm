@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Cake, Wallet, BadgeCheck, Tags, Landmark, UserPlus, User2 } from "lucide-react";
 import { z } from "zod";
 
@@ -182,7 +183,9 @@ export function TableCellViewer({ item }: { item: z.infer<typeof userSchema> }) 
         </div>
 
         <DrawerFooter>
-          <Button>Xem chi tiết</Button>
+            <Link href={`/orders/${item.customer_ID}`}>
+              <Button className="w-full">Xem chi tiết</Button>
+            </Link>
           <DrawerClose asChild>
             <Button variant="outline">Đóng</Button>
           </DrawerClose>
