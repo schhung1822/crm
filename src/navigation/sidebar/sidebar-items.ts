@@ -23,7 +23,12 @@ import {
   Ruler,
   Scale,
   KeyIcon,
+  ShoppingBagIcon,
+  PackageIcon,
+  Calendar1Icon,
+  AppWindowIcon
 } from "lucide-react";
+import App from "next/app";
 
 export interface NavSubItem {
   title: string;
@@ -83,15 +88,9 @@ export const sidebarItems: NavGroup[] = [
         comingSoon: true,
       },
       {
-        title: "Học viện",
+        title: "Zalo OA",
         url: "/dashboard/coming-soon",
-        icon: GraduationCap,
-        comingSoon: true,
-      },
-      {
-        title: "Nhạc nền",
-        url: "/dashboard/coming-soon",
-        icon: Music,
+        icon: AppWindowIcon,
         comingSoon: true,
       },
     ],
@@ -101,25 +100,24 @@ export const sidebarItems: NavGroup[] = [
     label: "Quản lý",
     items: [
       {
-        title: "Kênh",
-        url: "/kenh",
-        icon: Tv,
+        title: "Đơn hàng",
+        url: "/orders",
+        icon: ShoppingBagIcon,
       },
       {
-        title: "Từ khóa",
-        url: "/keyword",
-        icon: KeyIcon,
-        comingSoon: true,
-      },
-      {
-        title: "Học viên",
-        url: "/academy",
-        icon: GraduationCap,
-      },
-      {
-        title: "Thành viên",
-        url: "/user",
+        title: "Khách hàng",
+        url: "/customers",
         icon: Users,
+      },
+      {
+        title: "Hàng hóa",
+        url: "/products",
+        icon: PackageIcon,
+      },
+      {
+        title: "Sự kiện",
+        url: "/events",
+        icon: Calendar1Icon,
       },
       {
         title: "Xác thực",

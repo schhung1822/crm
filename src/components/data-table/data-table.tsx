@@ -186,7 +186,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="overflow-hidden rounded-lg border">{content}</div>
+      <div className="overflow-hidden rounded-lg border scrollbar-thin scrollbar-thumb-muted-foreground/40 scrollbar-track-transparent hover:scrollbar-thumb-muted-foreground/60">{content}</div>
 
       <div className="flex items-center justify-between px-4 py-2">
         <div className="text-muted-foreground hidden flex-1 text-sm lg:flex">

@@ -14,21 +14,26 @@ import { DataTable as DataTableNew } from "@/components/data-table/data-table";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import { withDndColumn } from "@/components/data-table/table-utils";
 
-// ⬇️ import thêm Stats
+// ⬇️ import thêm Stats + columns factory
 import { dashboardColumns as makeColumns, type Stats } from "./columns";
 import type { Channel } from "./schema";
 
 export function DataTable({
-  data: initialData = [],
-  stats,
+  data: initialData = []
 }: {
   data?: Channel[];
-  stats: Stats;
 }) {
-  // ⬇️ Gọi factory đúng kiểu
-  const columns = withDndColumn(makeColumns(stats));
-
   const [data, setData] = React.useState<Channel[]>(() => initialData);
+  // compute summary stats (used by columns factory)
+  const stats: Stats = React.useMemo(() => ({
+    totalOrders: initialData.length,
+    totalTienHang: initialData.reduce((s, c) => s + (Number(c.tien_hang) || 0), 0),
+    totalThanhTien: initialData.reduce((s, c) => s + (Number(c.thanh_tien) || 0), 0),
+    totalQuantity: initialData.reduce((s, c) => s + (Number(c.quantity) || 0), 0),
+  }), [initialData]);
+
+  // build columns from factory
+  const columns = React.useMemo(() => withDndColumn(makeColumns(stats)), [stats]);
   const [searchTerm, setSearchTerm] = React.useState("");
   
   const filteredData = React.useMemo(() => {
@@ -36,10 +41,10 @@ export function DataTable({
     
     const term = searchTerm.toLowerCase();
     return data.filter((item) =>
-      item.name_customer.toLowerCase().includes(term) ||
+      item.channel_name.toLowerCase().includes(term) ||
       item.order_ID.toLowerCase().includes(term) ||
       (item.phone ? item.phone.toLowerCase().includes(term) : false) ||
-      (item.seller ? item.seller.toLowerCase().includes(term) : false)
+      (item.created_by ? item.created_by.toLowerCase().includes(term) : false)
     );
   }, [data, searchTerm]);
 

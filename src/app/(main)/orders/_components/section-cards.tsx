@@ -13,7 +13,7 @@ type SectionCardsProps = {
   };
 };
 
-export function SectionCardsView({ stats }: SectionCardsProps) {
+export function SectionCards({ stats }: SectionCardsProps) {
   const fmt = (n: number) => n.toLocaleString("vi-VN");
 
   return (
@@ -21,27 +21,33 @@ export function SectionCardsView({ stats }: SectionCardsProps) {
       <Card className="@container/card">
         <CardHeader>
           <CardDescription>Tổng đơn</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            {fmt(stats.totalOrders)}
-          </CardTitle>
+          <div className="flex items-baseline">
+            <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+              {fmt(stats.totalOrders)}
+            </CardTitle>
+          </div>
         </CardHeader>
       </Card>
 
       <Card className="@container/card">
         <CardHeader>
           <CardDescription>Tổng tiền hàng</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            {fmt(stats.totalTienHang)}
-          </CardTitle>
+          <div className="flex items-baseline">
+            <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+              {fmt(stats.totalTienHang)}
+            </CardTitle>
+          </div>
         </CardHeader>
       </Card>
 
       <Card className="@container/card col-span-1 @xl/main:col-span-2 @5xl/main:col-span-4">
         <CardHeader>
           <CardDescription>Tổng thành tiền</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            {fmt(stats.totalThanhTien)}
-          </CardTitle>
+          <div className="flex items-baseline">
+            <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+              {fmt(stats.totalThanhTien)}
+            </CardTitle>
+          </div>
         </CardHeader>
       </Card>
     </div>

@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import { channelSchema, Channel } from "./schema";
 import { Badge } from "@/components/ui/badge";
+import { channelSchema, Channel } from "./schema";
 import { TableCellViewer } from "./table-cell-viewer";
 
 // ---- Stats type ----

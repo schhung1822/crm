@@ -1,7 +1,9 @@
 "use client";
 
 import * as React from "react";
+
 import { Plus, Search } from "lucide-react";
+import { z } from "zod";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,21 +16,11 @@ import { DataTable as DataTableNew } from "@/components/data-table/data-table";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import { withDndColumn } from "@/components/data-table/table-utils";
 
-// ⬇️ import thêm Stats
-import { dashboardColumns as makeColumns, type Stats } from "./columns";
-import type { Channel } from "./schema";
+import { dashboardColumns } from "./columns";
+import { academySchema, Academy } from "./schema";
 
-export function DataTable({
-  data: initialData = [],
-  stats,
-}: {
-  data?: Channel[];
-  stats: Stats;
-}) {
-  // ⬇️ Gọi factory đúng kiểu
-  const columns = withDndColumn(makeColumns(stats));
-
-  const [data, setData] = React.useState<Channel[]>(() => initialData);
+export function DataTable({ data: initialData }: { data: Academy[] }) {
+  const [data, setData] = React.useState<Academy[]>(() => initialData);
   const [searchTerm, setSearchTerm] = React.useState("");
   
   const filteredData = React.useMemo(() => {
@@ -36,17 +28,18 @@ export function DataTable({
     
     const term = searchTerm.toLowerCase();
     return data.filter((item) =>
-      item.name_customer.toLowerCase().includes(term) ||
-      item.order_ID.toLowerCase().includes(term) ||
-      (item.phone ? item.phone.toLowerCase().includes(term) : false) ||
-      (item.seller ? item.seller.toLowerCase().includes(term) : false)
+      item.name.toLowerCase().includes(term) ||
+      item.phone.toLowerCase().includes(term) ||
+      item.city.toLowerCase().includes(term) ||
+      item.role.toLowerCase().includes(term)
     );
   }, [data, searchTerm]);
 
+  const columns = withDndColumn(dashboardColumns);
   const table = useDataTableInstance({
     data: filteredData,
     columns,
-    getRowId: (row) => row.order_ID.toString(),
+    getRowId: (row) => row.phone.toString(),
   });
 
   return (
@@ -65,12 +58,17 @@ export function DataTable({
           <DataTableViewOptions table={table} />
           <Button variant="outline" size="sm">
             <Plus />
-            <span className="hidden lg:inline">Thêm kênh</span>
+            <span className="hidden lg:inline">Thêm Học viên</span>
           </Button>
         </div>
       </div>
       <div className="table-scroll overflow-hidden rounded-lg">
-        <DataTableNew dndEnabled table={table} columns={columns} onReorder={setData} />
+        <DataTableNew
+          dndEnabled
+          table={table}
+          columns={columns}
+          onReorder={setData}
+        />
       </div>
     </div>
   );

@@ -207,3 +207,25 @@ html {
   background: var(--sb-thumb-hover);
 }
 
+/* ---- Table horizontal scrollbar (compact like slider) ---- */
+.table-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+.table-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.table-scroll::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.4);
+  border-radius: 9999px;
+}
+.table-scroll::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.6);
+}
+
+/* Firefox */
+.table-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--muted-foreground) / 0.4) transparent;
+}
+
+
