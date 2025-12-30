@@ -5,11 +5,8 @@ import * as React from "react";
 import { Plus, Search } from "lucide-react";
 import { z } from "zod";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { useDataTableInstance } from "@/hooks/use-data-table-instance";
 
 import { DataTable as DataTableNew } from "@/components/data-table/data-table";

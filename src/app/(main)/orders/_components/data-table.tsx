@@ -41,10 +41,10 @@ export function DataTable({
     
     const term = searchTerm.toLowerCase();
     return data.filter((item) =>
-      item.channel_name.toLowerCase().includes(term) ||
-      item.order_ID.toLowerCase().includes(term) ||
-      (item.phone ? item.phone.toLowerCase().includes(term) : false) ||
-      (item.created_by ? item.created_by.toLowerCase().includes(term) : false)
+      String(item.kenh_ban ?? "").toLowerCase().includes(term) ||
+      String(item.order_ID ?? "").toLowerCase().includes(term) ||
+      (item.phone ? String(item.phone).toLowerCase().includes(term) : false) ||
+      ("created_by" in item ? String((item as any).created_by).toLowerCase().includes(term) : false)
     );
   }, [data, searchTerm]);
 

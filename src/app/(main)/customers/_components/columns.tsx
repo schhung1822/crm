@@ -10,8 +10,9 @@ import { userSchema, Users } from "./schema";
 import { TableCellViewer } from "./table-cell-viewer";
 
 // Format số với dấu chấm (1.234.567)
-const formatNumber = (n: number) => {
-  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+const formatNumber = (n?: number | string) => {
+  const num = Number(n ?? 0) || 0;
+  return String(num).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 };
 
 export const dashboardColumns: ColumnDef<Users>[] = [

@@ -35,6 +35,10 @@ export function ChartAreaInteractive({ chartData }: { chartData?: ChartPoint[] }
     }
   }, [isMobile]);
 
+  const staticChartData: ChartPoint[] = [
+    { date: new Date().toISOString(), orders: 0, revenue: 0 },
+  ];
+
   const source = chartData ?? staticChartData;
 
   const filteredData = source.filter((item) => {
