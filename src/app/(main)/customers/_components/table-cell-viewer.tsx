@@ -1,5 +1,7 @@
 "use client";
+import React from "react";
 
+import Link from "next/link";
 import { Cake, Wallet, BadgeCheck, Tags, Landmark, UserPlus, User2 } from "lucide-react";
 import { z } from "zod";
 
@@ -65,6 +67,10 @@ function Stat({
 
 export function TableCellViewer({ item }: { item: z.infer<typeof userSchema> }) {
   const isMobile = useIsMobile();
+  const [open, setOpen] = React.useState(false);
+  const [orders, setOrders] = React.useState<any[] | null>(null);
+  const [loadingOrders, setLoadingOrders] = React.useState(false);
+  const [ordersError, setOrdersError] = React.useState<string | null>(null);
 
   if (!item) {
     return null;
@@ -75,8 +81,41 @@ export function TableCellViewer({ item }: { item: z.infer<typeof userSchema> }) 
       ? item.create_time.toLocaleDateString("vi-VN")
       : item.create_time;
 
+  React.useEffect(() => {
+    if (!open) return;
+    if (!item?.customer_ID) return;
+
+    let cancelled = false;
+    async function load() {
+      try {
+        setLoadingOrders(true);
+        setOrdersError(null);
+        const res = await fetch(`/api/orders/${encodeURIComponent(String(item.customer_ID))}`);
+        const data = await res.json();
+        if (cancelled) return;
+        if (!res.ok) {
+          setOrdersError(data?.error || "Lỗi khi tải đơn hàng");
+          setOrders([]);
+        } else {
+          setOrders(Array.isArray(data.rows) ? data.rows : []);
+        }
+      } catch (err) {
+        if (cancelled) return;
+        setOrdersError(String(err));
+        setOrders([]);
+      } finally {
+        if (!cancelled) setLoadingOrders(false);
+      }
+    }
+
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [open, item?.customer_ID]);
+
   return (
-    <Drawer direction={isMobile ? "bottom" : "right"}>
+    <Drawer open={open} onOpenChange={setOpen} direction={isMobile ? "bottom" : "right"}>
       <DrawerTrigger asChild>
         <Button variant="link" className="text-foreground w-fit px-0 text-left">
           {item.name}
@@ -177,12 +216,13 @@ export function TableCellViewer({ item }: { item: z.infer<typeof userSchema> }) 
                 {item.note ? String(item.note) : "—"}
               </div>
             </div>
-
           </div>
         </div>
 
         <DrawerFooter>
-          <Button>Xem chi tiết</Button>
+            <Link href={`/orders/${item.customer_ID}`}>
+              <Button className="w-full">Xem chi tiết</Button>
+            </Link>
           <DrawerClose asChild>
             <Button variant="outline">Đóng</Button>
           </DrawerClose>

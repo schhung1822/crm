@@ -22,6 +22,7 @@ import {
   DrawerDescription,
   DrawerFooter,
   DrawerHeader,
+  DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Separator } from "@/components/ui/separator";
@@ -128,9 +129,9 @@ export function TableCellViewer({
           <div className="min-w-0">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
+                <DrawerTitle className="truncate">Mã đơn: {item.order_ID}</DrawerTitle>
                 <DrawerDescription className="truncate">
-                  Mã đơn: <span className="font-medium text-foreground">{item.order_ID}</span>
-                  {item.brand ? <> • {item.brand}</> : null}
+                  {item.brand ? <>• {item.brand}</> : null}
                 </DrawerDescription>
               </div>
 

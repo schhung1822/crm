@@ -1,25 +1,5 @@
-import type { ColumnDef } from "@tanstack/react-table";
-import { EllipsisVertical, Link as LinkIcon } from "lucide-react"; // 👈 đổi tên icon
-import NextLink from "next/link"; // 👈 Link của Next
-import { z } from "zod";
-
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import { videoSchema, Video } from "./schema";
-import { TableCellViewer } from "./table-cell-viewer";
-
-const toAt = (v?: string) => (v ? (v.startsWith("@") ? v : `@${v}`) : "");
-
-export const dashboardColumns: ColumnDef<Video>[] = [
+// Re-export parent orders columns to avoid duplicate implementations.
+export { dashboardColumns } from "../../_components/columns";
   // Checkbox chọn nhiều dòng
   {
     id: "select",

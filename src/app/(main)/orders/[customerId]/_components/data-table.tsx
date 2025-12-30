@@ -16,29 +16,38 @@ import { DataTable as DataTableNew } from "@/components/data-table/data-table";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import { withDndColumn } from "@/components/data-table/table-utils";
 
-import { dashboardColumns } from "./columns";
-import { videoSchema, Video } from "./schema";
+import { dashboardColumns as makeColumns, type Stats } from "../../_components/columns";
+import { channelSchema, Channel } from "../../_components/schema";
 
-export function DataTable({ data: initialData }: { data: Video[] }) {
-  const [data, setData] = React.useState<Video[]>(() => initialData);
+export function DataTable({ data: initialData }: { data: Channel[] }) {
+  const [data, setData] = React.useState<Channel[]>(() => initialData ?? []);
   const [searchTerm, setSearchTerm] = React.useState("");
-  
+
+  const stats = React.useMemo(() => {
+    const totalOrders = (data ?? []).length;
+    const totalTienHang = (data ?? []).reduce((s, r) => s + (Number(r.tien_hang) || 0), 0);
+    const totalThanhTien = (data ?? []).reduce((s, r) => s + (Number(r.thanh_tien) || 0), 0);
+    const totalQuantity = (data ?? []).reduce((s, r) => s + (Number(r.quantity) || 0), 0);
+    return { totalOrders, totalTienHang, totalThanhTien, totalQuantity };
+  }, [data]);
+
   const filteredData = React.useMemo(() => {
     if (!searchTerm.trim()) return data;
-    
     const term = searchTerm.toLowerCase();
-    return data.filter((item) =>
-      item.video_title.toLowerCase().includes(term) ||
-      item.video_id.toLowerCase().includes(term) ||
-      (item.video_desc ? item.video_desc.toLowerCase().includes(term) : false)
+    return (data ?? []).filter((item) =>
+      String(item.order_ID ?? "").toLowerCase().includes(term) ||
+      String(item.name_customer ?? "").toLowerCase().includes(term) ||
+      String(item.phone ?? "").toLowerCase().includes(term) ||
+      String(item.seller ?? "").toLowerCase().includes(term) ||
+      String(item.name_pro ?? "").toLowerCase().includes(term)
     );
   }, [data, searchTerm]);
 
-  const columns = withDndColumn(dashboardColumns);
+  const columns = React.useMemo(() => withDndColumn(makeColumns(stats)), [stats]);
   const table = useDataTableInstance({
     data: filteredData,
     columns,
-    getRowId: (row) => row.video_id.toString(),
+    getRowId: (row) => String(row.order_ID ?? "").toString(),
   });
 
   return (
@@ -57,7 +66,7 @@ export function DataTable({ data: initialData }: { data: Video[] }) {
           <DataTableViewOptions table={table} />
           <Button variant="outline" size="sm">
             <Plus />
-            <span className="hidden lg:inline">Thêm video</span>
+            <span className="hidden lg:inline">Thêm đơn</span>
           </Button>
         </div>
       </div>
@@ -70,8 +79,5 @@ export function DataTable({ data: initialData }: { data: Video[] }) {
         />
       </div>
     </div>
-  );
-}
-    </Tabs>
   );
 }
