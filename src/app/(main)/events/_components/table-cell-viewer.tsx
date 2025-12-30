@@ -77,7 +77,7 @@ export function TableCellViewer({
   return (
     <Drawer direction={isMobile ? "bottom" : "right"}>
       <DrawerTrigger asChild>
-        <Button variant="link" className="w-fit px-0 text-left">
+        <Button variant="link" className="w-fit px-0 text-left text-white hover:text-white">
           {item.name}
         </Button>
       </DrawerTrigger>
