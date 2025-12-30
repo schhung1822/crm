@@ -1,6 +1,6 @@
 // src/lib/videos_by_kenh.ts
 import { getDB } from "@/lib/db";
-import { videoSchema, type Video } from "@/app/(main)/kenh/[id_kenh]/_components/schema";
+import { videoSchema, type Video } from "@/app/(main)/orders/[customerId]/_components/schema";
 
 type Paging = { page?: number; pageSize?: number | "all" | -1 };
 

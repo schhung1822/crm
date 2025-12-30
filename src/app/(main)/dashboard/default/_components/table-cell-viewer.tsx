@@ -50,7 +50,7 @@ export function TableCellViewer({
     <Drawer direction={isMobile ? "bottom" : "right"}>
       <DrawerTrigger asChild>
         <Button variant="link" className="text-foreground w-fit px-0 text-left">
-          {item.name}
+          {"name" in item ? (item as any).name : item.name_customer}
         </Button>
       </DrawerTrigger>
 
