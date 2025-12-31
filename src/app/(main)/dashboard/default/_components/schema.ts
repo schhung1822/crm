@@ -19,6 +19,7 @@ export const channelSchema = z.object({
   quantity: z.number().nullable().optional(),
   name_pro: z.string().nullable().optional(),
   pro_ID: z.string().nullable().optional(),
+  brand_pro: z.string().nullable().optional(),
 });
 
 export type Channel = z.infer<typeof channelSchema>;
