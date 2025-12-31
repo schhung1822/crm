@@ -39,7 +39,7 @@ export default async function Page() {
   return (
     <div className="@container/main flex flex-col gap-4 md:gap-6">
       <SectionCards stats={stats} />
-      <ChartAreaInteractive chartData={chartData} />
+      <ChartAreaInteractive chartData={chartData}/>
       <DataTable data={channels} stats={stats} />
     </div>
   );
