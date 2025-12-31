@@ -65,7 +65,7 @@ export function LayoutControls(props: LayoutControlsProps) {
           </div>
           <div className="space-y-3">
             <div className="space-y-1">
-              <Label className="text-xs font-medium">Preset</Label>
+              <Label className="text-xs font-medium">Cài đặt màu</Label>
               <Select value={themePreset} onValueChange={(value) => handleValueChange("theme_preset", value)}>
                 <SelectTrigger size="sm" className="w-full text-xs">
                   <SelectValue placeholder="Preset" />
