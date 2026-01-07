@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Plus, Search } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,9 +15,9 @@ import { DataTable as DataTableNew } from "@/components/data-table/data-table";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import { withDndColumn } from "@/components/data-table/table-utils";
 
-// ⬇️ import thêm Stats
 import { dashboardColumns as makeColumns, type Stats } from "./columns";
 import type { Channel } from "./schema";
+import { fetchChannelsByDateRange } from "@/server/server-actions";
 
 export function DataTable({
   data: initialData = [],
@@ -25,12 +26,36 @@ export function DataTable({
   data?: Channel[];
   stats: Stats;
 }) {
-  // ⬇️ Gọi factory đúng kiểu
   const columns = withDndColumn(makeColumns(stats));
+  const searchParams = useSearchParams();
 
   const [data, setData] = React.useState<Channel[]>(() => initialData);
   const [searchTerm, setSearchTerm] = React.useState("");
-  
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  // Fetch data khi date range thay đổi
+  React.useEffect(() => {
+    const from = searchParams.get("from");
+    const to = searchParams.get("to");
+
+    if (from || to) {
+      setIsLoading(true);
+      fetchChannelsByDateRange(from || undefined, to || undefined)
+        .then((filteredData) => {
+          setData(filteredData);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          setData(initialData);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } else {
+      setData(initialData);
+    }
+  }, [searchParams, initialData]);
+
   const filteredData = React.useMemo(() => {
     if (!searchTerm.trim()) return data;
     
@@ -59,6 +84,7 @@ export function DataTable({
             className="pl-10"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            disabled={isLoading}
           />
         </div>
         <div className="flex items-center gap-2">

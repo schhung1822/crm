@@ -97,6 +97,71 @@ export const leadsBySourceChartConfig = {
   },
 } as ChartConfig;
 
+export type RevenueGroupRow = { name: string; revenue: number };
+
+export function buildRevenueHorizontalBars(rows: RevenueGroupRow[]) {
+  const normalized = (rows ?? []).map((r) => ({
+    name: String(r.name ?? "").trim() || "Không rõ",
+    actual: Number(r.revenue) || 0,
+  }));
+
+  // remaining để 0 cho giống cấu trúc cũ (không dùng mục tiêu nữa)
+  const data = normalized.map((r) => ({
+    ...r,
+    remaining: 0,
+  }));
+
+  const config: ChartConfig = {
+    actual: { label: "Doanh thu", color: "var(--chart-1)" },
+    remaining: { label: " ", color: "var(--chart-2)" },
+    label: { color: "var(--primary-foreground)" },
+  } as ChartConfig;
+
+  // Mỗi chi nhánh 1 màu khác nhau theo theme
+  normalized.forEach((r, i) => {
+    const colorKey = `branch-${i}`;
+    (config as any)[colorKey] = { 
+      label: r.name, 
+      color: chartColorByIndex(i) 
+    };
+  });
+
+  return { data, config };
+}
+
+const slugify = (s: string) =>
+  (s ?? "")
+    .toString()
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "") || "unknown";
+
+const chartColorByIndex = (i: number) => `var(--chart-${(i % 5) + 1})`;
+
+export function buildRevenuePie(rows: RevenueGroupRow[], valueLabel = "Doanh thu") {
+  const normalized = (rows ?? []).map((r) => ({
+    label: String(r.name ?? "").trim() || "Không rõ",
+    revenue: Number(r.revenue) || 0,
+  }));
+
+  const data = normalized.map((r) => {
+    const key = slugify(r.label);
+    return { source: key, revenue: r.revenue, fill: `var(--color-${key})` };
+  });
+
+  const config: ChartConfig = { revenue: { label: valueLabel } } as ChartConfig;
+
+  normalized.forEach((r, i) => {
+    const key = slugify(r.label);
+    (config as any)[key] = { label: r.label, color: chartColorByIndex(i) };
+  });
+
+  return { data, config };
+}
+
 export const projectRevenueChartData = [
   { name: "Xu hướng", actual: 82000, target: 90000 },
   { name: "Hướng dẫn", actual: 48000, target: 65000 },
