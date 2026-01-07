@@ -19,25 +19,20 @@ export function TableCards({ channels }: Props) {
   const formatVND = (n: number) => n.toLocaleString("vi-VN");
   const total = channels.reduce(
     (acc, cur) => {
-      acc.orders += cur.orders;
+      acc.order_count += cur.order_count;
       acc.quantity += cur.quantity;
       acc.tien_hang += cur.tien_hang;
       acc.giam_gia += cur.giam_gia;
       acc.thanh_tien += cur.thanh_tien;
       return acc;
     },
-    { orders: 0, quantity: 0, tien_hang: 0, giam_gia: 0, thanh_tien: 0 }
+    { order_count: 0, quantity: 0, tien_hang: 0, giam_gia: 0, thanh_tien: 0 }
   );
 
   const table = useDataTableInstance({
     data: channels,
     columns: channelColumns,
     getRowId: (row) => row.kenh_ban,
-    initialState: {
-      pagination: {
-        pageSize: channels.length,
-      },
-    },
   });
 
   return (
@@ -58,7 +53,7 @@ export function TableCards({ channels }: Props) {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-6 p-4 rounded-lg border bg-muted/20">
           <div className="space-y-1">
             <div className="text-xs font-medium text-muted-foreground">Tổng đơn</div>
-            <div className="text-2xl font-bold tabular-nums">{formatVND(total.orders)}</div>
+            <div className="text-2xl font-bold tabular-nums">{formatVND(total.order_count)}</div>
           </div>
           <div className="space-y-1">
             <div className="text-xs font-medium text-muted-foreground">Sản phẩm</div>

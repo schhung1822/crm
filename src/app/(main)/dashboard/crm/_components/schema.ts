@@ -127,7 +127,7 @@ export type RevenueByProduct = z.infer<typeof RevenueByProductSchema>;
  */
 export const ChannelSummarySchema = z.object({
   kenh_ban: z.string(),
-  orders: z.number(),
+  order_count: z.number(),
   quantity: z.number(),
   tien_hang: z.number(),
   giam_gia: z.number(),

@@ -20,11 +20,11 @@ export const channelColumns: ColumnDef<z.infer<typeof ChannelSummarySchema>>[] =
     enableHiding: false,
   },
   {
-    accessorKey: "orders",
+    accessorKey: "order_count",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Số đơn" />,
     cell: ({ row }) => (
       <div className="text-center">
-        <span className="tabular-nums font-medium text-sm">{fmtNumber(row.original.orders)}</span>
+        <span className="tabular-nums font-medium text-sm">{fmtNumber(row.original.order_count)}</span>
       </div>
     ),
   },

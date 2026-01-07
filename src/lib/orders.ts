@@ -31,7 +31,7 @@ export async function getChannels(options?: GetChannelsOptions): Promise<Channel
     params.push(to);
   }
 
-  const [rows] = await db.query<unknown[]>(
+  const [rows] = await db.query<any[]>(
     `
     SELECT
       order_ID,
