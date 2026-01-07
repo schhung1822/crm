@@ -3,44 +3,84 @@
 import { Download } from "lucide-react";
 
 import { DataTable } from "@/components/data-table/data-table";
-import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardAction } from "@/components/ui/card";
 import { useDataTableInstance } from "@/hooks/use-data-table-instance";
 
-import { recentLeadsColumns } from "./columns.crm";
-import { recentLeadsData } from "./crm.config";
+import { channelColumns } from "./columns.crm";
+import { ChannelSummary } from "./schema";
 
-export function TableCards() {
+type Props = {
+  channels: ChannelSummary[];
+};
+
+export function TableCards({ channels }: Props) {
+  const formatVND = (n: number) => n.toLocaleString("vi-VN");
+  const total = channels.reduce(
+    (acc, cur) => {
+      acc.orders += cur.orders;
+      acc.quantity += cur.quantity;
+      acc.tien_hang += cur.tien_hang;
+      acc.giam_gia += cur.giam_gia;
+      acc.thanh_tien += cur.thanh_tien;
+      return acc;
+    },
+    { orders: 0, quantity: 0, tien_hang: 0, giam_gia: 0, thanh_tien: 0 }
+  );
+
   const table = useDataTableInstance({
-    data: recentLeadsData,
-    columns: recentLeadsColumns,
-    getRowId: (row) => row.id.toString(),
+    data: channels,
+    columns: channelColumns,
+    getRowId: (row) => row.kenh_ban,
+    initialState: {
+      pagination: {
+        pageSize: channels.length,
+      },
+    },
   });
 
   return (
-    <div className="grid grid-cols-1 gap-4 *:data-[slot=card]:shadow-xs">
-      <Card>
-        <CardHeader>
-          <CardTitle>Video gần đây</CardTitle>
-          <CardDescription>Theo dõi và quản lý video gần đây của bạn.</CardDescription>
-          <CardAction>
-            <div className="flex items-center gap-2">
-              <DataTableViewOptions table={table} />
-              <Button variant="outline" size="sm">
-                <Download />
-                <span className="hidden lg:inline">Xuất</span>
-              </Button>
-            </div>
-          </CardAction>
-        </CardHeader>
-        <CardContent className="flex size-full flex-col gap-4">
-          <div className="overflow-hidden rounded-md">
-            <DataTable table={table} columns={recentLeadsColumns} />
+    <Card className="shadow-sm">
+      <CardHeader className="border-b bg-muted/30">
+        <CardTitle className="text-lg">Thống kê bán hàng theo các kênh</CardTitle>
+        <CardAction>
+          <div className="flex items-center gap-2">
+            <DataTableViewOptions table={table} />
+            <Button variant="outline" size="sm">
+              <Download className="size-4" />
+              <span className="hidden lg:inline">Xuất</span>
+            </Button>
           </div>
-        </CardContent>
-      </Card>
-    </div>
+        </CardAction>
+      </CardHeader>
+      <CardContent className="">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-6 p-4 rounded-lg border bg-muted/20">
+          <div className="space-y-1">
+            <div className="text-xs font-medium text-muted-foreground">Tổng đơn</div>
+            <div className="text-2xl font-bold tabular-nums">{formatVND(total.orders)}</div>
+          </div>
+          <div className="space-y-1">
+            <div className="text-xs font-medium text-muted-foreground">Sản phẩm</div>
+            <div className="text-2xl font-bold tabular-nums">{formatVND(total.quantity)}</div>
+          </div>
+          <div className="space-y-1">
+            <div className="text-xs font-medium text-muted-foreground">Tiền hàng</div>
+            <div className="text-2xl font-bold tabular-nums">{formatVND(total.tien_hang)}</div>
+          </div>
+          <div className="space-y-1">
+            <div className="text-xs font-medium text-muted-foreground">Giảm giá</div>
+            <div className="text-2xl font-bold tabular-nums">{formatVND(total.giam_gia)}</div>
+          </div>
+          <div className="space-y-1">
+            <div className="text-xs font-medium text-muted-foreground">Thành tiền</div>
+            <div className="text-2xl font-bold tabular-nums">{formatVND(total.thanh_tien)}</div>
+          </div>
+        </div>
+        <div className="rounded-lg border overflow-hidden">
+          <DataTable table={table} columns={channelColumns} />
+        </div>
+      </CardContent>
+    </Card>
   );
 }

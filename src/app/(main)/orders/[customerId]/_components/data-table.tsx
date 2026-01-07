@@ -61,7 +61,7 @@ export function DataTable({ data: initialData }: { data: Channel[] }) {
         </div>
         <div className="flex items-center gap-2">
           <DataTableViewOptions table={table} />
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm">d
             <Plus />
             <span className="hidden lg:inline">Thêm đơn</span>
           </Button>

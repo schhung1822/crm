@@ -1,7 +1,7 @@
 "use client";
 
 import { format, subMonths } from "date-fns";
-import { Wallet, BadgeDollarSign } from "lucide-react";
+import { Wallet, Globe, ThumbsUp } from "lucide-react";
 import { Area, AreaChart, Line, LineChart, Bar, BarChart, XAxis } from "recharts";
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -50,7 +50,7 @@ export function OverviewCards() {
 
       <Card className="overflow-hidden pb-0">
         <CardHeader>
-          <CardTitle>Video đã đăng</CardTitle>
+          <CardTitle>Bài viết đã đăng</CardTitle>
           <CardDescription>Tháng trước</CardDescription>
         </CardHeader>
         <CardContent className="flex-1 p-0">
@@ -82,14 +82,14 @@ export function OverviewCards() {
 
       <Card>
         <CardHeader>
-          <div className="w-fit rounded-lg bg-green-500/10 p-2">
-            <Wallet className="size-5 text-green-500" />
+          <div className="w-fit rounded-lg bg-blue-500/10 p-2">
+            <Globe className="size-5 text-blue-500" />
           </div>
         </CardHeader>
         <CardContent className="flex size-full flex-col justify-between">
           <div className="space-y-1.5">
-            <CardTitle>Doanh thu từ Tiktok</CardTitle>
-            <CardDescription>6 Tháng qua</CardDescription>
+            <CardTitle>Doanh thu từ Website</CardTitle>
+            <CardDescription>1 Tháng qua</CardDescription>
           </div>
           <p className="text-2xl font-medium tabular-nums">56.050.000đ</p>
           <div className="w-fit rounded-md bg-green-500/10 px-2 py-1 text-xs font-medium text-green-500">+22.2%</div>
@@ -99,7 +99,7 @@ export function OverviewCards() {
       <Card>
         <CardHeader>
           <div className="bg-destructive/10 w-fit rounded-lg p-2">
-            <BadgeDollarSign className="text-destructive size-5" />
+            <ThumbsUp className="text-destructive size-5" />
           </div>
         </CardHeader>
         <CardContent className="flex size-full flex-col justify-between">
@@ -107,14 +107,14 @@ export function OverviewCards() {
             <CardTitle>Lượt tương tác</CardTitle>
             <CardDescription>6 Tháng qua</CardDescription>
           </div>
-          <p className="text-2xl font-medium tabular-nums">826</p>
+          <p className="text-2xl font-medium tabular-nums">82.618</p>
           <div className="text-destructive bg-destructive/10 w-fit rounded-md px-2 py-1 text-xs font-medium">-2.5%</div>
         </CardContent>
       </Card>
 
       <Card className="col-span-1 xl:col-span-2">
         <CardHeader>
-          <CardTitle>Tăng trưởng lượt xem</CardTitle>
+          <CardTitle>Tăng trưởng các trang mạng xã hội</CardTitle>
           <CardDescription>Từ đầu năm</CardDescription>
         </CardHeader>
         <CardContent>

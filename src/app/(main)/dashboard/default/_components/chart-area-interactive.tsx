@@ -5,8 +5,6 @@ import { Area, AreaChart, CartesianGrid, XAxis, YAxis, Legend } from "recharts";
 
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 type ChartPoint = { date: string; orders: number; revenue: number };
@@ -24,7 +22,7 @@ export function formatVNDShort(value: number) {
   return value.toString();
 }
 
-export function ChartAreaInteractive({
+export const ChartAreaInteractive = React.memo(function ChartAreaInteractive({
   chartData,
   templateKey = "default",
 }: {
@@ -72,42 +70,7 @@ export function ChartAreaInteractive({
   return (
     <Card className="@container/card">
       <CardHeader>
-        <CardTitle>Đơn hàng - doanh thu</CardTitle>
-        <CardDescription>
-          <span className="hidden @[540px]/card:block">Tổng kết 3 tháng qua</span>
-          <span className="@[540px]/card:hidden">3 Tháng qua</span>
-        </CardDescription>
-
-        <CardAction>
-          <ToggleGroup
-            type="single"
-            value={timeRange}
-            onValueChange={setTimeRange}
-            variant="outline"
-            className="hidden *:data-[slot=toggle-group-item]:!px-4 @[767px]/card:flex"
-          >
-            <ToggleGroupItem value="90d">3 tháng qua</ToggleGroupItem>
-            <ToggleGroupItem value="30d">30 ngày qua</ToggleGroupItem>
-            <ToggleGroupItem value="7d">7 ngày qua</ToggleGroupItem>
-          </ToggleGroup>
-
-          <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger className="flex w-40 @[767px]/card:hidden" size="sm">
-              <SelectValue placeholder="Last 3 months" />
-            </SelectTrigger>
-            <SelectContent className="rounded-xl">
-              <SelectItem value="90d" className="rounded-lg">
-                3 tháng qua
-              </SelectItem>
-              <SelectItem value="30d" className="rounded-lg">
-                30 ngày qua
-              </SelectItem>
-              <SelectItem value="7d" className="rounded-lg">
-                7 ngày qua
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        </CardAction>
+        <CardTitle>Biểu đồ đơn hàng - doanh thu</CardTitle>
       </CardHeader>
 
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
@@ -184,4 +147,4 @@ export function ChartAreaInteractive({
       </CardContent>
     </Card>
   );
-}
+});

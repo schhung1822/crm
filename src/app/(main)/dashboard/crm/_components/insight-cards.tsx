@@ -1,152 +1,162 @@
 "use client";
 
-import { XAxis, Label, Pie, PieChart, Bar, BarChart, CartesianGrid, LabelList, YAxis } from "recharts";
+import * as React from "react";
+import { Pie, PieChart, Label, Bar, BarChart, CartesianGrid, XAxis, YAxis, LabelList, Cell } from "recharts";
 
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import type { ChartConfig } from "@/components/ui/chart";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend } from "@/components/ui/chart";
 
-import {
-  leadsBySourceChartData,
-  leadsBySourceChartConfig,
-  projectRevenueChartData,
-  projectRevenueChartConfig,
-} from "./crm.config";
+type PieDatum = { source: string; revenue: number; fill: string };
+type BranchBarRow = { name: string; actual: number; remaining: number };
 
-export function InsightCards() {
-  const totalLeads = leadsBySourceChartData.reduce((acc, curr) => acc + curr.leads, 0);
+const formatVNDCompact = (n: number) => {
+  const v = Number(n) || 0;
+  const abs = Math.abs(v);
+
+  if (abs >= 1_000_000_000) {
+    const x = v / 1_000_000_000;
+    return `${x.toLocaleString("vi-VN", { maximumFractionDigits: x >= 10 ? 0 : 1 })} tỷ`;
+  }
+  if (abs >= 1_000_000) {
+    const x = v / 1_000_000;
+    return `${x.toLocaleString("vi-VN", { maximumFractionDigits: x >= 10 ? 0 : 1 })} triệu`;
+  }
+  return v.toLocaleString("vi-VN");
+};
+
+export function InsightCards({
+  revenueByChannel,
+  revenueByBranchBars,
+}: {
+  revenueByChannel: { data: PieDatum[]; config: ChartConfig };
+  revenueByBranchBars: { data: BranchBarRow[]; config: ChartConfig };
+}) {
+  const totalChannelRevenue = revenueByChannel.data.reduce((acc, curr) => acc + (curr.revenue || 0), 0);
 
   return (
-    <div className="grid grid-cols-1 gap-4 *:data-[slot=card]:shadow-xs sm:grid-cols-2 xl:grid-cols-5">
-      <Card className="col-span-1 xl:col-span-2">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      {/* Pie: Doanh thu theo kênh */}
+      <Card className="flex flex-col">
         <CardHeader>
-          <CardTitle>Người theo dõi theo nguồn</CardTitle>
+          <CardTitle>Doanh thu theo kênh bán</CardTitle>
         </CardHeader>
-        <CardContent className="max-h-48">
-          <ChartContainer config={leadsBySourceChartConfig} className="size-full">
-            <PieChart
-              className="m-0"
-              margin={{
-                top: 0,
-                right: 0,
-                left: 0,
-                bottom: 0,
-              }}
-            >
-              <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-              <Pie
-                data={leadsBySourceChartData}
-                dataKey="leads"
-                nameKey="source"
-                innerRadius={65}
-                outerRadius={90}
-                paddingAngle={2}
-                cornerRadius={4}
-              >
-                <Label
-                  content={({ viewBox }) => {
-                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                      return (
-                        <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle" dominantBaseline="middle">
-                          <tspan
-                            x={viewBox.cx}
-                            y={viewBox.cy}
-                            className="fill-foreground text-3xl font-bold tabular-nums"
-                          >
-                            {totalLeads.toLocaleString()}
-                          </tspan>
-                          <tspan x={viewBox.cx} y={(viewBox.cy ?? 0) + 24} className="fill-muted-foreground">
-                              Người theo dõi
-                          </tspan>
-                        </text>
-                      );
-                    }
-                  }}
+
+        <CardContent className="flex-1 pb-4">
+          <div className="flex items-center justify-between gap-4">
+            <ChartContainer config={revenueByChannel.config} className="flex-shrink-0 w-[280px] h-[280px]">
+              <PieChart>
+                <ChartTooltip
+                  cursor={false}
+                  content={<ChartTooltipContent hideLabel formatter={(v) => formatVNDCompact(Number(v))} />}
                 />
-              </Pie>
-              <ChartLegend
-                layout="vertical"
-                verticalAlign="middle"
-                align="right"
-                content={() => (
-                  <ul className="ml-8 flex flex-col gap-3">
-                    {leadsBySourceChartData.map((item) => (
-                      <li key={item.source} className="flex w-36 items-center justify-between">
-                        <span className="flex items-center gap-2 capitalize">
-                          <span className="size-2.5 rounded-full" style={{ background: item.fill }} />
-                          {leadsBySourceChartConfig[item.source].label}
-                        </span>
-                        <span className="tabular-nums">{item.leads}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              />
-            </PieChart>
-          </ChartContainer>
+                <Pie
+                  data={revenueByChannel.data}
+                  dataKey="revenue"
+                  nameKey="source"
+                  innerRadius={70}
+                  outerRadius={100}
+                  paddingAngle={2}
+                  cornerRadius={4}
+                >
+                  <Label
+                    content={({ viewBox }) => {
+                      if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                        return (
+                          <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle" dominantBaseline="middle">
+                            <tspan x={viewBox.cx} y={viewBox.cy} className="fill-foreground text-xl font-bold tabular-nums">
+                              {formatVNDCompact(totalChannelRevenue)}
+                            </tspan>
+                            <tspan x={viewBox.cx} y={(viewBox.cy ?? 0) + 22} className="fill-muted-foreground text-xs">
+                              Tổng doanh thu
+                            </tspan>
+                          </text>
+                        );
+                      }
+                      return null;
+                    }}
+                  />
+                </Pie>
+              </PieChart>
+            </ChartContainer>
+            
+            <div className="flex-1 flex flex-col gap-1.5 min-w-0">
+              {revenueByChannel.data.map((item) => (
+                <div key={item.source} className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 min-w-0 flex-1">
+                    <span className="size-3 rounded-full flex-shrink-0" style={{ background: item.fill }} />
+                    <span className="text-[11px] text-muted-foreground truncate">
+                      {(revenueByChannel.config as any)[item.source]?.label ?? item.source}
+                    </span>
+                  </div>
+                  <span className="text-[11px] font-medium tabular-nums flex-shrink-0">{formatVNDCompact(item.revenue)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </CardContent>
-        <CardFooter className="gap-2">
-          <Button size="sm" variant="outline" className="basis-1/2">
-            Xem báo cáo đầy đủ
-          </Button>
-          <Button size="sm" variant="outline" className="basis-1/2">
-            Tải xuống CSV
-          </Button>
+        <CardFooter>
         </CardFooter>
       </Card>
 
-      <Card className="col-span-1 xl:col-span-3">
+      {/* Bar ngang: Doanh thu theo chi nhánh */}
+      <Card className="flex flex-col">
         <CardHeader>
-          <CardTitle>Doanh thu theo nội dung so với mục tiêu</CardTitle>
+          <CardTitle>Doanh thu theo chi nhánh</CardTitle>
         </CardHeader>
-        <CardContent className="size-full max-h-52">
-          <ChartContainer config={projectRevenueChartConfig} className="size-full">
-            <BarChart accessibilityLayer data={projectRevenueChartData} layout="vertical">
+
+        <CardContent className="flex-1 pb-4">
+          <div className="flex flex-wrap gap-2 mb-3">
+            {revenueByBranchBars.data.slice(0, 6).map((item, idx) => {
+              const colorKey = `branch-${idx}`;
+              const color = (revenueByBranchBars.config as any)[colorKey]?.color || `var(--chart-${(idx % 5) + 1})`;
+              return (
+                <div key={item.name} className="flex items-center gap-1.5">
+                  <span className="size-2.5 rounded-full" style={{ background: color }} />
+                  <span className="text-xs">{item.name}</span>
+                </div>
+              );
+            })}
+          </div>
+          <ChartContainer config={revenueByBranchBars.config} className="h-[250px] w-full">
+            <BarChart
+              data={revenueByBranchBars.data}
+              layout="vertical"
+              margin={{ left: 0, right: 16, top: 5, bottom: 5 }}
+            >
               <CartesianGrid horizontal={false} />
               <YAxis
                 dataKey="name"
                 type="category"
                 tickLine={false}
-                tickMargin={10}
                 axisLine={false}
-                tickFormatter={(value) => value.slice(0, 3)}
-                hide
+                width={100}
+                tick={{ fontSize: 11 }}
               />
-              <XAxis dataKey="actual" type="number" hide />
-              <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
-              <Bar stackId="a" dataKey="actual" layout="vertical" fill="var(--color-actual)">
-                <LabelList
-                  dataKey="name"
-                  position="insideLeft"
-                  offset={8}
-                  className="fill-primary-foreground text-xs"
-                />
+              <XAxis type="number" hide />
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent formatter={(v) => formatVNDCompact(Number(v))} />}
+              />
+              
+              <Bar dataKey="actual" radius={6}>
+                {revenueByBranchBars.data.map((entry, index) => {
+                  const colorKey = `branch-${index}`;
+                  const color = (revenueByBranchBars.config as any)[colorKey]?.color || `var(--chart-${(index % 5) + 1})`;
+                  return <Cell key={`cell-${index}`} fill={color} />;
+                })}
                 <LabelList
                   dataKey="actual"
-                  position="insideRight"
-                  offset={8}
-                  className="fill-primary-foreground text-xs tabular-nums"
-                />
-              </Bar>
-              <Bar
-                stackId="a"
-                dataKey="remaining"
-                layout="vertical"
-                fill="var(--color-remaining)"
-                radius={[0, 6, 6, 0]}
-              >
-                <LabelList
-                  dataKey="remaining"
-                  position="insideRight"
-                  offset={8}
-                  className="fill-primary-foreground text-xs tabular-nums"
+                  position="right"
+                  formatter={(v: any) => formatVNDCompact(Number(v))}
+                  style={{ fontSize: 10 }}
                 />
               </Bar>
             </BarChart>
           </ChartContainer>
         </CardContent>
+
         <CardFooter>
-          <p className="text-muted-foreground text-xs">Tiến độ đạt 78% · 2 nội dung vượt mục tiêu</p>
         </CardFooter>
       </Card>
     </div>

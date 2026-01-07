@@ -1,83 +1,74 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { EllipsisVertical } from "lucide-react";
 import z from "zod";
 
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 
-import { recentLeadSchema } from "./schema";
+import { ChannelSummarySchema } from "./schema";
 
-export const recentLeadsColumns: ColumnDef<z.infer<typeof recentLeadSchema>>[] = [
+const fmtNumber = (n: number) => n.toLocaleString("vi-VN");
+
+export const channelColumns: ColumnDef<z.infer<typeof ChannelSummarySchema>>[] = [
   {
-    id: "select",
-    header: ({ table }) => (
-      <div className="flex items-center justify-center">
-        <Checkbox
-          checked={table.getIsAllPageRowsSelected()}
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      </div>
-    ),
+    accessorKey: "kenh_ban",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Kênh bán" />,
     cell: ({ row }) => (
-      <div className="flex items-center justify-center">
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
+      <div className="flex items-center gap-2">
+        <div className="size-2 rounded-full bg-primary/60" />
+        <span className="font-semibold text-base">{row.original.kenh_ban}</span>
       </div>
     ),
-    enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "id",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Ref" />,
-    cell: ({ row }) => <span className="tabular-nums">{row.original.id}</span>,
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "name",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
-    cell: ({ row }) => <span>{row.original.name}</span>,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "company",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Company" />,
-    cell: ({ row }) => <span>{row.original.company}</span>,
-    enableSorting: false,
-  },
-  {
-    accessorKey: "status",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
-    cell: ({ row }) => <Badge variant="secondary">{row.original.status}</Badge>,
-    enableSorting: false,
-  },
-  {
-    accessorKey: "source",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Source" />,
-    cell: ({ row }) => <Badge variant="outline">{row.original.source}</Badge>,
-    enableSorting: false,
-  },
-  {
-    accessorKey: "lastActivity",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Last Activity" />,
-    cell: ({ row }) => <span className="text-muted-foreground tabular-nums">{row.original.lastActivity}</span>,
-    enableSorting: false,
-  },
-  {
-    id: "actions",
-    cell: () => (
-      <Button variant="ghost" className="text-muted-foreground flex size-8" size="icon">
-        <EllipsisVertical />
-        <span className="sr-only">Mở menu</span>
-      </Button>
+    accessorKey: "orders",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Số đơn" />,
+    cell: ({ row }) => (
+      <div className="text-center">
+        <span className="tabular-nums font-medium text-sm">{fmtNumber(row.original.orders)}</span>
+      </div>
     ),
-    enableSorting: false,
+  },
+  {
+    accessorKey: "quantity",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Sản phẩm bán ra" />,
+    cell: ({ row }) => (
+      <div className="text-center">
+        <span className="tabular-nums font-medium text-sm">{fmtNumber(row.original.quantity)}</span>
+      </div>
+    ),
+  },
+  {
+    accessorKey: "tien_hang",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Tiền hàng" />,
+    cell: ({ row }) => (
+      <div className="text-right">
+        <span className="tabular-nums font-semibold text-sm">
+          {fmtNumber(row.original.tien_hang)} ₫
+        </span>
+      </div>
+    ),
+  },
+  {
+    accessorKey: "giam_gia",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Giảm giá" />,
+    cell: ({ row }) => (
+      <div className="text-right">
+        <span className="tabular-nums font-semibold text-sm">
+          {fmtNumber(row.original.giam_gia)} ₫
+        </span>
+      </div>
+    ),
+  },
+  {
+    accessorKey: "thanh_tien",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Thành tiền" />,
+    cell: ({ row }) => (
+      <div className="text-right">
+        <span className="tabular-nums font-bold text-base">
+          {fmtNumber(row.original.thanh_tien)} ₫
+        </span>
+      </div>
+    ),
+    enableHiding: false,
   },
 ];
