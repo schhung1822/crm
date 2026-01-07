@@ -33,11 +33,6 @@ export function TableCards({ channels }: Props) {
     data: channels,
     columns: channelColumns,
     getRowId: (row) => row.kenh_ban,
-    initialState: {
-      pagination: {
-        pageSize: channels.length,
-      },
-    },
   });
 
   return (
