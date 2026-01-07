@@ -99,7 +99,7 @@ export const getCRMStats = unstable_cache(
     const [rows] = await db.query<any[]>(
       `
       SELECT 
-        COUNT(*) AS totalOrders,
+        COUNT(DISTINCT order_ID) AS totalOrders,
         SUM(COALESCE(quantity, 0)) AS totalQuantity,
         SUM(COALESCE(tien_hang, 0)) AS totalTienHang,
         SUM(COALESCE(thanh_tien, 0)) AS totalThanhTien
@@ -133,7 +133,7 @@ export const getBrandConversionFunnel = unstable_cache(
       `
       SELECT 
         COALESCE(p.brand, o.brand_pro, 'Không rõ') AS brand,
-        COUNT(*) AS orders
+        COUNT(DISTINCT o.order_ID) AS orders
       FROM orders o
       LEFT JOIN product p ON o.pro_ID = p.pro_ID
       WHERE ${whereClause.replace('create_time', 'o.create_time')}
@@ -167,7 +167,7 @@ export const getChannelSalesSummary = unstable_cache(
       `
       SELECT
         COALESCE(kenh_ban, 'Không rõ') AS kenh_ban,
-        COUNT(*) AS orders,
+        COUNT(DISTINCT order_ID) AS orders,
         SUM(COALESCE(quantity, 0)) AS quantity,
         SUM(COALESCE(tien_hang, 0) * COALESCE(quantity, 0)) AS tien_hang,
         SUM(COALESCE(giam_gia, 0)) AS giam_gia,
@@ -182,7 +182,7 @@ export const getChannelSalesSummary = unstable_cache(
 
     return (rows ?? []).map((r) => ({
       kenh_ban: String(r.kenh_ban ?? "Không rõ"),
-      orders: Number(r.orders) || 0,
+      order_count: Number(r.orders) || 0,
       quantity: Number(r.quantity) || 0,
       tien_hang: Number(r.tien_hang) || 0,
       giam_gia: Number(r.giam_gia) || 0,
@@ -243,7 +243,7 @@ export const getTopSalesByRevenue = unstable_cache(
       SELECT 
         COALESCE(seller, 'Không rõ') AS seller,
         SUM(COALESCE(thanh_tien, 0)) AS totalRevenue,
-        COUNT(*) AS totalOrders
+        COUNT(DISTINCT order_ID) AS totalOrders
       FROM orders
       WHERE ${whereClause}
       GROUP BY COALESCE(seller, 'Không rõ')
