@@ -2,8 +2,9 @@
 
 import * as React from "react";
 
-import { Plus, Search } from "lucide-react";
+import { Plus, Search, LayoutTemplate } from "lucide-react";
 import { z } from "zod";
+import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -56,10 +57,12 @@ export function DataTable({ data: initialData }: { data: Academy[] }) {
         </div>
         <div className="flex items-center gap-2">
           <DataTableViewOptions table={table} />
-          <Button variant="outline" size="sm">
-            <Plus />
-            <span className="hidden lg:inline">Thêm Học viên</span>
-          </Button>
+          <Link href="./admin/templates/eac-checkin">
+            <Button variant="outline" size="sm">
+              <LayoutTemplate />
+              <span className="hidden lg:inline">Quản lý template</span>
+            </Button>
+          </Link>
         </div>
       </div>
       <div className="table-scroll overflow-hidden rounded-lg">
