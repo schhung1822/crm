@@ -645,11 +645,9 @@ export default function AdminTemplateEditor({
 
           {/* Right Side - Preview */}
           <div className="overflow-y-auto bg-gradient-to-br from-muted/20 via-background to-muted/30 scrollbar-thin scrollbar-thumb-muted-foreground/20 scrollbar-track-transparent hover:scrollbar-thumb-muted-foreground/30">
-            <di>
               <div className="w-full">
                 <TemplateRenderer config={previewConfig} />
               </div>
-            </di>
           </div>
         </div>
       </div>
