@@ -70,5 +70,6 @@ export const defaultConfig: FormTemplateConfig = {
     readUserIdFromQueryKey: "userid",
     prefillKeys: { city: "city", role: "role" },
     source: "zalo_webview_form",
+    eventName: "Check in sự kiện",
   },
 };

@@ -88,5 +88,6 @@ export type FormTemplateConfig = {
     readUserIdFromQueryKey: string; // "userid"
     prefillKeys: { city?: string; role?: string };
     source: string; // "zalo_webview_form"
+    eventName: string; // tên sự kiện (sẽ đồng bộ với titleText)
   };
 };

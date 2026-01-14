@@ -37,24 +37,23 @@ export function useDataTableInstance<TData, TValue>({
   const [columnFilters, setColumnFilters] =
     React.useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [pagination, setPagination] = React.useState({
+    pageIndex: defaultPageIndex,
+    pageSize: defaultPageSize,
+  });
 
   const table = useReactTable({
     data,
     columns,
-    // KHÔNG đưa pagination vào đây nữa, vì ta phân trang bên ngoài
     state: {
       sorting,
       columnVisibility,
       rowSelection,
       columnFilters,
+      pagination,
     },
-    // optional: nếu muốn dùng giá trị mặc định ở chỗ khác
-    initialState: {
-      pagination: {
-        pageIndex: defaultPageIndex,
-        pageSize: defaultPageSize,
-      },
-    },
+    manualPagination: false,
+    pageCount: Math.ceil(data.length / pagination.pageSize),
 
     enableRowSelection,
     getRowId: getRowId ?? ((row) => (row as any).id?.toString() ?? ""),
@@ -63,10 +62,10 @@ export function useDataTableInstance<TData, TValue>({
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: setPagination,
 
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    // ❌ bỏ getPaginationRowModel – để table.getRowModel() trả về toàn bộ 120 row
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
