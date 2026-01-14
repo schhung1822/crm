@@ -3,12 +3,12 @@
 import { z } from "zod";
 import {
   Phone,
-  MapPin,
+  CircleHelp,
   User,
-  Building2,
   Ticket,
   Fingerprint,
   ShieldCheck,
+  Mail
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -92,17 +92,17 @@ export function TableCellViewer({
                 {item.name}
               </DrawerTitle>
 
-              {item.role && (
+              {item.event_name && (
                 <Badge variant="secondary" className="shrink-0 rounded-full">
                   <ShieldCheck className="mr-1 h-3.5 w-3.5" />
-                  {item.role}
+                  {item.event_name}
                 </Badge>
               )}
             </div>
 
             <DrawerDescription className="mt-1 flex items-center gap-2 truncate">
-              <Phone className="h-3.5 w-3.5" />
-              {item.phone}
+              <Fingerprint className="h-3.5 w-3.5" />
+              User ID: {item.user_id || 'N/A'}
             </DrawerDescription>
           </div>
         </DrawerHeader>
@@ -123,39 +123,67 @@ export function TableCellViewer({
                 value={item.phone}
               />
               <InfoRow
-                icon={<MapPin className="h-4 w-4" />}
-                label="Tỉnh / Thành phố"
-                value={item.city}
+                icon={<Mail className="h-4 w-4" />}
+                label="Email"
+                value={item.email}
               />
             </Block>
 
-            {/* Thông tin học viện */}
-            <Block title="Thông tin học viện">
-              <InfoRow
-                icon={<Building2 className="h-4 w-4" />}
-                label="Cơ sở"
-                value={item.co_so}
-              />
-              <InfoRow
-                icon={<User className="h-4 w-4" />}
-                label="Nhân viên phụ trách"
-                value={item.name_nv}
-              />
-              <InfoRow
-                icon={<Ticket className="h-4 w-4" />}
-                label="Voucher"
-                value={item.voucher}
-              />
-            </Block>
+            {/* Câu hỏi */}
+            {(item.q1 || item.q2 || item.q3 || item.q4 || item.q5) && (
+              <Block title="Câu hỏi">
+                {item.q1 && (
+                  <InfoRow
+                    icon={<CircleHelp className="h-4 w-4" />}
+                    label={item.title_q1 || "Câu hỏi 1"}
+                    value={item.q1}
+                  />
+                )}
+                {item.q2 && (
+                  <InfoRow
+                    icon={<CircleHelp className="h-4 w-4" />}
+                    label={item.title_q2 || "Câu hỏi 2"}
+                    value={item.q2}
+                  />
+                )}
+                {item.q3 &&(
+                  <InfoRow
+                    icon={<CircleHelp className="h-4 w-4" />}
+                    label={item.title_q3 || "Câu hỏi 3"}
+                    value={item.q3}
+                  />
+                )}
+                {item.q4 && (
+                  <InfoRow
+                    icon={<CircleHelp className="h-4 w-4" />}
+                    label={item.title_q4 || "Câu hỏi 4"}
+                    value={item.q4}
+                  />
+                )}
+                {item.q5 && (
+                  <InfoRow
+                    icon={<CircleHelp className="h-4 w-4" />}
+                    label={item.title_q5 || "Câu hỏi 5"}
+                    value={item.q5}
+                  />
+                )}
+              </Block>
+            )}
 
-            {/* Thông tin hệ thống */}
-            <Block title="Thông tin hệ thống">
-              <InfoRow
-                icon={<Fingerprint className="h-4 w-4" />}
-                label="User ID"
-                value={item.user_id}
-              />
-            </Block>
+            {/* Voucher */}
+            {item.voucher && (
+              <Block title="Mã Voucher">
+                <InfoRow
+                  icon={<Ticket className="h-4 w-4" />}
+                  label="Voucher"
+                  value={
+                    <span className="font-mono text-base font-semibold text-primary">
+                      {item.voucher}
+                    </span>
+                  }
+                />
+              </Block>
+            )}
 
             <Separator />
           </div>

@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { EllipsisVertical } from "lucide-react";
+import { EllipsisVertical, CircleHelp } from "lucide-react";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -54,6 +54,8 @@ export const dashboardColumns: ColumnDef<Academy>[] = [
     ),
     cell: ({ row }) => <TableCellViewer item={row.original} />,
     enableSorting: false,
+    enableHiding: true,
+    meta: { label: "Tên" },
   },
 
   // Phone
@@ -64,50 +66,60 @@ export const dashboardColumns: ColumnDef<Academy>[] = [
     ),
     cell: ({ row }) => <span className="font-mono">{row.original.phone}</span>,
     enableSorting: false,
+    enableHiding: true,
+    meta: { label: "Số điện thoại" },
   },
 
-  // City
+  // Email
   {
     accessorKey: "city",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Tỉnh/Thành phố" />
+      <DataTableColumnHeader column={column} title="Email" />
     ),
-    cell: ({ row }) => <span>{row.original.city}</span>,
+    cell: ({ row }) => <span>{row.original.email}</span>,
     enableSorting: false,
+    enableHiding: true,
+    meta: { label: "Email" },
   },
 
-  // Role
+  // Event Name
   {
     accessorKey: "role",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Vai trò" />
+      <DataTableColumnHeader column={column} title="Sự kiện" />
     ),
     cell: ({ row }) => (
       <span className="font-mono text-xs px-4 py-1.5 bg-secondary/10 rounded-md border border-secondary/50">
-        {row.original.role}
+        {row.original.event_name}
       </span>
     ),
     enableSorting: false,
+    enableHiding: true,
+    meta: { label: "Sự kiện" },
   },
 
   // Co so
   {
     accessorKey: "co_so",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Cơ sở" />
+      <DataTableColumnHeader column={column} title="Khu vực" />
     ),
-    cell: ({ row }) => <span>{row.original.co_so}</span>,
+    cell: ({ row }) => <span>{row.original.q1}</span>,
     enableSorting: false,
+    enableHiding: true,
+    meta: { label: "Khu vực" },
   },
 
   // Name NV
   {
     accessorKey: "name_nv",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Tên NV" />
+      <DataTableColumnHeader column={column} title="Ngành nghề" />
     ),
-    cell: ({ row }) => <span>{row.original.name_nv}</span>,
+    cell: ({ row }) => <span>{row.original.q2}</span>,
     enableSorting: false,
+    enableHiding: true,
+    meta: { label: "Ngành nghề" },
   },
 
   // Voucher
@@ -118,6 +130,8 @@ export const dashboardColumns: ColumnDef<Academy>[] = [
     ),
     cell: ({ row }) => <span>{row.original.voucher}</span>,
     enableSorting: false,
+    enableHiding: true,
+    meta: { label: "Voucher" },
   },
 
   // User ID
@@ -134,6 +148,8 @@ export const dashboardColumns: ColumnDef<Academy>[] = [
       return <span className="font-mono text-sm">{userId}</span>;
     },
     enableSorting: false,
+    enableHiding: true,
+    meta: { label: "User ID" },
   },
 
   // Actions

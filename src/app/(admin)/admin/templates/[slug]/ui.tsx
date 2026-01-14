@@ -207,15 +207,15 @@ export default function AdminTemplateEditor({
             <Tabs defaultValue="theme" className="w-full">
               <div className="sticky top-0 bg-background border-b z-10 shadow-sm">
                 <TabsList className="w-full justify-start rounded-none h-12 p-1 bg-transparent">
-                  <TabsTrigger value="theme" className="flex-1 gap-2 rounded-md data-[state=active]:bg-background data-[state=active]:shadow-sm">
+                  <TabsTrigger value="theme" className="flex-1 gap-2 rounded-md data-[state=active]:bg-background data-[state=active]:shadow-sm cursor-pointer">
                     <Palette className="h-4 w-4" />
                     <span className="hidden sm:inline">Giao diện</span>
                   </TabsTrigger>
-                  <TabsTrigger value="fields" className="flex-1 gap-2 rounded-md data-[state=active]:bg-background data-[state=active]:shadow-sm">
+                  <TabsTrigger value="fields" className="flex-1 gap-2 rounded-md data-[state=active]:bg-background data-[state=active]:shadow-sm cursor-pointer">
                     <FormInput className="h-4 w-4" />
                     <span className="hidden sm:inline">Form</span>
                   </TabsTrigger>
-                  <TabsTrigger value="footer" className="flex-1 gap-2 rounded-md data-[state=active]:bg-background data-[state=active]:shadow-sm">
+                  <TabsTrigger value="footer" className="flex-1 gap-2 rounded-md data-[state=active]:bg-background data-[state=active]:shadow-sm cursor-pointer">
                     <FileText className="h-4 w-4" />
                     <span className="hidden sm:inline">Thông tin</span>
                   </TabsTrigger>
@@ -224,6 +224,30 @@ export default function AdminTemplateEditor({
 
               <div className="p-6">
                 <TabsContent value="theme" className="mt-0 space-y-5">
+                  <Card className="border-2">
+                    <CardHeader>
+                      <CardTitle className="text-base flex items-center gap-1">
+                        <Calendar className="h-4 w-4" />
+                        Tên sự kiện
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="space-y-2">
+                        <Input
+                          value={config.behavior.eventName}
+                          onChange={(e) => {
+                            const eventName = e.target.value;
+                            update({ 
+                              behavior: { ...config.behavior, eventName },
+                              header: { ...config.header, titleText: eventName }
+                            });
+                          }}
+                          placeholder="VD: Check in sự kiện EAC Summit 2024"
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+
                   <Card className="border-2">
                     <CardHeader>
                       <CardTitle className="text-base flex items-center gap-2">

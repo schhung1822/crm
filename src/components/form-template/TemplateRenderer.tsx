@@ -12,6 +12,39 @@ function normalizePhone(p: string) {
   return p;
 }
 
+// Helper function to get cookie value
+function getCookie(name: string): string | null {
+  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return match ? match[2] : null;
+}
+
+// Helper function to get fbclid from URL
+function getFbclid(): string | null {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('fbclid') || null;
+}
+
+// Helper function to generate _fbc value
+function generateFbc(): string | null {
+  const fbclid = getFbclid();
+  if (fbclid) {
+    const timestamp = Math.floor(Date.now() / 1000); // Unix timestamp
+    return `fb.1.${timestamp}.${fbclid}`;
+  }
+  return null;
+}
+
+// Helper function to get user IP (via external API)
+async function getUserIP(): Promise<string> {
+  try {
+    const res = await fetch('https://api.ipify.org?format=json');
+    const data = await res.json();
+    return data.ip || '';
+  } catch {
+    return '';
+  }
+}
+
 type Props = { config: FormTemplateConfig };
 
 export default function TemplateRenderer({ config }: Props) {
@@ -30,10 +63,6 @@ export default function TemplateRenderer({ config }: Props) {
     full_name: "",
     phone: "",
     email: "",
-    city: "",
-    role: "",
-    clinic: "",
-    full_name_nv: "",
     user_id: "",
     q1: "",
     q2: "",
@@ -62,15 +91,6 @@ export default function TemplateRenderer({ config }: Props) {
 
     const userId = q.get(config.behavior.readUserIdFromQueryKey || "userid");
     if (userId) setValues((s) => ({ ...s, user_id: userId }));
-
-    const cityKey = config.behavior.prefillKeys.city || "city";
-    const roleKey = config.behavior.prefillKeys.role || "role";
-
-    const city = q.get(cityKey);
-    const role = q.get(roleKey);
-
-    if (city) setValues((s) => ({ ...s, city }));
-    if (role) setValues((s) => ({ ...s, role }));
   }, [config.behavior]);
 
   function openModal(ok: boolean, title: string, message: string) {
@@ -85,10 +105,26 @@ export default function TemplateRenderer({ config }: Props) {
     e.preventDefault();
     if (submitting) return;
 
+    // Get user_id from URL
+    const q = new URLSearchParams(window.location.search);
+    const userId = q.get('user_id') || q.get('userid') || values.user_id;
+
+    // Get fbp and fbc
+    const fbpValue = getCookie('_fbp');
+    const fbcValue = getCookie('_fbc') || generateFbc();
+
+    // Get user IP
+    const userIP = await getUserIP();
+
     // build payload theo config (bật/tắt field)
     const payload: Record<string, any> = {
       source: config.behavior.source || "zalo_webview_form",
+      event_name: config.behavior.eventName || '',
       ua: navigator.userAgent,
+      user_id: userId,
+      ip: userIP,
+      fbp: fbpValue || '',
+      fbc: fbcValue || '',
     };
 
     // default fields
@@ -96,18 +132,13 @@ export default function TemplateRenderer({ config }: Props) {
     if (config.fields.phone.enabled) payload.phone = normalizePhone(values.phone.trim());
     if (config.fields.email.enabled) payload.email = values.email.trim();
 
-    // hidden fields (nhưng có thể cho admin bật/tắt)
-    const hidden = config.fields.hidden;
-    if (hidden.city?.enabled) payload.city = values.city.trim();
-    if (hidden.role?.enabled) payload.role = values.role.trim();
-    if (hidden.clinic?.enabled) payload.clinic = values.clinic.trim();
-    if (hidden.full_name_nv?.enabled) payload.full_name_nv = values.full_name_nv.trim();
-    if (hidden.user_id?.enabled) payload.user_id = values.user_id.trim();
+    // Note: user_id đã được set từ URL ở trên, không ghi đè nữa
 
-    // questions
+    // questions - gửi cả giá trị và nhãn
     for (const q of config.questions.slice(0, 5)) {
       if (!q.enabled) continue;
       payload[q.id] = (values[q.id] || "").trim();
+      payload[`${q.id}_label`] = q.label; // gửi thêm nhãn câu hỏi
     }
 
     // validate bắt buộc

@@ -26,21 +26,26 @@ export function DataTableViewOptions<TData>({ table }: DataTableViewOptionsProps
           Kiểu xem
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[150px]">
+      <DropdownMenuContent align="end" className="w-[180px]">
         <DropdownMenuLabel>Chuyển đổi cột</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {table
           .getAllColumns()
           .filter((column) => typeof column.accessorFn !== "undefined" && column.getCanHide())
           .map((column) => {
+            const label = (column.columnDef.meta as any)?.label || column.id;
+            const isVisible = column.getIsVisible();
             return (
               <DropdownMenuCheckboxItem
                 key={column.id}
                 className="capitalize"
-                checked={column.getIsVisible()}
-                onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                checked={isVisible}
+                onCheckedChange={(value) => {
+                  console.log(`Toggling ${label}: ${isVisible} -> ${value}`);
+                  column.toggleVisibility(value);
+                }}
               >
-                {column.id}
+                {label}
               </DropdownMenuCheckboxItem>
             );
           })}
