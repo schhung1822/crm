@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -11,12 +13,15 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 
 const FormSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email address." }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters." }),
+  email: z.string().min(1, { message: "Please enter username or email." }),
+  password: z.string().min(1, { message: "Please enter your password." }),
   remember: z.boolean().optional(),
 });
 
 export function LoginForm() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -27,13 +32,43 @@ export function LoginForm() {
   });
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-    toast("You submitted the following values", {
-      description: (
-        <pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+    setIsLoading(true);
+    
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: data.email,
+          password: data.password,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        toast.success("Login successful!", {
+          description: `Welcome back, ${result.user?.name || result.user?.username}!`,
+        });
+        
+        // Redirect to home page
+        router.push("/");
+        router.refresh();
+      } else {
+        toast.error("Login failed", {
+          description: result.message || "Invalid username or password. Please try again.",
+        });
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("An error occurred", {
+        description: "Unable to login. Please check your connection and try again.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -44,9 +79,16 @@ export function LoginForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email Address</FormLabel>
+              <FormLabel>Tên đăng nhập hoặc Email</FormLabel>
               <FormControl>
-                <Input id="email" type="email" placeholder="you@example.com" autoComplete="email" {...field} />
+                <Input 
+                  id="email" 
+                  type="text" 
+                  placeholder="Nhập tên đăng nhập hoặc email của bạn" 
+                  autoComplete="username" 
+                  disabled={isLoading}
+                  {...field} 
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -57,13 +99,14 @@ export function LoginForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Mật khẩu</FormLabel>
               <FormControl>
                 <Input
                   id="password"
                   type="password"
                   placeholder="••••••••"
                   autoComplete="current-password"
+                  disabled={isLoading}
                   {...field}
                 />
               </FormControl>
@@ -85,13 +128,13 @@ export function LoginForm() {
                 />
               </FormControl>
               <FormLabel htmlFor="login-remember" className="text-muted-foreground ml-1 text-sm font-medium">
-                Remember me for 30 days
+                Ghi nhớ đăng nhập trong 30 ngày
               </FormLabel>
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit">
-          Login
+        <Button className="w-full" type="submit" disabled={isLoading}>
+          {isLoading ? "Logging in..." : "Login"}
         </Button>
       </form>
     </Form>

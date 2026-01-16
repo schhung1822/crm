@@ -108,7 +108,7 @@ export function TableCellViewer({
         </DrawerHeader>
 
         {/* ===== BODY ===== */}
-        <div className="flex-1 overflow-y-auto px-4 py-4">
+        <div className="flex-1 overflow-y-auto px-4 py-4 nice-scroll">
           <div className="grid gap-3">
             {/* Thông tin cá nhân */}
             <Block title="Thông tin cá nhân">

@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { APP_CONFIG } from "@/config/app-config";
 import { getPreference } from "@/server/server-actions";
 import { PreferencesStoreProvider } from "@/stores/preferences/preferences-provider";
+import { AuthProvider } from "@/components/auth-provider";
 import { THEME_MODE_VALUES, THEME_PRESET_VALUES, type ThemePreset, type ThemeMode } from "@/types/preferences/theme";
 
 import "./globals.css";
@@ -32,8 +33,10 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       <body className={`${inter.className} min-h-screen antialiased`}>
         <NavigationLoading />
         <PreferencesStoreProvider themeMode={themeMode} themePreset={themePreset}>
-          {children}
-          <Toaster />
+          <AuthProvider>
+            {children}
+            <Toaster />
+          </AuthProvider>
         </PreferencesStoreProvider>
       </body>
     </html>

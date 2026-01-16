@@ -1,3 +1,6 @@
+"use client"
+
+import { useEffect, useRef, useState } from "react"
 import {
   Accordion,
   AccordionContent,
@@ -5,250 +8,342 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 
+const sections = [
+  { id: "overview", label: "Tổng quan hệ thống" },
+  { id: "principle", label: "Nguyên tắc sử dụng" },
+  { id: "sync", label: "Đồng bộ dữ liệu" },
+  { id: "orders", label: "Dữ liệu đơn hàng" },
+  { id: "customers", label: "Dữ liệu khách hàng" },
+  { id: "products", label: "Dữ liệu hàng hóa" },
+  { id: "events", label: "Dữ liệu sự kiện" },
+  { id: "reports", label: "Báo cáo & Dashboard" },
+  { id: "permission", label: "Phân quyền & trách nhiệm" },
+  { id: "audit", label: "Nhật ký & bảo mật" },
+  { id: "faq", label: "Câu hỏi thường gặp" },
+]
+
 export default function Page() {
+  const [active, setActive] = useState("overview")
+  const observer = useRef<IntersectionObserver | null>(null)
+
+  useEffect(() => {
+    observer.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => e.isIntersecting && setActive(e.target.id))
+      },
+      { rootMargin: "-40% 0px -50% 0px" }
+    )
+
+    sections.forEach((s) => {
+      const el = document.getElementById(s.id)
+      el && observer.current?.observe(el)
+    })
+
+    return () => observer.current?.disconnect()
+  }, [])
+
+  const scrollTo = (id: string) =>
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
+
   return (
-    <div className="p-10 space-y-16">
-        <section className="space-y-4">
-        <h1 className="text-3xl font-bold text-center uppercase">Quy tắc</h1>
-        <p className="text-center w-[600px] mx-auto">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id orci ut nunc faucibus pretium. Integer scelerisque magna non massa blandit.
+    <div className="max-w-[1500px] mx-auto px-10 py-12">
+      {/* ================= PAGE TITLE ================= */}
+      <header className="mb-16 space-y-4 text-center">
+        <h1 className="text-4xl font-bold uppercase">
+          Quy tắc & Hướng dẫn sử dụng
+        </h1>
+        <p className="text-muted-foreground max-w-3xl mx-auto">
+          Tài liệu hướng dẫn chính thức về cách vận hành, khai thác và sử dụng
+          hệ thống CRM do Nextgency phát triển cho EAC.
         </p>
-          <hr className="w-1/2 mx-auto" />
-      </section>
+      </header>
 
-      {/* ========================================================= */}
-      {/* 1. Quy tắc phát triển dự án */}
-      {/* ========================================================= */}
-      <section className="space-y-4">
-        <h2 className="text-3xl font-bold">Bộ Quy Tắc Phát Triển Dự Án</h2>
+      <div className="flex gap-12">
+        {/* ================= SIDEBAR ================= */}
+        <aside className="w-[300px] shrink-0 sticky top-20 h-fit space-y-6">
+          <div className="border rounded-xl p-5">
+            <h3 className="font-semibold mb-3">Nội dung</h3>
+            <ul className="space-y-1 text-sm">
+              {sections.map((s) => (
+                <li key={s.id}>
+                  <button
+                    onClick={() => scrollTo(s.id)}
+                    className={`w-full text-left px-3 py-2 rounded-md transition
+                      ${
+                        active === s.id
+                          ? "bg-primary text-primary-foreground"
+                          : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                      }`}
+                  >
+                    {s.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        <ul className="space-y-2 list-disc pl-6">
-          <li>Mọi commit phải rõ ràng, có mô tả chi tiết và không được để empty commit.</li>
-          <li>Tuyệt đối không push vào branch main nếu chưa qua review.</li>
-          <li>Code phải được format theo Prettier và ESLint trước khi submit PR.</li>
-          <li>Mọi function viết mới đều phải có mô tả JSDoc.</li>
-          <li> Ưu tiên tách nhỏ component, tránh logic phình to.</li>
-          <li>Không được hard-code API URL trong bất kỳ component nào.</li>
-          <li>Tất cả query phải được cache bằng React Query hoặc server actions.</li>
-        </ul>
-      </section>
+          {/* ===== Document Meta ===== */}
+          <div className="border rounded-xl p-5 text-sm space-y-2">
+            <div>
+              <b>Tác giả:</b> Nextgency
+            </div>
+            <div>
+              <b>Khách hàng:</b> EAC
+            </div>
+            <div>
+              <b>Cập nhật:</b> 15.01.2026
+            </div>
+            <div>
+              <b>Phiên bản:</b> v1.0
+            </div>
+          </div>
+        </aside>
 
-      {/* ========================================================= */}
-      {/* 2. Quy tắc UI/UX */}
-      {/* ========================================================= */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold">Quy Tắc UI/UX</h2>
+        {/* ================= CONTENT ================= */}
+        <main className="flex-1 space-y-28">
+          <Section id="overview" title="1. Tổng quan hệ thống">
+            <p>
+              CRM EAC được xây dựng nhằm tạo ra một hệ thống dữ liệu trung tâm
+              (Single Source of Truth), giúp ban lãnh đạo và các bộ phận liên quan
+              theo dõi toàn bộ hoạt động kinh doanh trên một nền tảng duy nhất.
+            </p>
 
-        <div className="space-y-4">
-          <p>Đảm bảo giao diện nhất quán về màu sắc, spacing và typography:</p>
+            <p>
+              Hệ thống không phát sinh dữ liệu gốc mới mà chỉ tiếp nhận dữ liệu
+              từ các hệ thống vận hành hiện có của EAC, bao gồm KiotViet và Zalo OA.
+            </p>
 
-          <ol className="list-decimal pl-6 space-y-2">
-            <li>Padding tối thiểu 16px cho mọi section.</li>
-            <li>Heading phải tuân theo scale: 32 → 24 → 20 → 16.</li>
-            <li>Không dùng quá 2 font trên toàn bộ hệ thống.</li>
-            <li>
-              Button phải có 3 trạng thái: <b>default</b>, <b>hover</b>, <b>disabled</b>.
-            </li>
-            <li>Spacing giữa các block lớn ≥ 40px.</li>
-          </ol>
+            <Table
+              headers={["Hạng mục", "Mô tả"]}
+              rows={[
+                ["Mục tiêu", "Theo dõi, phân tích và ra quyết định kinh doanh"],
+                ["Phạm vi", "Đơn hàng, khách hàng, hàng hóa, sự kiện"],
+                ["Không bao gồm", "Tạo đơn, sửa dữ liệu, xử lý thanh toán"],
+                ["Đối tượng sử dụng", "Ban lãnh đạo, quản lý, sale, CSKH"],
+              ]}
+            />
+          </Section>
 
-          <p>
-            Khi thiết kế component phải đảm bảo <b>mobile-first</b> và hỗ trợ mọi kích thước màn hình.
-          </p>
-        </div>
+          <Section id="principle" title="2. Nguyên tắc sử dụng">
+            <ul className="list-disc pl-6 space-y-2">
+              <li>CRM chỉ dùng để xem và phân tích dữ liệu.</li>
+              <li>Không chỉnh sửa dữ liệu trực tiếp.</li>
+              <li>Dữ liệu có độ trễ theo chu kỳ đồng bộ.</li>
+              <li>Mọi dữ liệu đều có log truy vết.</li>
+            </ul>
+          </Section>
 
-         <blockquote className="mt-6 border-l-2 pl-6 italic">
-            &quot;After all,&quot; he said, &quot;everyone enjoys a good joke, so
-            it&apos;s only fair that they should pay for the privilege.&quot;
-        </blockquote>
-      </section>
+          <Section id="sync" title="3. Đồng bộ dữ liệu & kiểm soát sai lệch">
+            <p>
+              Dữ liệu trong CRM không được nhập thủ công mà được đồng bộ tự động
+              theo chu kỳ từ các hệ thống nguồn.
+            </p>
 
-      {/* ========================================================= */}
-      {/* 3. Quy tắc Backend */}
-      {/* ========================================================= */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold">Quy Tắc Backend & API</h2>
+            <Table
+              headers={["Nguồn dữ liệu", "Kiểu đồng bộ", "Tần suất", "Ghi chú"]}
+              rows={[
+                ["KiotViet", "Batch", "5–10 phút", "Nguồn dữ liệu chính"],
+                ["Zalo OA", "Realtime + Batch", "Gần realtime", "Phục vụ CSKH"],
+                ["Sự kiện Offline", "Thủ công", "Theo sự kiện", "Nhập sau sự kiện"],
+              ]}
+            />
 
-        <ul className="list-disc pl-6 space-y-2">
-          <li>API phải luôn trả về JSON chuẩn theo format chung.</li>
-          <li>Không trả về HTML trong API dưới bất kỳ hình thức nào.</li>
-          <li>Trường dữ liệu phải snake_case hoặc camelCase thống nhất.</li>
-          <li>Response phải bao gồm status code chính xác theo behavior.</li>
-          <li>Tốc độ phản hồi API không vượt quá 250ms cho request cơ bản.</li>
-          <li>
-            Mọi API quan trọng phải có <b>rate limit</b> và <b>token-based</b> authentication.
-          </li>
-        </ul>
-      </section>
+            <p>
+              Trong một số trường hợp, dữ liệu có thể sai lệch tạm thời do:
+            </p>
 
-      {/* ========================================================= */}
-      {/* 4. Quy tắc bảo mật */}
-      {/* ========================================================= */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold">Quy Tắc Bảo Mật</h2>
+            <ul className="list-disc pl-6 space-y-2">
+              <li>Đơn hàng vừa tạo nhưng chưa đồng bộ xong</li>
+              <li>Dữ liệu bị chỉnh sửa ở hệ thống nguồn</li>
+              <li>Lỗi mạng hoặc gián đoạn API</li>
+            </ul>
+          </Section>
 
-        <div className="space-y-2">
-          <p>Các nguyên tắc bảo mật phải được áp dụng xuyên suốt:</p>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>Mật khẩu phải hash bằng bcrypt ≥ 12 rounds.</li>
-            <li>Không lưu access token vào localStorage.</li>
-            <li>Không ghi log thông tin nhạy cảm.</li>
-            <li>Không commit file .env lên git trong mọi tình huống.</li>
-            <li>
-              File upload phải được kiểm tra mime types và kích thước trước khi xử lý.
-            </li>
-            <li>
-              Các endpoint admin phải có middleware xác thực nhiều lớp (role + token + IP allowlist).
-            </li>
-          </ul>
-        </div>
-      </section>
 
-      {/* ========================================================= */}
-      {/* 5. Quy tắc tối ưu hoá */}
-      {/* ========================================================= */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold">Quy Tắc Tối Ưu Hóa</h2>
+          <Section id="orders" title="4. Dữ liệu đơn hàng">
+            <Table
+              headers={["Nhóm dữ liệu", "Mô tả"]}
+              rows={[
+                ["Thông tin chung", "Mã đơn, chi nhánh, ngày tạo"],
+                ["Khách hàng", "Tên, SĐT, địa chỉ"],
+                ["Giá trị", "Tiền hàng, giảm giá, thành tiền"],
+                ["Sản phẩm", "Danh sách SP & số lượng"],
+              ]}
+            />
+          </Section>
 
-        <ul className="list-disc pl-6 space-y-2">
-          <li>Lazy load các component không cần thiết.</li>
-          <li>Sử dụng dynamic import cho các module nặng.</li>
-          <li>
-            Image phải dùng <code>next/image</code> để tối ưu load time.
-          </li>
-          <li>Hạn chế rerender không cần thiết bằng memoization.</li>
-          <li>Tránh gọi API lặp lại trừ khi thực sự cần.</li>
-          <li>Cache kết quả nặng ở server hoặc Redis.</li>
-        </ul>
-      </section>
+          <Section id="customers" title="5. Dữ liệu khách hàng & vòng đời CRM">
+            <p>
+              Mỗi khách hàng trong CRM được theo dõi xuyên suốt vòng đời từ lần
+              mua đầu tiên cho tới các tương tác sau bán.
+            </p>
 
-      {/* ========================================================= */}
-      {/* 6. Quy tắc làm việc nhóm */}
-      {/* ========================================================= */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold">Quy Tắc Làm Việc Nhóm</h2>
+            <Table
+              headers={["Trạng thái", "Điều kiện", "Hành động gợi ý"]}
+              rows={[
+                ["Nóng", "Mua gần đây / tương tác cao", "Chăm sóc bán thêm"],
+                ["Ấm", "Lâu chưa mua", "Nhắc mua lại"],
+                ["Lạnh", "Không tương tác", "Remarketing"],
+              ]}
+            />
+          </Section>
 
-        <ul className="list-disc pl-6 space-y-2">
-          <li>Luôn thông báo khi bạn bắt đầu và kết thúc một task.</li>
-          <li>Không bao giờ để người khác chờ quá 4 giờ cho một câu hỏi quan trọng.</li>
-          <li>Đặt lịch meeting có agenda rõ ràng và không quá 45 phút.</li>
-          <li>Hạn chế gửi message ngoài giờ trừ tình huống khẩn cấp.</li>
-          <li>
-            Báo cáo daily phải có: <b>Hôm nay làm gì – Ngày mai làm gì – Vướng mắc gì</b>.
-          </li>
-        </ul>
-      </section>
 
-      {/* ========================================================= */}
-      {/* 7. Bảng mô tả demo */}
-      {/* ========================================================= */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold">Bảng Quy Ước Demo</h2>
+           <Section id="products" title="6. Dữ liệu hàng hóa">
+            <p>
+              Dữ liệu hàng hóa phản ánh toàn bộ danh mục sản phẩm/dịch vụ đang
+              kinh doanh và là nền tảng để phân tích doanh thu, tồn kho và hiệu
+              quả bán hàng.
+            </p>
 
-        <table className="w-full table-auto border-collapse border border-neutral-700">
-          <thead className="bg-neutral-900">
-            <tr>
-              <th className="border border-neutral-700 p-3 text-left">Tên Quy Tắc</th>
-              <th className="border border-neutral-700 p-3 text-left">Mô Tả</th>
-              <th className="border border-neutral-700 p-3 text-left">Bắt buộc?</th>
-            </tr>
-          </thead>
-          <tbody>
-            {[
-              ["Không push lên main", "Mọi code phải qua PR", "Có"],
-              ["Có test unit", "Tối thiểu 1 test cho mỗi module chính", "Có"],
-              ["Log exceptions", "Ghi log lỗi backend đầy đủ", "Có"],
-              ["Dark mode", "UI phải hỗ trợ chế độ tối", "Không"],
-              ["Mobile-first", "Ưu tiên mobile trước desktop", "Có"],
-            ].map((row, i) => (
-              <tr key={i} className="hover:bg-neutral-800">
-                <td className="border border-neutral-700 p-3">{row[0]}</td>
-                <td className="border border-neutral-700 p-3">{row[1]}</td>
-                <td className="border border-neutral-700 p-3">{row[2]}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
+            <Table
+              headers={["Nhóm dữ liệu", "Mô tả chi tiết"]}
+              rows={[
+                ["Thông tin cơ bản", "Mã hàng, tên hàng, danh mục"],
+                ["Giá bán", "Giá niêm yết, giá thực thu, chiết khấu"],
+                ["Trạng thái", "Đang bán, ngưng bán, hết hàng"],
+                ["Kênh bán", "Online, offline, sự kiện"],
+              ]}
+            />
+          </Section>
 
-      {/* ========================================================= */}
-      {/* 8. Đoạn mô phỏng tài liệu dài bất kỳ */}
-      {/* ========================================================= */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold">Tài Liệu Mô Phỏng</h2>
+          <Section id="events" title="7. Dữ liệu sự kiện">
+            <p>
+              Dữ liệu sự kiện giúp doanh nghiệp theo dõi hiệu quả các chương trình
+              offline/online và phục vụ hoạt động chăm sóc sau sự kiện.
+            </p>
 
-        <p>
-          Đây là đoạn văn bản dài dùng để mô phỏng tài liệu lorem ipsum…  
-          Bạn có thể cần nhiều nội dung để test scroll hoặc layout, nên tôi để đoạn văn
-          tương đối dài để thử nghiệm spacing, typography và hiển thị trong nhiều trường hợp.
-        </p>
+            <Table
+              headers={["Thuộc tính", "Nội dung"]}
+              rows={[
+                ["Tên sự kiện", "Hội thảo / Workshop / Khai trương"],
+                ["Thời gian", "Ngày – giờ diễn ra"],
+                ["Địa điểm", "Online hoặc Offline"],
+                ["Mục tiêu", "Thu data, bán hàng, branding"],
+              ]}
+            />
+          </Section>
 
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id orci ut nunc
-          faucibus pretium. Integer scelerisque magna non massa blandit, eget suscipit
-          sapien interdum. Vivamus fermentum bibendum eros at gravida. Vestibulum commodo
-          finibus dui, eu tincidunt neque ultricies at. Integer fermentum risus nec nisi
-          finibus pharetra. Aenean ac ultrices lorem. Cras tempor efficitur nibh, non
-          sollicitudin augue tincidunt non.
-        </p>
+          <Section id="reports" title="8. Hệ thống báo cáo & cách đọc số">
+            <p>
+              Các dashboard trong CRM được thiết kế nhằm phục vụ từng nhóm người dùng
+              với mục tiêu khác nhau.
+            </p>
 
-        <p>
-          Curabitur et est sed augue ultricies ultricies. Nullam aliquet dolor a vehicula
-          interdum. Nulla facilisi. Mauris fringilla, ante nec ultrices vulputate, massa
-          libero facilisis erat, sed dictum lorem tortor sed arcu.
-        </p>
-      </section>
-      
-      <Accordion
-          type="single"
-          collapsible
-          className="w-full"
-          defaultValue="item-1"
-        >
-          <AccordionItem value="item-1">
-            <AccordionTrigger>Product Information</AccordionTrigger>
-            <AccordionContent className="flex flex-col gap-4 text-balance">
-              <p>
-                Our flagship product combines cutting-edge technology with sleek
-                design. Built with premium materials, it offers unparalleled
-                performance and reliability.
-              </p>
-              <p>
-                Key features include advanced processing capabilities, and an
-                intuitive user interface designed for both beginners and experts.
-              </p>
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-2">
-            <AccordionTrigger>Shipping Details</AccordionTrigger>
-            <AccordionContent className="flex flex-col gap-4 text-balance">
-              <p>
-                We offer worldwide shipping through trusted courier partners.
-                Standard delivery takes 3-5 business days, while express shipping
-                ensures delivery within 1-2 business days.
-              </p>
-              <p>
-                All orders are carefully packaged and fully insured. Track your
-                shipment in real-time through our dedicated tracking portal.
-              </p>
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-3">
-            <AccordionTrigger>Return Policy</AccordionTrigger>
-            <AccordionContent className="flex flex-col gap-4 text-balance">
-              <p>
-                We stand behind our products with a comprehensive 30-day return
-                policy. If you&apos;re not completely satisfied, simply return the
-                item in its original condition.
-              </p>
-              <p>
-                Our hassle-free return process includes free return shipping and
-                full refunds processed within 48 hours of receiving the returned
-                item.
-              </p>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+            <Table
+              headers={["Dashboard", "Đối tượng xem", "Mục đích"]}
+              rows={[
+                ["Tổng quan doanh thu", "Ban lãnh đạo", "Ra quyết định chiến lược"],
+                ["Doanh thu chi nhánh", "Quản lý", "So sánh hiệu suất"],
+                ["Hiệu suất sale", "Trưởng nhóm", "Đánh giá nhân sự"],
+              ]}
+            />
+          </Section>
+
+
+          <Section id="permission" title="9. Phân quyền & trách nhiệm">
+            <Table
+              headers={["Vai trò", "Quyền hạn"]}
+              rows={[
+                ["Admin", "Toàn quyền xem & xuất báo cáo"],
+                ["Quản lý", "Xem dữ liệu & dashboard"],
+                ["Nhân viên", "Xem giới hạn theo vai trò"],
+              ]}
+            />
+          </Section>
+
+          <Section id="audit" title="10. Nhật ký & bảo mật">
+            <ul className="list-disc pl-6 space-y-2">
+              <li>Ghi log đăng nhập</li>
+              <li>Ghi log xuất dữ liệu</li>
+              <li>Truy vết thay đổi mapping báo cáo</li>
+            </ul>
+          </Section>
+
+          {/* ===== FAQ ===== */}
+          <Section id="faq" title="11. Câu hỏi thường gặp">
+            <Accordion type="single" collapsible>
+              <AccordionItem value="1">
+                <AccordionTrigger>
+                  CRM có phải là thể nhập liệu hay sửa đổi không?
+                </AccordionTrigger>
+                <AccordionContent>
+                  Không. CRM chỉ tiếp nhận dữ liệu từ hệ thống nguồn như KiotViet,
+                  Zalo OA hoặc form website.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="2">
+                <AccordionTrigger>
+                  Vì sao số liệu có lúc bị chênh lệch?
+                </AccordionTrigger>
+                <AccordionContent>
+                  Do độ trễ đồng bộ, dữ liệu chưa đồng bộ xong hoặc thay đổi ở hệ
+                  thống gốc. Độ trễ tối đa là 10 phút.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="3">
+                <AccordionTrigger>
+                  Có xuất được dữ liệu ra Excel không?
+                </AccordionTrigger>
+                <AccordionContent>
+                  Có. Người dùng được phân quyền có thể xuất dữ liệu theo từng
+                  bảng và từng thời gian.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="4">
+                <AccordionTrigger>
+                  Ai chịu trách nhiệm nếu dữ liệu sai?
+                </AccordionTrigger>
+                <AccordionContent>
+                  Bộ phận vận hành hệ thống nguồn chịu trách nhiệm dữ liệu gốc;
+                  CRM chỉ phản ánh lại dữ liệu đó.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </Section>
+        </main>
+      </div>
     </div>
-  );
+  )
+}
+
+/* ================= Components ================= */
+
+function Section({ id, title, children }: any) {
+  return (
+    <section id={id} className="space-y-4 scroll-mt-24">
+      <h2 className="text-2xl font-semibold">{title}</h2>
+      <div className="text-foreground/90 space-y-4">{children}</div>
+    </section>
+  )
+}
+
+function Table({ headers, rows }: any) {
+  return (
+    <table className="w-full border border-border text-sm">
+      <thead className="bg-muted">
+        <tr>
+          {headers.map((h: string) => (
+            <th key={h} className="border border-border p-3 text-left font-semibold">
+              {h}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((r: string[], i: number) => (
+          <tr key={i} className="hover:bg-muted/50">
+            {r.map((c, j) => (
+              <td key={j} className="border border-border p-3">
+                {c}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )
 }

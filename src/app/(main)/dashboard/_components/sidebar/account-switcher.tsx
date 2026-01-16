@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { BadgeCheck, Bell, CreditCard, LogOut } from "lucide-react";
-
+import { useAuth } from "@/components/auth-provider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -27,6 +27,10 @@ export function AccountSwitcher({
   }>;
 }) {
   const [activeUser, setActiveUser] = useState(users[0]);
+  const { logout } = useAuth();
+  const handleLogout = async () => {
+    await logout();
+  };
 
   return (
     <DropdownMenu>
@@ -71,8 +75,8 @@ export function AccountSwitcher({
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <LogOut />
+        <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+          <LogOut onClick={handleLogout}/>
           Đăng xuất
         </DropdownMenuItem>
       </DropdownMenuContent>

@@ -135,7 +135,7 @@ export function TableCellViewer({ item }: { item: z.infer<typeof productSchema> 
         </DrawerHeader>
 
         {/* BODY scroll */}
-        <div className="flex-1 overflow-y-auto px-4 py-4">
+        <div className="flex-1 overflow-y-auto px-4 py-4 nice-scroll">
           <div className="grid gap-3">
             <Block title="Tổng quan">
               <Row
