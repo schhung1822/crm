@@ -6,6 +6,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   await ensureDefaultTemplate();
   const tpl = await getTemplateBySlug(slug);
 
-  if (!tpl) return <div className="p-6">Không tìm thấy template</div>;
+  if (!tpl || !tpl.slug || !tpl.name || !tpl.config) {
+    return <div className="p-6">Không tìm thấy template</div>;
+  }
+  
   return <AdminTemplateEditor slug={tpl.slug} initialName={tpl.name} initialConfig={tpl.config} />;
 }
