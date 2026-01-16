@@ -145,7 +145,7 @@ export function TableCellViewer({
         </DrawerHeader>
 
         {/* BODY - scroll */}
-        <div className="flex-1 overflow-y-auto px-4 py-4">
+        <div className="flex-1 overflow-y-auto px-4 py-4 nice-scroll">
           {/* KPI */}
           <div className="grid gap-3">
             <Block title="Khách hàng">

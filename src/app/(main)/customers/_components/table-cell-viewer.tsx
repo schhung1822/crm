@@ -144,7 +144,7 @@ export function TableCellViewer({ item }: { item: z.infer<typeof userSchema> }) 
           </div>
         </DrawerHeader>
 
-        <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm nice-scroll max-h-[80vh] sm:max-h-[82vh]">
+        <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm nice-scroll max-h-[80vh] sm:max-h-[82vh] nice-scroll">
           {!isMobile && (
             <>
               <div className="grid gap-2">

@@ -1,8 +1,9 @@
 import { ChartAreaInteractive } from "./_components/chart-area-interactive";
-import { DataTable } from "./_components/data-table";
 import { SectionCards } from "./_components/section-cards";
 import { DateRangeFilter } from "./_components/date-range-filter";
+import { TableCards } from "../crm/_components/table-cards";
 import { getChannels } from "@/lib/orders";
+import { getChannelSalesSummary, getCRMStats } from "@/lib/crm-revenue";
 
 export default async function Page({
   searchParams,
@@ -19,20 +20,26 @@ export default async function Page({
   }
 
   let channels: any[] = [];
+  let channelSummary: any[] = [];
+  let stats: any = {};
   try {
     const res = await getChannels({ from, to, limit: 10000 });
     channels = Array.isArray(res) ? res : [];
+    [channelSummary, stats] = await Promise.all([
+      getChannelSalesSummary(from, to),
+      getCRMStats(from, to),
+    ]);
   } catch (e) {
     console.error("getChannels error:", e);
     channels = [];
+    channelSummary = [];
+    stats = {
+      totalOrders: 0,
+      totalQuantity: 0,
+      totalThanhTien: 0,
+      totalTienHang: 0,
+    };
   }
-
-  const stats = {
-    totalOrders: channels.length,
-    totalQuantity: channels.reduce((s, c) => s + (Number(c.quantity) || 0), 0),
-    totalThanhTien: channels.reduce((s, c) => s + (Number(c.thanh_tien) || 0), 0),
-    totalTienHang: channels.reduce((s, c) => s + (Number(c.tien_hang) || 0), 0),
-  };
 
   // Build chart data (group by date)
   const chartMap: Record<string, { orders: number; revenue: number }> = {};
@@ -53,7 +60,7 @@ export default async function Page({
       <DateRangeFilter />
       <SectionCards stats={stats} />
       <ChartAreaInteractive chartData={chartData} />
-      <DataTable data={channels} stats={stats} />
+      <TableCards channels={channelSummary} />
     </div>
   );
 }

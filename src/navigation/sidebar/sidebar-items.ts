@@ -1,34 +1,19 @@
 import {
-  ShoppingBag,
-  Forklift,
-  Mail,
-  MessageSquare,
-  Calendar,
-  Kanban,
-  ReceiptText,
   Users,
-  Lock,
   Fingerprint,
   SquareArrowUpRight,
   LayoutDashboard,
   ChartBar,
   Banknote,
   Gauge,
-  GraduationCap,
   type LucideIcon,
-  Music,
-  PlayCircle,
-  Tv,
   TrendingUp,
-  Ruler,
   Scale,
-  KeyIcon,
   ShoppingBagIcon,
   PackageIcon,
   Calendar1Icon,
   AppWindowIcon
 } from "lucide-react";
-import App from "next/app";
 
 export interface NavSubItem {
   title: string;

@@ -1,14 +1,16 @@
 const { execSync } = require('child_process');
 
-// Only run prisma generate if DATABASE_URL is set
-if (process.env.DATABASE_URL) {
-  console.log('DATABASE_URL found, generating Prisma client...');
-  try {
-    execSync('prisma generate', { stdio: 'inherit' });
-  } catch (error) {
-    console.error('Failed to generate Prisma client:', error.message);
-    process.exit(1);
+// Always run prisma generate for build
+console.log('Generating Prisma client...');
+try {
+  // Use a dummy DATABASE_URL if not set, just for generation
+  if (!process.env.DATABASE_URL) {
+    process.env.DATABASE_URL = 'postgresql://dummy:dummy@localhost:5432/dummy';
+    console.log('No DATABASE_URL found, using dummy URL for client generation');
   }
-} else {
-  console.log('DATABASE_URL not found, skipping Prisma generation. Set DATABASE_URL in your hosting environment variables.');
+  execSync('prisma generate', { stdio: 'inherit' });
+  console.log('Prisma client generated successfully');
+} catch (error) {
+  console.error('Failed to generate Prisma client:', error.message);
+  process.exit(1);
 }
