@@ -55,6 +55,8 @@ export async function POST(request: NextRequest) {
       email: userRecord.email || "",
       role: userRecord.role || "user",
       name: userRecord.name || undefined,
+      phone: userRecord.phone || undefined,
+      avatar: undefined,
     });
 
     // Set cookie
@@ -69,6 +71,7 @@ export async function POST(request: NextRequest) {
           email: userRecord.email,
           name: userRecord.name,
           role: userRecord.role,
+          phone: userRecord.phone,
         },
       },
       { status: 200 }

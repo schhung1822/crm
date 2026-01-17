@@ -1,6 +1,5 @@
 import {
   Users,
-  Fingerprint,
   SquareArrowUpRight,
   LayoutDashboard,
   ChartBar,
@@ -12,7 +11,9 @@ import {
   ShoppingBagIcon,
   PackageIcon,
   Calendar1Icon,
-  AppWindowIcon
+  AppWindowIcon,
+  UserCog,
+  Bell,
 } from "lucide-react";
 
 export interface NavSubItem {
@@ -105,14 +106,12 @@ export const sidebarItems: NavGroup[] = [
         icon: Calendar1Icon,
       },
       {
-        title: "Xác thực",
+        title: "Thông báo",
         url: "/auth",
-        icon: Fingerprint,
+        icon: Bell,
         subItems: [
-          { title: "Đăng nhập v1", url: "/auth/v1/login", newTab: true },
-          { title: "Đăng nhập v2", url: "/auth/v2/login", newTab: true },
-          { title: "Đăng ký v1", url: "/auth/v1/register", newTab: true },
-          { title: "Đăng ký v2", url: "/auth/v2/register", newTab: true },
+          { title: "Cập nhật", url: "/thong-bao/cap-nhap", newTab: true },
+          { title: "Dịch vụ", url: "/thong-bao/dich-vu", newTab: true },
         ],
       },
     ],
@@ -121,6 +120,11 @@ export const sidebarItems: NavGroup[] = [
     id: 3,
     label: "Khác",
     items: [
+      {
+        title: "Tài khoản",
+        url: "/account",
+        icon: UserCog,
+      },
       {
         title: "Quy tắc",
         url: "/rules",
