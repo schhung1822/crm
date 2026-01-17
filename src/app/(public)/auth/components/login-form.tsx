@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/components/auth-provider";
 
 const FormSchema = z.object({
   email: z.string().min(1, { message: "Please enter username or email." }),
@@ -20,6 +21,7 @@ const FormSchema = z.object({
 
 export function LoginForm() {
   const router = useRouter();
+  const { refreshUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -52,6 +54,9 @@ export function LoginForm() {
         toast.success("Login successful!", {
           description: `Welcome back, ${result.user?.name || result.user?.username}!`,
         });
+        
+        // Refresh user data in AuthProvider
+        await refreshUser();
         
         // Redirect to home page
         router.push("/");
@@ -134,7 +139,7 @@ export function LoginForm() {
           )}
         />
         <Button className="w-full" type="submit" disabled={isLoading}>
-          {isLoading ? "Logging in..." : "Login"}
+          {isLoading ? "Đang đăng nhập..." : "Đăng nhập"}
         </Button>
       </form>
     </Form>

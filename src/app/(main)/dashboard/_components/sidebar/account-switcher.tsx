@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
-
-import { BadgeCheck, Bell, CreditCard, LogOut } from "lucide-react";
+import Link from "next/link";
+import { Bell, CreditCard, LogOut, CircleUser } from "lucide-react";
 import { useAuth } from "@/components/auth-provider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -13,70 +12,69 @@ import {
   DropdownMenuTrigger,
   DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
-import { cn, getInitials } from "@/lib/utils";
+import { getInitials } from "@/lib/utils";
 
-export function AccountSwitcher({
-  users,
-}: {
-  readonly users: ReadonlyArray<{
-    readonly id: string;
-    readonly name: string;
-    readonly email: string;
-    readonly avatar: string;
-    readonly role: string;
-  }>;
-}) {
-  const [activeUser, setActiveUser] = useState(users[0]);
-  const { logout } = useAuth();
+export function AccountSwitcher() {
+  const { user, logout, isLoading } = useAuth();
+  
   const handleLogout = async () => {
     await logout();
   };
 
+  if (isLoading) {
+    return <div className="size-9 animate-pulse rounded-lg bg-muted" />;
+  }
+
+  if (!user) {
+    return null;
+  }
+
+  const displayName = user.name || user.username;
+  const userAvatar = user.avatar || "";
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="size-9 rounded-lg">
-          <AvatarImage src={activeUser.avatar || undefined} alt={activeUser.name} />
-          <AvatarFallback className="rounded-lg">{getInitials(activeUser.name)}</AvatarFallback>
+        <Avatar className="size-9 rounded-lg cursor-pointer">
+          <AvatarImage src={userAvatar} alt={displayName} />
+          <AvatarFallback className="rounded-lg">{getInitials(displayName)}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="min-w-56 space-y-1 rounded-lg" side="bottom" align="end" sideOffset={4}>
-        {users.map((user) => (
-          <DropdownMenuItem
-            key={user.email}
-            className={cn("p-0", user.id === activeUser.id && "bg-accent/50 border-l-primary border-l-2")}
-            onClick={() => setActiveUser(user)}
-          >
-            <div className="flex w-full items-center justify-between gap-2 px-1 py-1.5">
-              <Avatar className="size-9 rounded-lg">
-                <AvatarImage src={user.avatar || undefined} alt={user.name} />
-                <AvatarFallback className="rounded-lg">{getInitials(user.name)}</AvatarFallback>
-              </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
-                <span className="truncate text-xs capitalize">{user.role}</span>
-              </div>
-            </div>
-          </DropdownMenuItem>
-        ))}
+        <div className="flex items-center gap-2 px-3 py-2">
+          <Avatar className="size-10 rounded-lg">
+            <AvatarImage src={userAvatar} alt={displayName} />
+            <AvatarFallback className="rounded-lg">{getInitials(displayName)}</AvatarFallback>
+          </Avatar>
+          <div className="grid flex-1 text-left text-sm leading-tight">
+            <span className="truncate font-semibold">{displayName}</span>
+            <span className="truncate text-xs text-muted-foreground">{user.email}</span>
+          </div>
+        </div>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <BadgeCheck />
-            Tài khoản
+          <DropdownMenuItem asChild>
+            <Link href="/account" className="flex items-center gap-2">
+              <CircleUser className="h-4 w-4" />
+              <span>Tài khoản</span>
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <CreditCard />
-              Thanh toán
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard/finance" className="flex items-center gap-2">
+              <CreditCard className="h-4 w-4" />
+              <span>Thanh toán</span>
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Bell />
-              Thông báo
+          <DropdownMenuItem asChild>
+            <Link href="/thong-bao/cap-nhap" className="flex items-center gap-2">
+              <Bell className="h-4 w-4" />
+              <span>Thông báo</span>
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
-          <LogOut onClick={handleLogout}/>
+          <LogOut />
           Đăng xuất
         </DropdownMenuItem>
       </DropdownMenuContent>
