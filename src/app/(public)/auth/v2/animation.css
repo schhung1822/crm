@@ -1,4 +1,4 @@
-/* From Uiverse.io by StealthWorm */ 
+/* From Uiverse.io by StealthWorm */
 .loader {
   margin: 0 auto;
   display: flex;
@@ -67,7 +67,7 @@
 .container:nth-child(2) .f::after,
 .container:nth-child(3) .f::after {
   position: absolute;
-  content: '';
+  content: "";
   width: 100%;
   z-index: -1;
   height: 20px;
@@ -83,7 +83,7 @@
 .container:nth-child(2) .f::before,
 .container:nth-child(3) .f::before {
   position: absolute;
-  content: '';
+  content: "";
   width: 85%;
   z-index: -1;
   height: 20px;
@@ -101,20 +101,20 @@
   & .r::before,
   & .l::before {
     position: absolute;
-  content: '';
-  width: 95%;
-  height: 5px;
-  left: 0;
-  top: 25%;
-  border: 1px solid #52c5ff;
-  overflow: hidden;
-}
+    content: "";
+    width: 95%;
+    height: 5px;
+    left: 0;
+    top: 25%;
+    border: 1px solid #52c5ff;
+    overflow: hidden;
+  }
 }
 
 .container:nth-child(1) .b::before,
 .container:nth-child(4) .b::before {
   position: absolute;
-  content: '';
+  content: "";
   width: 95%;
   z-index: -1;
   height: 5px;
@@ -137,7 +137,8 @@
   border-radius: 2px;
 }
 
-.f,.b {
+.f,
+.b {
   width: 30px;
   height: 100px;
   background: #212121;
@@ -155,7 +156,8 @@
   border-radius: 2px;
 }
 
-.l,.r {
+.l,
+.r {
   width: 30px;
   height: 100px;
   left: 15px;
@@ -176,7 +178,8 @@
   border-radius: 2px;
 }
 
-.t,.bot {
+.t,
+.bot {
   width: 30px;
   height: 30px;
   top: 25px;

@@ -1,15 +1,13 @@
-import { ChartAreaInteractive } from "./_components/chart-area-interactive";
-import { SectionCards } from "./_components/section-cards";
-import { DateRangeFilter } from "./_components/date-range-filter";
-import { TableCards } from "../crm/_components/table-cards";
-import { getChannels } from "@/lib/orders";
 import { getChannelSalesSummary, getCRMStats } from "@/lib/crm-revenue";
+import { getChannels } from "@/lib/orders";
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: Promise<Record<string, string>>;
-}) {
+import { TableCards } from "../crm/_components/table-cards";
+
+import { ChartAreaInteractive } from "./_components/chart-area-interactive";
+import { DateRangeFilter } from "./_components/date-range-filter";
+import { SectionCards } from "./_components/section-cards";
+
+export default async function Page({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
   const params = await searchParams;
   const from = params.from ? new Date(params.from) : undefined;
   const to = params.to ? new Date(params.to) : undefined;
@@ -25,10 +23,7 @@ export default async function Page({
   try {
     const res = await getChannels({ from, to, limit: 10000 });
     channels = Array.isArray(res) ? res : [];
-    [channelSummary, stats] = await Promise.all([
-      getChannelSalesSummary(from, to),
-      getCRMStats(from, to),
-    ]);
+    [channelSummary, stats] = await Promise.all([getChannelSalesSummary(from, to), getCRMStats(from, to)]);
   } catch (e) {
     console.error("getChannels error:", e);
     channels = [];

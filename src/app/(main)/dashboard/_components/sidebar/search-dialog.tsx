@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import Link from "next/link";
 
 import { LayoutDashboard, ChartBar, Gauge, ShoppingBag, GraduationCap, Forklift, Search } from "lucide-react";
 
@@ -13,18 +14,17 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
+import { url } from "inspector";
 
 const searchItems = [
-  { group: "Dashboards", icon: LayoutDashboard, label: "Default" },
-  { group: "Dashboards", icon: ChartBar, label: "CRM", disabled: true },
-  { group: "Dashboards", icon: Gauge, label: "Analytics", disabled: true },
-  { group: "Dashboards", icon: ShoppingBag, label: "E-Commerce", disabled: true },
-  { group: "Dashboards", icon: GraduationCap, label: "Academy", disabled: true },
-  { group: "Dashboards", icon: Forklift, label: "Logistics", disabled: true },
-  { group: "Authentication", label: "Login v1" },
-  { group: "Authentication", label: "Login v2" },
-  { group: "Authentication", label: "Register v1" },
-  { group: "Authentication", label: "Register v2" },
+  { group: "Báo cáo", icon: LayoutDashboard, label: "Tổng quan", url: "/dashboard/default" },
+  { group: "Báo cáo", icon: ChartBar, label: "CRM", disabled: true, url: "/dashboard/crm" },
+  { group: "Báo cáo", icon: Gauge, label: "Phân tích", disabled: true, url: "/dashboard/analytics" },
+  { group: "Báo cáo", icon: ShoppingBag, label: "Trenđing", disabled: true, url: "/dashboard/trending" },
+  { group: "Báo cáo", icon: GraduationCap, label: "Zalo OA", disabled: true, url: "/dashboard/zaloOA" },
+  { group: "Thông tin", label: "Thông báo dịch vụ", url: "/noti/service-notifications" },
+  { group: "Thông tin", label: "Thông báo cập nhập", url: "/noti/update-notifications" },
+  { group: "Thông tin", label: "Quy tắc", url: "/rules" },
 ];
 
 export function SearchDialog() {
@@ -52,7 +52,7 @@ export function SearchDialog() {
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="Tìm kiếm bảng điều khiển, người dùng và hơn thế nữa…" />
-        <CommandList>
+        <CommandList className="nice-scroll">
           <CommandEmpty>Không tìm thấy kết quả.</CommandEmpty>
           {[...new Set(searchItems.map((item) => item.group))].map((group, i) => (
             <React.Fragment key={group}>
@@ -61,10 +61,12 @@ export function SearchDialog() {
                 {searchItems
                   .filter((item) => item.group === group)
                   .map((item) => (
-                    <CommandItem className="!py-1.5" key={item.label} onSelect={() => setOpen(false)}>
-                      {item.icon && <item.icon />}
-                      <span>{item.label}</span>
-                    </CommandItem>
+                    <Link href={item.url} key={item.label}>
+                      <CommandItem className="!py-1.5" onSelect={() => setOpen(false)}>
+                        {item.icon && <item.icon />}
+                        <span>{item.label}</span>
+                      </CommandItem>
+                    </Link>
                   ))}
               </CommandGroup>
             </React.Fragment>

@@ -9,7 +9,7 @@
 3. **Login Page**: `/auth/v2/login`
 4. **API Routes**:
    - POST `/api/auth/login` - Đăng nhập
-   - POST `/api/auth/logout` - Đăng xuất  
+   - POST `/api/auth/logout` - Đăng xuất
    - GET `/api/auth/me` - Lấy thông tin user hiện tại
 5. **Middleware**: Tự động bảo vệ tất cả routes, redirect về login nếu chưa đăng nhập
 6. **Auth Provider**: Context để quản lý trạng thái đăng nhập
@@ -22,6 +22,7 @@
 ### 1. Đăng nhập với user hiện có
 
 Nếu đã có user trong database:
+
 - Truy cập: `http://localhost:3000/auth/v2/login`
 - Nhập username/email và password
 - Đăng nhập
@@ -39,7 +40,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   const hashedPassword = await bcrypt.hash("yourpassword", 10);
-  
+
   const user = await prisma.user.create({
     data: {
       user: "yourusername",
@@ -50,7 +51,7 @@ async function main() {
       status: "active",
     },
   });
-  
+
   console.log("✅ User created:", user.user);
 }
 
@@ -58,6 +59,7 @@ main().finally(() => prisma.$disconnect());
 ```
 
 Sau đó chạy:
+
 ```bash
 npx ts-node --compiler-options '{"module":"CommonJS"}' scripts/create-new-user.ts
 ```
@@ -100,11 +102,11 @@ import { useAuth } from "@/components/auth-provider";
 
 export function MyComponent() {
   const { user, logout, isLoading } = useAuth();
-  
+
   if (isLoading) return <div>Loading...</div>;
-  
+
   if (!user) return <div>Not logged in</div>;
-  
+
   return (
     <div>
       <p>Welcome, {user.name}!</p>
@@ -125,11 +127,11 @@ import { redirect } from "next/navigation";
 
 export default async function Page() {
   const user = await getCurrentUser();
-  
+
   if (!user) {
     redirect("/auth/v2/login");
   }
-  
+
   // User is authenticated
   return <div>Welcome {user.name}</div>;
 }
@@ -178,15 +180,18 @@ NODE_ENV="development"
 ## 🐛 Troubleshooting
 
 **Không redirect sau login?**
+
 - Kiểm tra console browser có lỗi
 - Xóa cookie và thử lại
 - Restart dev server
 
 **Lỗi kết nối database?**
+
 - Kiểm tra `DATABASE_URL` trong `.env`
 - Chạy `npx prisma generate`
 
 **Không thấy UserMenu?**
+
 - Import và thêm `<UserMenu />` vào header/navbar
 
 ---
@@ -196,7 +201,7 @@ NODE_ENV="development"
 ```
 src/
 ├── lib/auth.ts                    # Auth utilities
-├── middleware.ts                  # Route protection  
+├── middleware.ts                  # Route protection
 ├── components/
 │   ├── auth-provider.tsx         # Auth context
 │   └── user-menu.tsx             # User dropdown

@@ -42,8 +42,7 @@ export function OperationalCards({
             </FunnelChart>
           </ChartContainer>
         </CardContent>
-        <CardFooter>
-        </CardFooter>
+        <CardFooter></CardFooter>
       </Card>
 
       <Card>
@@ -58,11 +57,11 @@ export function OperationalCards({
             {topProducts.map((item, idx) => (
               <div key={item.product} className="space-y-0.5">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 min-w-0 flex-1">
-                    <span className="text-xs font-medium text-muted-foreground">#{idx + 1}</span>
-                    <span className="text-sm font-medium truncate">{item.product}</span>
+                  <div className="flex min-w-0 flex-1 items-center gap-2">
+                    <span className="text-muted-foreground text-xs font-medium">#{idx + 1}</span>
+                    <span className="truncate text-sm font-medium">{item.product}</span>
                   </div>
-                  <div className="flex items-baseline gap-1 flex-shrink-0">
+                  <div className="flex flex-shrink-0 items-baseline gap-1">
                     <span className="text-sm font-semibold tabular-nums">{formatVND(item.quantity)}</span>
                     <TrendingUp className="size-3 text-green-500" />
                   </div>
@@ -76,8 +75,7 @@ export function OperationalCards({
           </div>
         </CardContent>
         <CardFooter>
-          <div className="text-muted-foreground text-xs">
-          </div>
+          <div className="text-muted-foreground text-xs"></div>
         </CardFooter>
       </Card>
 
@@ -90,13 +88,13 @@ export function OperationalCards({
             {topSales.map((item, idx) => (
               <li key={item.seller} className="space-y-1.5 rounded-md border px-3 py-2">
                 <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2 min-w-0 flex-1">
-                    <span className="flex items-center justify-center size-6 rounded-full bg-primary text-primary-foreground text-xs font-bold">
+                  <div className="flex min-w-0 flex-1 items-center gap-2">
+                    <span className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-full text-xs font-bold">
                       {idx + 1}
                     </span>
-                    <span className="text-sm font-medium truncate">{item.seller}</span>
+                    <span className="truncate text-sm font-medium">{item.seller}</span>
                   </div>
-                  <TrendingUp className="size-4 text-green-500 flex-shrink-0" />
+                  <TrendingUp className="size-4 flex-shrink-0 text-green-500" />
                 </div>
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-muted-foreground">Doanh thu:</span>
@@ -110,8 +108,7 @@ export function OperationalCards({
             ))}
           </ul>
         </CardContent>
-        <CardFooter>
-        </CardFooter>
+        <CardFooter></CardFooter>
       </Card>
     </div>
   );

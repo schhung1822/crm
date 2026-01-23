@@ -1,15 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { Globe } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { APP_CONFIG } from "@/config/app-config";
 
 import { LoginForm } from "../../components/login-form";
@@ -22,7 +23,7 @@ export default function LoginV2() {
           <h1 className="text-3xl font-medium">Đăng nhập CRM</h1>
           <p className="text-muted-foreground text-sm">Vui lòng nhập thông tin đăng nhập của bạn.</p>
         </div>
-        <div className="space-y-4"> 
+        <div className="space-y-4">
           <LoginForm />
         </div>
       </div>

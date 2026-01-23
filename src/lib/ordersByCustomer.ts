@@ -1,19 +1,18 @@
 // src/lib/ordersByCustomer.ts
-import { getDB } from "@/lib/db";
 import { channelSchema, type Channel } from "@/app/(main)/orders/_components/schema";
+import { getDB } from "@/lib/db";
 
 type Paging = { page?: number; pageSize?: number | "all" | -1 };
 
 export async function getOrdersByCustomer(
   customerIdRaw: string,
-  paging?: Paging
+  paging?: Paging,
 ): Promise<{ rows: Channel[]; total: number }> {
   const customerId = String(customerIdRaw || "").trim();
-  const wantAll =
-    !paging || paging.pageSize === undefined || paging.pageSize === "all" || Number(paging.pageSize) <= 0;
+  const wantAll = !paging || paging.pageSize === undefined || paging.pageSize === "all" || Number(paging.pageSize) <= 0;
 
   const page = Number(paging?.page ?? 1) || 1;
-  const pageSize = wantAll ? undefined : (Number(paging?.pageSize) || 20);
+  const pageSize = wantAll ? undefined : Number(paging?.pageSize) || 20;
   const offset = pageSize ? (page - 1) * pageSize : undefined;
 
   const db = getDB();
@@ -56,10 +55,9 @@ export async function getOrdersByCustomer(
   if (wantAll) {
     total = rows?.length ?? 0;
   } else {
-    const [cntResult] = await db.query<any[]>(
-      `SELECT COUNT(*) AS total FROM orders WHERE customer_ID = ?`,
-      [customerId]
-    );
+    const [cntResult] = await db.query<any[]>(`SELECT COUNT(*) AS total FROM orders WHERE customer_ID = ?`, [
+      customerId,
+    ]);
     total = Number(cntResult?.[0]?.total ?? 0);
   }
 
@@ -83,7 +81,7 @@ export async function getOrdersByCustomer(
       pro_ID: String(r.pro_ID ?? ""),
       name_pro: String(r.name_pro ?? ""),
       brand_pro: String(r.brand_pro ?? ""),
-    })
+    }),
   );
 
   return { rows: parsed, total };

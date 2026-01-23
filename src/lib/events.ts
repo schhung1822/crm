@@ -1,5 +1,5 @@
-import { getDB } from "@/lib/db";
 import { academySchema, Academy } from "@/app/(main)/events/_components/schema";
+import { getDB } from "@/lib/db";
 
 export async function getAcademy(): Promise<Academy[]> {
   const db = getDB();
@@ -26,7 +26,7 @@ export async function getAcademy(): Promise<Academy[]> {
       q5: r.q5 ? String(r.q5) : "",
       event_name: r.event_name ? String(r.event_name) : "",
       voucher: r.voucher ? String(r.voucher) : "",
-      user_id: r.user_id ? String(r.user_id) : ""
+      user_id: r.user_id ? String(r.user_id) : "",
     }),
   );
 }

@@ -1,37 +1,23 @@
 "use client";
 
 import { Table } from "@tanstack/react-table";
-import {
-  ChevronRight,
-  ChevronsRight,
-  ChevronLeft,
-  ChevronsLeft,
-} from "lucide-react";
+import { ChevronRight, ChevronsRight, ChevronLeft, ChevronsLeft } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
 }
 
-export function DataTablePagination<TData>({
-  table,
-}: DataTablePaginationProps<TData>) {
+export function DataTablePagination<TData>({ table }: DataTablePaginationProps<TData>) {
   const { pageIndex, pageSize } = table.getState().pagination;
 
   return (
     <div className="flex items-center justify-between px-4">
       <div className="text-muted-foreground hidden flex-1 text-sm lg:flex">
-        {table.getFilteredSelectedRowModel().rows.length} của{" "}
-        {table.getFilteredRowModel().rows.length} hàng đã chọn
+        {table.getFilteredSelectedRowModel().rows.length} của {table.getFilteredRowModel().rows.length} hàng đã chọn
       </div>
       <div className="flex w-full items-center gap-8 lg:w-fit">
         {/* Số hàng mỗi trang */}

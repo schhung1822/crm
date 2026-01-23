@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+
 import { verifyPassword, createToken, setAuthCookie } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,37 +10,25 @@ export async function POST(request: NextRequest) {
 
     // Validate input
     if (!username || !password) {
-      return NextResponse.json(
-        { message: "Tên đăng nhập và mật khẩu là bắt buộc" },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: "Tên đăng nhập và mật khẩu là bắt buộc" }, { status: 400 });
     }
 
     // Find user by username or email
     const userRecord = await prisma.user.findFirst({
       where: {
-        OR: [
-          { user: username },
-          { email: username },
-        ],
+        OR: [{ user: username }, { email: username }],
       },
     });
 
     if (!userRecord || !userRecord.password) {
-      return NextResponse.json(
-        { message: "Tên đăng nhập hoặc mật khẩu không đúng" },
-        { status: 401 }
-      );
+      return NextResponse.json({ message: "Tên đăng nhập hoặc mật khẩu không đúng" }, { status: 401 });
     }
 
     // Verify password
     const isValidPassword = await verifyPassword(password, userRecord.password);
-    
+
     if (!isValidPassword) {
-      return NextResponse.json(
-        { message: "Tên đăng nhập hoặc mật khẩu không đúng" },
-        { status: 401 }
-      );
+      return NextResponse.json({ message: "Tên đăng nhập hoặc mật khẩu không đúng" }, { status: 401 });
     }
 
     // Update last login
@@ -74,13 +63,10 @@ export async function POST(request: NextRequest) {
           phone: userRecord.phone,
         },
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("Login error:", error);
-    return NextResponse.json(
-      { message: "Có lỗi xảy ra. Vui lòng thử lại!" },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Có lỗi xảy ra. Vui lòng thử lại!" }, { status: 500 });
   }
 }

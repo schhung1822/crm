@@ -1,7 +1,9 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+
 import { useRouter } from "next/navigation";
+
 import { toast } from "sonner";
 
 interface User {
@@ -73,11 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await fetchUser();
   };
 
-  return (
-    <AuthContext.Provider value={{ user, isLoading, logout, refreshUser }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ user, isLoading, logout, refreshUser }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

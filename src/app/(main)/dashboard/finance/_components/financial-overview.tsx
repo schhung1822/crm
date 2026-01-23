@@ -47,7 +47,9 @@ export function FinancialOverview() {
     <Card className="shadow-xs">
       <CardHeader>
         <CardTitle>Tổng quan tài chính</CardTitle>
-        <CardDescription>Theo dõi thu nhập, chi tiêu và số tiền đã lên lịch của bạn một cách nhanh chóng.</CardDescription>
+        <CardDescription>
+          Theo dõi thu nhập, chi tiêu và số tiền đã lên lịch của bạn một cách nhanh chóng.
+        </CardDescription>
         <CardAction>
           <Select defaultValue="last-year">
             <SelectTrigger>

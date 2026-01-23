@@ -1,6 +1,9 @@
 "use client";
 
+import { LogOut, User } from "lucide-react";
+
 import { useAuth } from "@/components/auth-provider";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,14 +13,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { LogOut, User } from "lucide-react";
 
 export function UserMenu() {
   const { user, logout, isLoading } = useAuth();
 
   if (isLoading) {
-    return <div className="h-8 w-8 animate-pulse rounded-full bg-muted" />;
+    return <div className="bg-muted h-8 w-8 animate-pulse rounded-full" />;
   }
 
   if (!user) {
@@ -45,8 +46,8 @@ export function UserMenu() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{user.name || user.username}</p>
-            <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+            <p className="text-sm leading-none font-medium">{user.name || user.username}</p>
+            <p className="text-muted-foreground text-xs leading-none">{user.email}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />

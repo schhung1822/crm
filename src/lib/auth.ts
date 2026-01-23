@@ -1,10 +1,9 @@
-import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
-import bcrypt from "bcryptjs";
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "your-secret-key-change-this-in-production"
-);
+import bcrypt from "bcryptjs";
+import { SignJWT, jwtVerify } from "jose";
+
+const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || "your-secret-key-change-this-in-production");
 
 const COOKIE_NAME = "auth-token";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
@@ -29,10 +28,7 @@ export async function hashPassword(password: string): Promise<string> {
 /**
  * Verify password
  */
-export async function verifyPassword(
-  password: string,
-  hashedPassword: string
-): Promise<boolean> {
+export async function verifyPassword(password: string, hashedPassword: string): Promise<boolean> {
   return bcrypt.compare(password, hashedPassword);
 }
 
@@ -98,7 +94,7 @@ export async function removeAuthCookie(): Promise<void> {
 export async function getCurrentUser(): Promise<JWTPayload | null> {
   const token = await getAuthCookie();
   if (!token) return null;
-  
+
   return verifyToken(token);
 }
 

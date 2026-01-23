@@ -1,13 +1,15 @@
 "use client";
 
 import * as React from "react";
+
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
 import { format } from "date-fns";
 import { vi } from "date-fns/locale";
 
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 type Range = { from?: Date; to?: Date };
 
@@ -103,9 +105,7 @@ export function DateRangeFilter() {
                 mode="single"
                 selected={range.from}
                 onSelect={(d) => setRange({ ...range, from: d })}
-                disabled={(date) =>
-                  range.to ? date > range.to : false
-                }
+                disabled={(date) => (range.to ? date > range.to : false)}
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -114,59 +114,33 @@ export function DateRangeFilter() {
                 mode="single"
                 selected={range.to}
                 onSelect={(d) => setRange({ ...range, to: d })}
-                disabled={(date) =>
-                  range.from ? date < range.from : false
-                }
+                disabled={(date) => (range.from ? date < range.from : false)}
               />
             </div>
           </div>
-          <div className="border-t mt-3 pt-3 flex flex-col gap-2">
-            <Button
-              size="sm"
-              onClick={() => apply(range)}
-              className="w-full"
-            >
+          <div className="mt-3 flex flex-col gap-2 border-t pt-3">
+            <Button size="sm" onClick={() => apply(range)} className="w-full">
               Áp dụng
             </Button>
           </div>
         </PopoverContent>
       </Popover>
 
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => quick("7d")}
-      >
+      <Button variant="outline" size="sm" onClick={() => quick("7d")}>
         7 ngày
       </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => quick("30d")}
-      >
+      <Button variant="outline" size="sm" onClick={() => quick("30d")}>
         30 ngày
       </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => quick("thisMonth")}
-      >
+      <Button variant="outline" size="sm" onClick={() => quick("thisMonth")}>
         Tháng này
       </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => quick("ytd")}
-      >
+      <Button variant="outline" size="sm" onClick={() => quick("ytd")}>
         Năm này
       </Button>
 
       {(range.from || range.to) && (
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={clear}
-        >
+        <Button variant="secondary" size="sm" onClick={clear}>
           Xóa
         </Button>
       )}

@@ -120,9 +120,9 @@ export function buildRevenueHorizontalBars(rows: RevenueGroupRow[]) {
   // Mỗi chi nhánh 1 màu khác nhau theo theme
   normalized.forEach((r, i) => {
     const colorKey = `branch-${i}`;
-    (config as any)[colorKey] = { 
-      label: r.name, 
-      color: chartColorByIndex(i) 
+    (config as any)[colorKey] = {
+      label: r.name,
+      color: chartColorByIndex(i),
     };
   });
 

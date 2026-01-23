@@ -53,6 +53,6 @@ export async function getOrders(): Promise<Order[]> {
       pro_ID: String(r.pro_ID ?? ""),
       name_pro: String(r.name_pro ?? ""),
       brand_pro: String(r.brand_pro ?? ""),
-    })
+    }),
   );
 }

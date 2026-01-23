@@ -1,8 +1,9 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { getChannels } from "@/lib/orders";
+
 import type { Channel } from "@/app/(main)/dashboard/default/_components/schema";
+import { getChannels } from "@/lib/orders";
 
 export async function getValueFromCookie(key: string): Promise<string | undefined> {
   const cookieStore = await cookies();
@@ -30,11 +31,7 @@ export async function getPreference<T extends string>(key: string, allowed: read
 
 // ============ New server actions for dashboard ============
 
-export async function fetchChannelsByDateRange(
-  from?: string,
-  to?: string,
-  limit: number = 10000
-): Promise<Channel[]> {
+export async function fetchChannelsByDateRange(from?: string, to?: string, limit: number = 10000): Promise<Channel[]> {
   try {
     const fromDate = from ? new Date(from) : undefined;
     const toDate = to ? new Date(to) : undefined;

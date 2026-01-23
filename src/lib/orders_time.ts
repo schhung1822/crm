@@ -16,13 +16,9 @@ function normalizeRange(from?: string | Date, to?: string | Date) {
   const f = toDate(from);
   const t = toDate(to);
 
-  const fromDate = f
-    ? new Date(f.getFullYear(), f.getMonth(), f.getDate(), 0, 0, 0, 0)
-    : null;
+  const fromDate = f ? new Date(f.getFullYear(), f.getMonth(), f.getDate(), 0, 0, 0, 0) : null;
 
-  const toDateNorm = t
-    ? new Date(t.getFullYear(), t.getMonth(), t.getDate(), 23, 59, 59, 999)
-    : null;
+  const toDateNorm = t ? new Date(t.getFullYear(), t.getMonth(), t.getDate(), 23, 59, 59, 999) : null;
 
   return { fromDate, toDateNorm };
 }
@@ -90,6 +86,6 @@ export async function getChannels(params: GetChannelsParams = {}): Promise<Chann
       pro_ID: String(r.pro_ID ?? ""),
       name_pro: String(r.name_pro ?? ""),
       brand_pro: String(r.brand_pro ?? ""),
-    })
+    }),
   );
 }

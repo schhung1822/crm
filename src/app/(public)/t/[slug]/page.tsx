@@ -1,5 +1,5 @@
-import { ensureDefaultTemplate, getTemplateBySlug } from "@/lib/form-template/repo";
 import TemplateRenderer from "@/components/form-template/TemplateRenderer";
+import { ensureDefaultTemplate, getTemplateBySlug } from "@/lib/form-template/repo";
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

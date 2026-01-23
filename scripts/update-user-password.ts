@@ -24,16 +24,16 @@ async function main() {
     if (!user) {
       console.log(`❌ User '${username}' not found!`);
       console.log("\n💡 Available users:");
-      
+
       const allUsers = await prisma.user.findMany({
         select: { id: true, user: true, email: true },
         take: 10,
       });
-      
-      allUsers.forEach(u => {
+
+      allUsers.forEach((u) => {
         console.log(`   - ${u.user} (${u.email})`);
       });
-      
+
       return;
     }
 
@@ -42,7 +42,7 @@ async function main() {
 
     // Check if password is already hashed (bcrypt hashes start with $2)
     const isAlreadyHashed = user.password?.startsWith("$2");
-    
+
     if (isAlreadyHashed) {
       console.log(`\n⚠️  Password appears to be already hashed.`);
       console.log(`Do you want to reset it to: "${newPassword}"?`);
@@ -55,7 +55,7 @@ async function main() {
     // Update user
     await prisma.user.update({
       where: { id: user.id },
-      data: { 
+      data: {
         password: hashedPassword,
         status: "active",
       },
@@ -67,7 +67,6 @@ async function main() {
     console.log(`   Email: ${user.email}`);
     console.log(`   Password: ${newPassword}`);
     console.log(`\n🌐 Login at: http://localhost:3000/auth/v2/login\n`);
-
   } catch (error) {
     console.error("❌ Error:", error);
   } finally {

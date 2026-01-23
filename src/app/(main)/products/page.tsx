@@ -1,5 +1,6 @@
-import { DataTable } from "./_components/data-table";
 import { getProducts } from "@/lib/products";
+
+import { DataTable } from "./_components/data-table";
 
 export default async function Page() {
   const products = await getProducts();

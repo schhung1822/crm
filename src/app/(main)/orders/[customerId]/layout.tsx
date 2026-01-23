@@ -5,10 +5,7 @@ import { cookies } from "next/headers";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 import { getPreference } from "@/server/server-actions";
-import {
-  CONTENT_LAYOUT_VALUES,
-  type ContentLayout,
-} from "@/types/preferences/layout";
+import { CONTENT_LAYOUT_VALUES, type ContentLayout } from "@/types/preferences/layout";
 
 export default async function Layout({ children }: Readonly<{ children: ReactNode }>) {
   const cookieStore = await cookies();

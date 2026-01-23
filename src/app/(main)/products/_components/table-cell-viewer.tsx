@@ -1,9 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { z } from "zod";
-import { Package, Tag, Layers, Banknote, ReceiptText, Image as ImageIcon } from "lucide-react";
 
+import { Package, Tag, Layers, Banknote, ReceiptText, Image as ImageIcon } from "lucide-react";
+import { z } from "zod";
+
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -15,7 +17,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -27,21 +28,13 @@ function money(v: unknown) {
   return n.toLocaleString("vi-VN");
 }
 
-function Row({
-  icon,
-  label,
-  value,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value?: React.ReactNode;
-}) {
+function Row({ icon, label, value }: { icon: React.ReactNode; label: string; value?: React.ReactNode }) {
   return (
     <div className="flex items-start gap-2.5">
-      <div className="mt-0.5 text-muted-foreground">{icon}</div>
+      <div className="text-muted-foreground mt-0.5">{icon}</div>
       <div className="min-w-0 flex-1">
-        <div className="text-[11px] text-muted-foreground">{label}</div>
-        <div className="text-sm font-medium leading-snug">
+        <div className="text-muted-foreground text-[11px]">{label}</div>
+        <div className="text-sm leading-snug font-medium">
           {value ?? <span className="text-muted-foreground">—</span>}
         </div>
       </div>
@@ -51,7 +44,7 @@ function Row({
 
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border bg-card/60 p-3">
+    <div className="bg-card/60 rounded-2xl border p-3">
       <div className="mb-2 text-sm font-semibold">{title}</div>
       <div className="grid gap-2.5">{children}</div>
     </div>
@@ -63,11 +56,7 @@ export function TableCellViewer({ item }: { item: z.infer<typeof productSchema> 
 
   // ✅ Đổi field ảnh tại đây nếu schema bạn dùng tên khác
   const thumbSrc =
-    (item as any)?.thumbnail ||
-    (item as any)?.image ||
-    (item as any)?.image_url ||
-    (item as any)?.thumb ||
-    "";
+    (item as any)?.thumbnail || (item as any)?.image || (item as any)?.image_url || (item as any)?.thumb || "";
 
   // ✅ Ảnh mặc định (bạn thay path theo dự án)
   const DEFAULT_THUMB = "/images/product-default.png";
@@ -84,12 +73,12 @@ export function TableCellViewer({ item }: { item: z.infer<typeof productSchema> 
       </DrawerTrigger>
 
       {/* max width 400px, full height desktop */}
-      <DrawerContent className="h-[100vh] sm:h-[100vh] sm:max-w-[400px] sm:ml-auto">
+      <DrawerContent className="h-[100vh] sm:ml-auto sm:h-[100vh] sm:max-w-[400px]">
         {/* HEADER sticky */}
-        <DrawerHeader className="sticky top-0 z-10 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+        <DrawerHeader className="bg-background/95 supports-[backdrop-filter]:bg-background/80 sticky top-0 z-10 border-b backdrop-blur">
           <div className="flex items-start gap-3">
             {/* Thumbnail vuông */}
-            <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border bg-muted">
+            <div className="bg-muted relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={thumbSrc || DEFAULT_THUMB}
@@ -103,7 +92,7 @@ export function TableCellViewer({ item }: { item: z.infer<typeof productSchema> 
               />
               {!thumbSrc ? (
                 <div className="absolute inset-0 grid place-items-center">
-                  <ImageIcon className="h-5 w-5 text-muted-foreground" />
+                  <ImageIcon className="text-muted-foreground h-5 w-5" />
                 </div>
               ) : null}
             </div>
@@ -111,7 +100,7 @@ export function TableCellViewer({ item }: { item: z.infer<typeof productSchema> 
             <div className="min-w-0 flex-1">
               <DrawerTitle className="truncate text-base">{item.name}</DrawerTitle>
               <DrawerDescription className="truncate">
-                Mã: <span className="font-medium text-foreground">{item.pro_ID}</span>
+                Mã: <span className="text-foreground font-medium">{item.pro_ID}</span>
                 {item.brand ? <> • {item.brand}</> : null}
               </DrawerDescription>
 
@@ -135,7 +124,7 @@ export function TableCellViewer({ item }: { item: z.infer<typeof productSchema> 
         </DrawerHeader>
 
         {/* BODY scroll */}
-        <div className="flex-1 overflow-y-auto px-4 py-4 nice-scroll">
+        <div className="nice-scroll flex-1 overflow-y-auto px-4 py-4">
           <div className="grid gap-3">
             <Block title="Tổng quan">
               <Row
@@ -161,8 +150,8 @@ export function TableCellViewer({ item }: { item: z.infer<typeof productSchema> 
             </Block>
 
             <Block title="Thuộc tính">
-              <div className="text-[11px] text-muted-foreground">Mô tả</div>
-              <div className="whitespace-pre-wrap break-words text-sm text-foreground/90">
+              <div className="text-muted-foreground text-[11px]">Mô tả</div>
+              <div className="text-foreground/90 text-sm break-words whitespace-pre-wrap">
                 {item.property ? String(item.property) : "—"}
               </div>
             </Block>
@@ -170,7 +159,7 @@ export function TableCellViewer({ item }: { item: z.infer<typeof productSchema> 
         </div>
 
         {/* FOOTER sticky */}
-        <DrawerFooter className="sticky bottom-0 z-10 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+        <DrawerFooter className="bg-background/95 supports-[backdrop-filter]:bg-background/80 sticky bottom-0 z-10 border-t backdrop-blur">
           <DrawerClose asChild>
             <Button variant="outline" className="w-full rounded-xl">
               Đóng

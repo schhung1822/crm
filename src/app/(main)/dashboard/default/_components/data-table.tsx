@@ -1,31 +1,26 @@
 "use client";
 
 import * as React from "react";
-import { Plus, Search } from "lucide-react";
+
 import { useSearchParams } from "next/navigation";
 
+import { Plus, Search } from "lucide-react";
+
+import { DataTable as DataTableNew } from "@/components/data-table/data-table";
+import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
+import { withDndColumn } from "@/components/data-table/table-utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { useDataTableInstance } from "@/hooks/use-data-table-instance";
-
-import { DataTable as DataTableNew } from "@/components/data-table/data-table";
-import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
-import { withDndColumn } from "@/components/data-table/table-utils";
+import { fetchChannelsByDateRange } from "@/server/server-actions";
 
 import { dashboardColumns as makeColumns, type Stats } from "./columns";
 import type { Channel } from "./schema";
-import { fetchChannelsByDateRange } from "@/server/server-actions";
 
-export function DataTable({
-  data: initialData = [],
-  stats,
-}: {
-  data?: Channel[];
-  stats: Stats;
-}) {
+export function DataTable({ data: initialData = [], stats }: { data?: Channel[]; stats: Stats }) {
   const columns = withDndColumn(makeColumns(stats));
   const searchParams = useSearchParams();
 
@@ -58,13 +53,14 @@ export function DataTable({
 
   const filteredData = React.useMemo(() => {
     if (!searchTerm.trim()) return data;
-    
+
     const term = searchTerm.toLowerCase();
-    return data.filter((item) =>
-      item.name_customer.toLowerCase().includes(term) ||
-      item.order_ID.toLowerCase().includes(term) ||
-      (item.phone ? item.phone.toLowerCase().includes(term) : false) ||
-      (item.seller ? item.seller.toLowerCase().includes(term) : false)
+    return data.filter(
+      (item) =>
+        item.name_customer.toLowerCase().includes(term) ||
+        item.order_ID.toLowerCase().includes(term) ||
+        (item.phone ? item.phone.toLowerCase().includes(term) : false) ||
+        (item.seller ? item.seller.toLowerCase().includes(term) : false),
     );
   }, [data, searchTerm]);
 
@@ -75,10 +71,10 @@ export function DataTable({
   });
 
   return (
-    <div className="w-full flex flex-col gap-6">
+    <div className="flex w-full flex-col gap-6">
       <div className="flex items-center justify-between gap-4">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+        <div className="relative max-w-sm flex-1">
+          <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
           <Input
             placeholder="Tìm kiếm theo tên, mã, SĐT, người tạo..."
             className="pl-10"
@@ -89,13 +85,9 @@ export function DataTable({
         </div>
         <div className="flex items-center gap-2">
           <DataTableViewOptions table={table} />
-          <Button variant="outline" size="sm">
-            <Plus />
-            <span className="hidden lg:inline">Thêm kênh</span>
-          </Button>
         </div>
       </div>
-      <div className="table-scroll overflow-hidden rounded-lg">
+      <div className="nice-scroll overflow-hidden rounded-lg">
         <DataTableNew dndEnabled table={table} columns={columns} onReorder={setData} />
       </div>
     </div>

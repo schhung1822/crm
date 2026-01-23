@@ -14,34 +14,13 @@ import {
   type DragEndEvent,
 } from "@dnd-kit/core";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-  arrayMove,
-} from "@dnd-kit/sortable";
-import {
-  ColumnDef,
-  flexRender,
-  type Table as TanStackTable,
-} from "@tanstack/react-table";
+import { SortableContext, verticalListSortingStrategy, arrayMove } from "@dnd-kit/sortable";
+import { ColumnDef, flexRender, type Table as TanStackTable } from "@tanstack/react-table";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 import { DraggableRow } from "./draggable-row";
 
@@ -86,9 +65,7 @@ function renderTableBody<TData, TValue>({
   return rows.map((row) => (
     <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
       {row.getVisibleCells().map((cell) => (
-        <TableCell key={cell.id}>
-          {flexRender(cell.column.columnDef.cell, cell.getContext())}
-        </TableCell>
+        <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
       ))}
     </TableRow>
   ));
@@ -112,16 +89,10 @@ export function DataTable<TData, TValue>({
   const end = start + pageSize;
   const pageRows = allRows.slice(start, end);
 
-  const dataIds: UniqueIdentifier[] = pageRows.map(
-    (row) => Number(row.id) as UniqueIdentifier
-  );
+  const dataIds: UniqueIdentifier[] = pageRows.map((row) => Number(row.id) as UniqueIdentifier);
 
   const sortableId = React.useId();
-  const sensors = useSensors(
-    useSensor(MouseSensor, {}),
-    useSensor(TouchSensor, {}),
-    useSensor(KeyboardSensor, {})
-  );
+  const sensors = useSensors(useSensor(MouseSensor, {}), useSensor(TouchSensor, {}), useSensor(KeyboardSensor, {}));
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
@@ -141,12 +112,7 @@ export function DataTable<TData, TValue>({
           <TableRow key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
               <TableHead key={header.id} colSpan={header.colSpan}>
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
+                {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
               </TableHead>
             ))}
           </TableRow>
@@ -186,7 +152,9 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="overflow-hidden rounded-lg border scrollbar-thin scrollbar-thumb-muted-foreground/40 scrollbar-track-transparent hover:scrollbar-thumb-muted-foreground/60">{content}</div>
+      <div className="scrollbar-thin scrollbar-thumb-muted-foreground/40 scrollbar-track-transparent hover:scrollbar-thumb-muted-foreground/60 overflow-hidden rounded-lg border">
+        {content}
+      </div>
 
       <div className="flex items-center justify-between px-4 py-2">
         <div className="text-muted-foreground hidden flex-1 text-sm lg:flex">
@@ -207,11 +175,7 @@ export function DataTable<TData, TValue>({
                 setPageIndex(0); // quay lại trang 1 khi đổi pageSize
               }}
             >
-              <SelectTrigger
-                size="sm"
-                className="w-20"
-                id="rows-per-page"
-              >
+              <SelectTrigger size="sm" className="w-20" id="rows-per-page">
                 <SelectValue placeholder={String(pageSize)} />
               </SelectTrigger>
               <SelectContent side="top">
@@ -237,8 +201,7 @@ export function DataTable<TData, TValue>({
               onClick={() => setPageIndex(0)}
               disabled={!canPrev}
             >
-              <span className="sr-only">Trang đầu</span>
-              «
+              <span className="sr-only">Trang đầu</span>«
             </Button>
             <Button
               variant="outline"
@@ -265,8 +228,7 @@ export function DataTable<TData, TValue>({
               onClick={() => setPageIndex(pageCount - 1)}
               disabled={!canNext}
             >
-              <span className="sr-only">Trang cuối</span>
-              »
+              <span className="sr-only">Trang cuối</span>»
             </Button>
           </div>
         </div>

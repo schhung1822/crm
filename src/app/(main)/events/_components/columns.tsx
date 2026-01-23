@@ -2,6 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { EllipsisVertical, CircleHelp } from "lucide-react";
 import { z } from "zod";
 
+import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -11,8 +12,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 
 import { academySchema, Academy } from "./schema";
 import { TableCellViewer } from "./table-cell-viewer";
@@ -24,10 +23,7 @@ export const dashboardColumns: ColumnDef<Academy>[] = [
     header: ({ table }) => (
       <div className="flex items-center justify-center">
         <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
         />
@@ -49,9 +45,7 @@ export const dashboardColumns: ColumnDef<Academy>[] = [
   // Tên
   {
     accessorKey: "name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Tên" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Tên" />,
     cell: ({ row }) => <TableCellViewer item={row.original} />,
     enableSorting: false,
     enableHiding: true,
@@ -61,9 +55,7 @@ export const dashboardColumns: ColumnDef<Academy>[] = [
   // Phone
   {
     accessorKey: "phone",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Số điện thoại" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Số điện thoại" />,
     cell: ({ row }) => <span className="font-mono">{row.original.phone}</span>,
     enableSorting: false,
     enableHiding: true,
@@ -73,9 +65,7 @@ export const dashboardColumns: ColumnDef<Academy>[] = [
   // Email
   {
     accessorKey: "city",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Email" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
     cell: ({ row }) => <span>{row.original.email}</span>,
     enableSorting: false,
     enableHiding: true,
@@ -85,11 +75,9 @@ export const dashboardColumns: ColumnDef<Academy>[] = [
   // Event Name
   {
     accessorKey: "role",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Sự kiện" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Sự kiện" />,
     cell: ({ row }) => (
-      <span className="font-mono text-xs px-4 py-1.5 bg-secondary/10 rounded-md border border-secondary/50">
+      <span className="bg-secondary/10 border-secondary/50 rounded-md border px-4 py-1.5 font-mono text-xs">
         {row.original.event_name}
       </span>
     ),
@@ -101,9 +89,7 @@ export const dashboardColumns: ColumnDef<Academy>[] = [
   // Co so
   {
     accessorKey: "co_so",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Khu vực" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Khu vực" />,
     cell: ({ row }) => <span>{row.original.q1}</span>,
     enableSorting: false,
     enableHiding: true,
@@ -113,9 +99,7 @@ export const dashboardColumns: ColumnDef<Academy>[] = [
   // Name NV
   {
     accessorKey: "name_nv",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Ngành nghề" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Ngành nghề" />,
     cell: ({ row }) => <span>{row.original.q2}</span>,
     enableSorting: false,
     enableHiding: true,
@@ -125,9 +109,7 @@ export const dashboardColumns: ColumnDef<Academy>[] = [
   // Voucher
   {
     accessorKey: "voucher",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Voucher" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Voucher" />,
     cell: ({ row }) => <span>{row.original.voucher}</span>,
     enableSorting: false,
     enableHiding: true,
@@ -137,9 +119,7 @@ export const dashboardColumns: ColumnDef<Academy>[] = [
   // User ID
   {
     accessorKey: "user_id",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="User ID" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="User ID" />,
     cell: ({ row }) => {
       const userId = row.original.user_id;
       if (!userId || userId === "{{user_id}}") {
@@ -158,19 +138,13 @@ export const dashboardColumns: ColumnDef<Academy>[] = [
     cell: () => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
-            size="icon"
-          >
+          <Button variant="ghost" className="data-[state=open]:bg-muted text-muted-foreground flex size-8" size="icon">
             <EllipsisVertical />
             <span className="sr-only">Mở menu</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem>
-              Xem chi tiết
-          </DropdownMenuItem>
+          <DropdownMenuItem>Xem chi tiết</DropdownMenuItem>
           <DropdownMenuItem>Tạo bản sao</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem variant="destructive">Xóa</DropdownMenuItem>

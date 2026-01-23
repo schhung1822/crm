@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+
 import { Bell, CreditCard, LogOut, CircleUser } from "lucide-react";
+
 import { useAuth } from "@/components/auth-provider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -16,13 +18,13 @@ import { getInitials } from "@/lib/utils";
 
 export function AccountSwitcher() {
   const { user, logout, isLoading } = useAuth();
-  
+
   const handleLogout = async () => {
     await logout();
   };
 
   if (isLoading) {
-    return <div className="size-9 animate-pulse rounded-lg bg-muted" />;
+    return <div className="bg-muted size-9 animate-pulse rounded-lg" />;
   }
 
   if (!user) {
@@ -35,7 +37,7 @@ export function AccountSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="size-9 rounded-lg cursor-pointer">
+        <Avatar className="size-9 cursor-pointer rounded-lg">
           <AvatarImage src={userAvatar} alt={displayName} />
           <AvatarFallback className="rounded-lg">{getInitials(displayName)}</AvatarFallback>
         </Avatar>
@@ -48,7 +50,7 @@ export function AccountSwitcher() {
           </Avatar>
           <div className="grid flex-1 text-left text-sm leading-tight">
             <span className="truncate font-semibold">{displayName}</span>
-            <span className="truncate text-xs text-muted-foreground">{user.email}</span>
+            <span className="text-muted-foreground truncate text-xs">{user.email}</span>
           </div>
         </div>
         <DropdownMenuSeparator />
@@ -66,7 +68,7 @@ export function AccountSwitcher() {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/thong-bao/cap-nhap" className="flex items-center gap-2">
+            <Link href="/noti/service-notifications" className="flex items-center gap-2">
               <Bell className="h-4 w-4" />
               <span>Thông báo</span>
             </Link>
