@@ -1,13 +1,15 @@
 "use client";
 
 import * as React from "react";
+
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
 import { format } from "date-fns";
 import { vi } from "date-fns/locale";
 
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 type Range = { from?: Date; to?: Date };
 
@@ -99,11 +101,21 @@ export function DateRangeFilter() {
 
         <PopoverContent className="w-auto p-3" align="start">
           <div className="flex gap-2 pb-2">
-            <Button size="sm" variant="secondary" onClick={() => quick("7d")}>7 ngày</Button>
-            <Button size="sm" variant="secondary" onClick={() => quick("30d")}>30 ngày</Button>
-            <Button size="sm" variant="secondary" onClick={() => quick("90d")}>3 tháng</Button>
-            <Button size="sm" variant="secondary" onClick={() => quick("thisMonth")}>Tháng này</Button>
-            <Button size="sm" variant="secondary" onClick={() => quick("ytd")}>Từ đầu năm</Button>
+            <Button size="sm" variant="secondary" onClick={() => quick("7d")}>
+              7 ngày
+            </Button>
+            <Button size="sm" variant="secondary" onClick={() => quick("30d")}>
+              30 ngày
+            </Button>
+            <Button size="sm" variant="secondary" onClick={() => quick("90d")}>
+              3 tháng
+            </Button>
+            <Button size="sm" variant="secondary" onClick={() => quick("thisMonth")}>
+              Tháng này
+            </Button>
+            <Button size="sm" variant="secondary" onClick={() => quick("ytd")}>
+              Từ đầu năm
+            </Button>
           </div>
 
           <Calendar
@@ -119,12 +131,10 @@ export function DateRangeFilter() {
           />
 
           <div className="flex justify-end gap-2 pt-3">
-            <Button size="sm" variant="ghost" onClick={clear}>Xoá</Button>
-            <Button
-              size="sm"
-              onClick={() => apply(range)}
-              disabled={!range.from}
-            >
+            <Button size="sm" variant="ghost" onClick={clear}>
+              Xoá
+            </Button>
+            <Button size="sm" onClick={() => apply(range)} disabled={!range.from}>
               Áp dụng
             </Button>
           </div>

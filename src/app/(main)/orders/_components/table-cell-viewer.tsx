@@ -1,19 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { z } from "zod";
-import Link from "next/link";
-import {
-  Calendar,
-  MapPin,
-  Phone,
-  Package,
-  User2,
-  Tag,
-  UserCheck,
-  FileText,
-} from "lucide-react";
 
+import Link from "next/link";
+
+import { Calendar, MapPin, Phone, Package, User2, Tag, UserCheck, FileText } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
+import { z } from "zod";
+
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -26,9 +21,8 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { ShoppingBag } from "lucide-react";
+
 import { channelSchema } from "./schema";
 
 type Stats = {
@@ -50,40 +44,24 @@ function money(v: unknown) {
   return n.toLocaleString("vi-VN");
 }
 
-function StatPill({
-  label,
-  value,
-  sub = "VNĐ",
-}: {
-  label: string;
-  value: string;
-  sub?: string;
-}) {
+function StatPill({ label, value, sub = "VNĐ" }: { label: string; value: string; sub?: string }) {
   return (
-    <div className="rounded-2xl border bg-card/60 px-3 py-2">
-      <div className="text-[11px] text-muted-foreground">{label}</div>
+    <div className="bg-card/60 rounded-2xl border px-3 py-2">
+      <div className="text-muted-foreground text-[11px]">{label}</div>
       <div className="mt-0.5 flex items-baseline justify-between gap-2">
-        <div className="text-base font-semibold tabular-nums leading-none">{value}</div>
-        <div className="text-[11px] text-muted-foreground">{sub}</div>
+        <div className="text-base leading-none font-semibold tabular-nums">{value}</div>
+        <div className="text-muted-foreground text-[11px]">{sub}</div>
       </div>
     </div>
   );
 }
 
-function Row({
-  icon,
-  label,
-  value,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value?: React.ReactNode;
-}) {
+function Row({ icon, label, value }: { icon: React.ReactNode; label: string; value?: React.ReactNode }) {
   return (
     <div className="flex items-start gap-2.5">
-      <div className="mt-0.5 text-muted-foreground">{icon}</div>
+      <div className="text-muted-foreground mt-0.5">{icon}</div>
       <div className="min-w-0 flex-1">
-        <div className="text-[11px] text-muted-foreground">{label}</div>
+        <div className="text-muted-foreground text-[11px]">{label}</div>
         <div className="text-sm font-medium">{value ?? "—"}</div>
       </div>
     </div>
@@ -92,20 +70,14 @@ function Row({
 
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border bg-card/60 p-3">
+    <div className="bg-card/60 rounded-2xl border p-3">
       <div className="mb-2 text-sm font-semibold">{title}</div>
       <div className="grid gap-2.5">{children}</div>
     </div>
   );
 }
 
-export function TableCellViewer({
-  item,
-  stats,
-}: {
-  item: z.infer<typeof channelSchema>;
-  stats: Stats;
-}) {
+export function TableCellViewer({ item, stats }: { item: z.infer<typeof channelSchema>; stats: Stats }) {
   const isMobile = useIsMobile();
 
   const createdAt = formatDateVN(item.create_time);
@@ -123,16 +95,14 @@ export function TableCellViewer({
       </DrawerTrigger>
 
       {/* ✅ max width 400px, full height on desktop */}
-      <DrawerContent className="h-[100vh] sm:h-[100vh] sm:max-w-[400px] sm:ml-auto">
+      <DrawerContent className="h-[100vh] sm:ml-auto sm:h-[100vh] sm:max-w-[400px]">
         {/* HEADER - sticky */}
-        <DrawerHeader className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b">
+        <DrawerHeader className="bg-background/95 supports-[backdrop-filter]:bg-background/80 sticky top-0 z-10 border-b backdrop-blur">
           <div className="min-w-0">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
                 <DrawerTitle className="truncate">Mã đơn: {item.order_ID}</DrawerTitle>
-                <DrawerDescription className="truncate">
-                  {item.brand ? <>• {item.brand}</> : null}
-                </DrawerDescription>
+                <DrawerDescription className="truncate">{item.brand ? <>• {item.brand}</> : null}</DrawerDescription>
               </div>
 
               {item.status ? (
@@ -145,7 +115,7 @@ export function TableCellViewer({
         </DrawerHeader>
 
         {/* BODY - scroll */}
-        <div className="flex-1 overflow-y-auto px-4 py-4 nice-scroll">
+        <div className="nice-scroll flex-1 overflow-y-auto px-4 py-4">
           {/* KPI */}
           <div className="grid gap-3">
             <Block title="Khách hàng">
@@ -172,10 +142,8 @@ export function TableCellViewer({
               {/* Header gọn 2 dòng */}
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <div className="text-[11px] text-muted-foreground">Mã sản phẩm</div>
-                  <div className="truncate text-sm font-semibold text-foreground">
-                    {item.pro_ID}
-                  </div>
+                  <div className="text-muted-foreground text-[11px]">Mã sản phẩm</div>
+                  <div className="text-foreground truncate text-sm font-semibold">{item.pro_ID}</div>
                 </div>
 
                 {item.status ? (
@@ -188,21 +156,9 @@ export function TableCellViewer({
               <Separator />
 
               {/* Sản phẩm + thương hiệu sản phẩm */}
-              <Row
-                icon={<ShoppingBag className="h-4 w-4" />}
-                label="Sản phẩm"
-                value={item.name_pro ?? "—"}
-              />
-              <Row
-                icon={<Package className="h-4 w-4" />}
-                label="Số luợng"
-                value={item.quantity ?? "—"}
-              />
-              <Row
-                icon={<Tag className="h-4 w-4" />}
-                label="Thương hiệu SP"
-                value={item.brand_pro ?? "—"}
-              />
+              <Row icon={<ShoppingBag className="h-4 w-4" />} label="Sản phẩm" value={item.name_pro ?? "—"} />
+              <Row icon={<Package className="h-4 w-4" />} label="Số luợng" value={item.quantity ?? "—"} />
+              <Row icon={<Tag className="h-4 w-4" />} label="Thương hiệu SP" value={item.brand_pro ?? "—"} />
               <Separator />
 
               {/* Tóm tắt thanh toán: 3 pill gọn */}
@@ -213,15 +169,14 @@ export function TableCellViewer({
               </div>
             </Block>
 
-
             <Block title="Ghi chú">
               <div className="flex items-start gap-2.5">
-                <div className="mt-0.5 text-muted-foreground">
+                <div className="text-muted-foreground mt-0.5">
                   <FileText className="h-4 w-4" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="text-[11px] text-muted-foreground">Nội dung</div>
-                  <div className="mt-0.5 whitespace-pre-wrap break-words text-sm text-foreground/90">
+                  <div className="text-muted-foreground text-[11px]">Nội dung</div>
+                  <div className="text-foreground/90 mt-0.5 text-sm break-words whitespace-pre-wrap">
                     {item.note ? String(item.note) : "—"}
                   </div>
                 </div>
@@ -231,7 +186,7 @@ export function TableCellViewer({
         </div>
 
         {/* FOOTER - sticky */}
-        <DrawerFooter className="sticky bottom-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-t">
+        <DrawerFooter className="bg-background/95 supports-[backdrop-filter]:bg-background/80 sticky bottom-0 z-10 border-t backdrop-blur">
           {/* <Link href={`/kenh/${item.id_kenh}`} className="w-full">
             <Button className="w-full rounded-xl">Xem chi tiết kênh</Button>
           </Link> */}

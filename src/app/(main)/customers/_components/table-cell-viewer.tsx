@@ -2,6 +2,7 @@
 import React from "react";
 
 import Link from "next/link";
+
 import { Cake, Wallet, BadgeCheck, Tags, Landmark, UserPlus, User2 } from "lucide-react";
 import { z } from "zod";
 
@@ -48,19 +49,13 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-function Stat({
-  icon,
-  value,
-}: {
-  icon: React.ReactNode;
-  value: string | number;
-}) {
+function Stat({ icon, value }: { icon: React.ReactNode; value: string | number }) {
   return (
-    <div className="flex items-center justify-between rounded-xl border border-border/70 bg-muted/10 px-3 py-2">
-      <div className="flex items-center gap-2 text-muted-foreground">
+    <div className="border-border/70 bg-muted/10 flex items-center justify-between rounded-xl border px-3 py-2">
+      <div className="text-muted-foreground flex items-center gap-2">
         <span className="text-foreground/80">{icon}</span>
       </div>
-      <div className="tabular-nums font-medium">{value}</div>
+      <div className="font-medium tabular-nums">{value}</div>
     </div>
   );
 }
@@ -76,10 +71,7 @@ export function TableCellViewer({ item }: { item: z.infer<typeof userSchema> }) 
     return null;
   }
 
-  const createdAt =
-    item.create_time instanceof Date
-      ? item.create_time.toLocaleDateString("vi-VN")
-      : item.create_time;
+  const createdAt = item.create_time instanceof Date ? item.create_time.toLocaleDateString("vi-VN") : item.create_time;
 
   React.useEffect(() => {
     if (!open) return;
@@ -125,15 +117,9 @@ export function TableCellViewer({ item }: { item: z.infer<typeof userSchema> }) 
         <DrawerHeader className="gap-3">
           <div className="flex items-center gap-3">
             <div className="relative">
-              <Avatar className="h-12 w-12 shrink-0 rounded-full ring-2 ring-white/50 shadow-[0_0_12px_rgba(56,189,248,0.65)]">
-                <AvatarImage
-                  src="/avatars/nghecontent.jpg"
-                  alt={item.name}
-                  className="rounded-full object-cover"
-                />
-                <AvatarFallback className="rounded-full bg-gray-300">
-                  {getInitials(item.name)}
-                </AvatarFallback>
+              <Avatar className="h-12 w-12 shrink-0 rounded-full shadow-[0_0_12px_rgba(56,189,248,0.65)] ring-2 ring-white/50">
+                <AvatarImage src="/avatars/nghecontent.jpg" alt={item.name} className="rounded-full object-cover" />
+                <AvatarFallback className="rounded-full bg-gray-300">{getInitials(item.name)}</AvatarFallback>
               </Avatar>
             </div>
 
@@ -144,32 +130,30 @@ export function TableCellViewer({ item }: { item: z.infer<typeof userSchema> }) 
           </div>
         </DrawerHeader>
 
-        <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm nice-scroll max-h-[80vh] sm:max-h-[82vh] nice-scroll">
+        <div className="nice-scroll nice-scroll flex max-h-[80vh] flex-col gap-4 overflow-y-auto px-4 text-sm sm:max-h-[82vh]">
           {!isMobile && (
-            <>
-              <div className="grid gap-2">
-                <div className="flex gap-2 leading-none font-medium">
-                  <DrawerDescription>Ngày tạo: {createdAt}</DrawerDescription>
-                </div>
+            <div className="grid gap-2">
+              <div className="flex gap-2 leading-none font-medium">
+                <DrawerDescription>Ngày tạo: {createdAt}</DrawerDescription>
               </div>
-            </>
+            </div>
           )}
 
           <div className="space-y-3">
-            <div className="rounded-2xl border bg-card/60 p-4">
-              <div className="text-sm font-semibold mb-3">Thông tin</div>
+            <div className="bg-card/60 rounded-2xl border p-4">
+              <div className="mb-3 text-sm font-semibold">Thông tin</div>
               <div className="grid gap-2 text-sm">
                 <div className="flex items-center justify-between gap-3">
                   <span className="text-muted-foreground">Số điện thoại</span>
-                  <span className="font-medium truncate">{item.phone ?? "—"}</span>
+                  <span className="truncate font-medium">{item.phone ?? "—"}</span>
                 </div>
-                <div className="flex items-start justify-between flex-col gap-3">
+                <div className="flex flex-col items-start justify-between gap-3">
                   <span className="text-muted-foreground">Địa chỉ</span>
-                  <span className="font-medium ">{item.address ?? "—"}</span>
+                  <span className="font-medium">{item.address ?? "—"}</span>
                 </div>
-                <div className="flex items-start justify-between flex-col gap-3">
+                <div className="flex flex-col items-start justify-between gap-3">
                   <span className="text-muted-foreground">Công ty</span>
-                  <span className="font-medium ">{item.company ?? "—"}</span>
+                  <span className="font-medium">{item.company ?? "—"}</span>
                 </div>
               </div>
             </div>
@@ -177,42 +161,44 @@ export function TableCellViewer({ item }: { item: z.infer<typeof userSchema> }) 
             <Separator />
 
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-2xl border bg-card/60 px-4 py-3">
-                <div className="text-xs text-muted-foreground">Nợ hiện tại</div>
+              <div className="bg-card/60 rounded-2xl border px-4 py-3">
+                <div className="text-muted-foreground text-xs">Nợ hiện tại</div>
                 <div className="mt-1 text-lg font-semibold tabular-nums">{fmt(item.no_hien_tai)}</div>
-                <div className="text-xs text-muted-foreground">VNĐ</div>
+                <div className="text-muted-foreground text-xs">VNĐ</div>
               </div>
-              <div className="rounded-2xl border bg-card/60 px-4 py-3">
-                <div className="text-xs text-muted-foreground">Tổng bán</div>
+              <div className="bg-card/60 rounded-2xl border px-4 py-3">
+                <div className="text-muted-foreground text-xs">Tổng bán</div>
                 <div className="mt-1 text-lg font-semibold tabular-nums">{fmt(item.tong_ban)}</div>
-                <div className="text-xs text-muted-foreground">VNĐ</div>
+                <div className="text-muted-foreground text-xs">VNĐ</div>
               </div>
-              <div className="rounded-2xl border bg-card/60 px-4 py-3">
-                <div className="text-xs text-muted-foreground">Tổng bán (trừ trả)</div>
+              <div className="bg-card/60 rounded-2xl border px-4 py-3">
+                <div className="text-muted-foreground text-xs">Tổng bán (trừ trả)</div>
                 <div className="mt-1 text-lg font-semibold tabular-nums">{fmt(item.tong_ban_tru_tra_hang)}</div>
-                <div className="text-xs text-muted-foreground">VNĐ</div>
+                <div className="text-muted-foreground text-xs">VNĐ</div>
               </div>
-              <div className="rounded-2xl border bg-card/60 px-4 py-3">
-                <div className="text-xs text-muted-foreground">Giao dịch gần nhất</div>
-                <div className="mt-1 text-lg font-semibold tabular-nums">{item.last_payment ? formatDate(item.last_payment) : "—"}</div>
-                <div className="text-xs text-muted-foreground">Ngày</div>
+              <div className="bg-card/60 rounded-2xl border px-4 py-3">
+                <div className="text-muted-foreground text-xs">Giao dịch gần nhất</div>
+                <div className="mt-1 text-lg font-semibold tabular-nums">
+                  {item.last_payment ? formatDate(item.last_payment) : "—"}
+                </div>
+                <div className="text-muted-foreground text-xs">Ngày</div>
               </div>
             </div>
 
             <Separator />
 
             <div className="grid grid-cols-2 gap-3">
-              <Stat icon={<Cake className="size-4" />}  value={formatDate(item.birth)} />
-              <Stat icon={<User2 className="size-4" />}  value={item.gender ?? "—"} />
-              <Stat icon={<BadgeCheck className="size-4" />}  value={item.class ?? "—"} />
-              <Stat icon={<Tags className="size-4" />}  value={item.class ?? "—"} />
-              <Stat icon={<Landmark className="size-4" />}  value={item.branch ?? "—"} />
-              <Stat icon={<UserPlus className="size-4" />}  value={item.create_by ?? "—"} />
+              <Stat icon={<Cake className="size-4" />} value={formatDate(item.birth)} />
+              <Stat icon={<User2 className="size-4" />} value={item.gender ?? "—"} />
+              <Stat icon={<BadgeCheck className="size-4" />} value={item.class ?? "—"} />
+              <Stat icon={<Tags className="size-4" />} value={item.class ?? "—"} />
+              <Stat icon={<Landmark className="size-4" />} value={item.branch ?? "—"} />
+              <Stat icon={<UserPlus className="size-4" />} value={item.create_by ?? "—"} />
             </div>
 
-            <div className="rounded-2xl border bg-card/60 p-4">
-              <div className="text-sm font-semibold mb-2">Ghi chú</div>
-              <div className="text-sm text-muted-foreground whitespace-pre-wrap break-words">
+            <div className="bg-card/60 rounded-2xl border p-4">
+              <div className="mb-2 text-sm font-semibold">Ghi chú</div>
+              <div className="text-muted-foreground text-sm break-words whitespace-pre-wrap">
                 {item.note ? String(item.note) : "—"}
               </div>
             </div>
@@ -220,9 +206,9 @@ export function TableCellViewer({ item }: { item: z.infer<typeof userSchema> }) 
         </div>
 
         <DrawerFooter>
-            <Link href={`/orders/${item.customer_ID}`}>
-              <Button className="w-full">Xem chi tiết</Button>
-            </Link>
+          <Link href={`/orders/${item.customer_ID}`}>
+            <Button className="w-full">Xem chi tiết</Button>
+          </Link>
           <DrawerClose asChild>
             <Button variant="outline">Đóng</Button>
           </DrawerClose>

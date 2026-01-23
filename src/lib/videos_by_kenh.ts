@@ -1,19 +1,18 @@
 // src/lib/videos_by_kenh.ts
-import { getDB } from "@/lib/db";
 import { videoSchema, type Video } from "@/app/(main)/orders/[customerId]/_components/schema";
+import { getDB } from "@/lib/db";
 
 type Paging = { page?: number; pageSize?: number | "all" | -1 };
 
 export async function getVideosByChannel(
   idKenhRaw: string,
-  paging?: Paging
+  paging?: Paging,
 ): Promise<{ rows: Video[]; total: number }> {
   const idKenh = String(idKenhRaw || "").replace(/^@/, "");
-  const wantAll =
-    !paging || paging.pageSize === undefined || paging.pageSize === "all" || Number(paging.pageSize) <= 0;
+  const wantAll = !paging || paging.pageSize === undefined || paging.pageSize === "all" || Number(paging.pageSize) <= 0;
 
   const page = Number(paging?.page ?? 1) || 1;
-  const pageSize = wantAll ? undefined : (Number(paging?.pageSize) || 20);
+  const pageSize = wantAll ? undefined : Number(paging?.pageSize) || 20;
   const offset = pageSize ? (page - 1) * pageSize : undefined;
 
   const db = getDB();
@@ -41,10 +40,9 @@ export async function getVideosByChannel(
   if (wantAll) {
     totalA = rowsA.length;
   } else {
-    const [cntA] = await db.query<any[]>(
-      `SELECT COUNT(*) AS total FROM video WHERE REPLACE(id_kenh,'@','') = ?`,
-      [idKenh]
-    );
+    const [cntA] = await db.query<any[]>(`SELECT COUNT(*) AS total FROM video WHERE REPLACE(id_kenh,'@','') = ?`, [
+      idKenh,
+    ]);
     totalA = Number(cntA?.[0]?.total ?? 0);
   }
 
@@ -78,7 +76,7 @@ export async function getVideosByChannel(
         WHERE REPLACE(k.id_kenh,'@','') = ?
         ORDER BY v.create_time DESC
         `,
-        [idKenh]
+        [idKenh],
       );
       rows = allB;
       total = allB.length;
@@ -88,7 +86,7 @@ export async function getVideosByChannel(
         `SELECT COUNT(*) AS total
          FROM video v JOIN kenh k ON k.tiktok_id = v.tiktok_id
          WHERE REPLACE(k.id_kenh,'@','') = ?`,
-        [idKenh]
+        [idKenh],
       );
       total = Number(cntB?.[0]?.total ?? 0);
     }
@@ -110,7 +108,7 @@ export async function getVideosByChannel(
       tiktok_id: String(r.tiktok_id ?? ""),
       thumbnail_ai_dyamic: String(r.thumbnail_ai_dyamic ?? ""),
       id_kenh: String(r.id_kenh ?? idKenh),
-    })
+    }),
   );
 
   return { rows: parsed, total };

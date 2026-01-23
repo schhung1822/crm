@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
+
 import type { FormTemplateConfig } from "@/lib/form-template/types";
 
 const VN_PHONE = /^(?:\+?84|0)(3|5|7|8|9)\d{8}$/;
@@ -14,14 +15,14 @@ function normalizePhone(p: string) {
 
 // Helper function to get cookie value
 function getCookie(name: string): string | null {
-  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
   return match ? match[2] : null;
 }
 
 // Helper function to get fbclid from URL
 function getFbclid(): string | null {
   const params = new URLSearchParams(window.location.search);
-  return params.get('fbclid') || null;
+  return params.get("fbclid") || null;
 }
 
 // Helper function to generate _fbc value
@@ -37,11 +38,11 @@ function generateFbc(): string | null {
 // Helper function to get user IP (via external API)
 async function getUserIP(): Promise<string> {
   try {
-    const res = await fetch('https://api.ipify.org?format=json');
+    const res = await fetch("https://api.ipify.org?format=json");
     const data = await res.json();
-    return data.ip || '';
+    return data.ip || "";
   } catch {
-    return '';
+    return "";
   }
 }
 
@@ -82,7 +83,7 @@ export default function TemplateRenderer({ config }: Props) {
         ["--muted" as any]: config.theme.muted,
         ["--ring" as any]: config.theme.ring,
       }) as React.CSSProperties,
-    [config]
+    [config],
   );
 
   // ===== behavior: fill userid + prefill city/role =====
@@ -107,11 +108,11 @@ export default function TemplateRenderer({ config }: Props) {
 
     // Get user_id from URL
     const q = new URLSearchParams(window.location.search);
-    const userId = q.get('user_id') || q.get('userid') || values.user_id;
+    const userId = q.get("user_id") || q.get("userid") || values.user_id;
 
     // Get fbp and fbc
-    const fbpValue = getCookie('_fbp');
-    const fbcValue = getCookie('_fbc') || generateFbc();
+    const fbpValue = getCookie("_fbp");
+    const fbcValue = getCookie("_fbc") || generateFbc();
 
     // Get user IP
     const userIP = await getUserIP();
@@ -119,12 +120,12 @@ export default function TemplateRenderer({ config }: Props) {
     // build payload theo config (bật/tắt field)
     const payload: Record<string, any> = {
       source: config.behavior.source || "zalo_webview_form",
-      event_name: config.behavior.eventName || '',
+      event_name: config.behavior.eventName || "",
       ua: navigator.userAgent,
       user_id: userId,
       ip: userIP,
-      fbp: fbpValue || '',
-      fbc: fbcValue || '',
+      fbp: fbpValue || "",
+      fbc: fbcValue || "",
     };
 
     // default fields
@@ -143,8 +144,10 @@ export default function TemplateRenderer({ config }: Props) {
 
     // validate bắt buộc
     const requiredMissing: string[] = [];
-    if (config.fields.full_name.enabled && config.fields.full_name.required && !payload.full_name) requiredMissing.push("Họ và tên");
-    if (config.fields.phone.enabled && config.fields.phone.required && !payload.phone) requiredMissing.push("Số điện thoại");
+    if (config.fields.full_name.enabled && config.fields.full_name.required && !payload.full_name)
+      requiredMissing.push("Họ và tên");
+    if (config.fields.phone.enabled && config.fields.phone.required && !payload.phone)
+      requiredMissing.push("Số điện thoại");
     if (config.fields.email.enabled && config.fields.email.required && !payload.email) requiredMissing.push("Email");
 
     // validate required questions
@@ -174,7 +177,9 @@ export default function TemplateRenderer({ config }: Props) {
       });
 
       let data: any = {};
-      try { data = await res.json(); } catch {}
+      try {
+        data = await res.json();
+      } catch {}
 
       if (res.ok && data.ok !== false) {
         openModal(true, "Checkin thành công", data.message || "Chúc bạn có trải nghiệm tuyệt vời tại sự kiện!");
@@ -186,7 +191,11 @@ export default function TemplateRenderer({ config }: Props) {
           email: "",
           clinic: "",
           full_name_nv: "",
-          q1: "", q2: "", q3: "", q4: "", q5: "",
+          q1: "",
+          q2: "",
+          q3: "",
+          q4: "",
+          q5: "",
         }));
       } else {
         openModal(false, "Không thể checkin", data.message || "Hệ thống bận, vui lòng thử lại.");
@@ -390,9 +399,7 @@ export default function TemplateRenderer({ config }: Props) {
               )}
 
               {/* user_id: giữ dạng hidden thật */}
-              {config.fields.hidden.user_id?.enabled && (
-                <input type="hidden" value={values.user_id} readOnly />
-              )}
+              {config.fields.hidden.user_id?.enabled && <input type="hidden" value={values.user_id} readOnly />}
 
               {/* 5 câu hỏi custom */}
               {config.questions.slice(0, 5).map((q) => {
@@ -418,18 +425,24 @@ export default function TemplateRenderer({ config }: Props) {
                   return (
                     <div className="field" key={q.id}>
                       <label htmlFor={q.id}>{q.label}</label>
-                      <select id={q.id} value={values[q.id] || ""} onChange={(e) => setField(q.id, e.target.value)} required={q.required}>
+                      <select
+                        id={q.id}
+                        value={values[q.id] || ""}
+                        onChange={(e) => setField(q.id, e.target.value)}
+                        required={q.required}
+                      >
                         <option value="">— Chọn —</option>
                         {opts.map((o) => (
-                          <option key={o} value={o}>{o}</option>
+                          <option key={o} value={o}>
+                            {o}
+                          </option>
                         ))}
                       </select>
                     </div>
                   );
                 }
 
-                const inputType =
-                  q.type === "email" ? "email" : q.type === "tel" ? "tel" : "text";
+                const inputType = q.type === "email" ? "email" : q.type === "tel" ? "tel" : "text";
 
                 return (
                   <div className="field" key={q.id}>
@@ -456,7 +469,8 @@ export default function TemplateRenderer({ config }: Props) {
             </form>
 
             <div className="footer-note">
-              Bằng việc gửi thông tin, bạn đồng ý cho phép chúng tôi liên hệ qua ZNS/SMS cho mục đích chăm sóc khách hàng theo chính sách bảo mật.
+              Bằng việc gửi thông tin, bạn đồng ý cho phép chúng tôi liên hệ qua ZNS/SMS cho mục đích chăm sóc khách
+              hàng theo chính sách bảo mật.
             </div>
           </main>
 
@@ -500,8 +514,10 @@ export default function TemplateRenderer({ config }: Props) {
 
               <div className="event-col">
                 <div className="event-place">
-                  <span className="name_address">{config.footer.placeName}</span><br />
-                  <span className="location_address">{config.footer.placeLine1}</span><br />
+                  <span className="name_address">{config.footer.placeName}</span>
+                  <br />
+                  <span className="location_address">{config.footer.placeLine1}</span>
+                  <br />
                   <span className="address">{config.footer.placeLine2}</span>
                 </div>
               </div>
@@ -510,7 +526,10 @@ export default function TemplateRenderer({ config }: Props) {
         </div>
 
         {/* Modal */}
-        <section className={"modal" + (modal.show ? " show" : "")} onClick={(e) => e.target === e.currentTarget && setModal((s) => ({ ...s, show: false }))}>
+        <section
+          className={"modal" + (modal.show ? " show" : "")}
+          onClick={(e) => e.target === e.currentTarget && setModal((s) => ({ ...s, show: false }))}
+        >
           <div className="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
             <div className={"status " + (modal.ok ? "ok" : "err")} aria-hidden="true">
               {modal.ok ? (

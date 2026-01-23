@@ -2,10 +2,17 @@ import { ColumnDef } from "@tanstack/react-table";
 import { EllipsisVertical } from "lucide-react";
 import { z } from "zod";
 
+import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuSeparator,DropdownMenuTrigger,} from "@/components/ui/dropdown-menu";
-import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 import { productSchema, Product } from "./schema";
 import { TableCellViewer } from "./table-cell-viewer";
 
@@ -21,10 +28,7 @@ export const dashboardColumns: ColumnDef<Product>[] = [
     header: ({ table }) => (
       <div className="flex items-center justify-center">
         <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
         />
@@ -46,9 +50,7 @@ export const dashboardColumns: ColumnDef<Product>[] = [
   // Mã sản phẩm
   {
     accessorKey: "pro_ID",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Mã SP" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Mã SP" />,
     cell: ({ row }) => <span className="font-mono">{row.original.pro_ID}</span>,
     enableSorting: false,
   },
@@ -56,9 +58,7 @@ export const dashboardColumns: ColumnDef<Product>[] = [
   // Tên
   {
     accessorKey: "name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Tên" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Tên" />,
     cell: ({ row }) => (
       <div className="max-w-[300px] truncate">
         <TableCellViewer item={row.original} />
@@ -70,29 +70,23 @@ export const dashboardColumns: ColumnDef<Product>[] = [
   // Thương hiệu
   {
     accessorKey: "brand",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Thương hiệu" />
-    ),
-    cell: ({ row }) => <span className="max-w-[200px] truncate block">{row.original.brand}</span>,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Thương hiệu" />,
+    cell: ({ row }) => <span className="block max-w-[200px] truncate">{row.original.brand}</span>,
     enableSorting: false,
   },
 
   // Phân loại
   {
     accessorKey: "class",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Phân loại" />
-    ),
-    cell: ({ row }) => <span className="max-w-[300px] truncate block">{row.original.class}</span>,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Phân loại" />,
+    cell: ({ row }) => <span className="block max-w-[300px] truncate">{row.original.class}</span>,
     enableSorting: false,
   },
 
   // Giá bán
   {
     accessorKey: "gia_ban",
-    header: ({ column }) => (
-      <DataTableColumnHeader className="w-full text-right" column={column} title="Giá bán" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader className="w-full text-right" column={column} title="Giá bán" />,
     cell: ({ row }) => (
       <div className="text-right tabular-nums">{(row.original.gia_ban || 0).toLocaleString("vi-VN")}</div>
     ),
@@ -102,9 +96,7 @@ export const dashboardColumns: ColumnDef<Product>[] = [
   // Giá vốn
   {
     accessorKey: "gia_von",
-    header: ({ column }) => (
-      <DataTableColumnHeader className="w-full text-right" column={column} title="Giá vốn" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader className="w-full text-right" column={column} title="Giá vốn" />,
     cell: ({ row }) => (
       <div className="text-right tabular-nums">{(row.original.gia_von || 0).toLocaleString("vi-VN")}</div>
     ),
@@ -114,10 +106,8 @@ export const dashboardColumns: ColumnDef<Product>[] = [
   // Thuộc tính
   {
     accessorKey: "property",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Thuộc tính" />
-    ),
-    cell: ({ row }) => <span className="max-w-[200px] truncate block">{row.original.property}</span>,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Thuộc tính" />,
+    cell: ({ row }) => <span className="block max-w-[200px] truncate">{row.original.property}</span>,
     enableSorting: false,
   },
 
@@ -127,19 +117,13 @@ export const dashboardColumns: ColumnDef<Product>[] = [
     cell: () => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
-            size="icon"
-          >
+          <Button variant="ghost" className="data-[state=open]:bg-muted text-muted-foreground flex size-8" size="icon">
             <EllipsisVertical />
             <span className="sr-only">Mở menu</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem>
-              Xem chi tiết
-          </DropdownMenuItem>
+          <DropdownMenuItem>Xem chi tiết</DropdownMenuItem>
           <DropdownMenuItem>Tạo bản sao</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem variant="destructive">Xóa</DropdownMenuItem>

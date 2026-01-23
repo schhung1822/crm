@@ -1,6 +1,11 @@
 import { unstable_cache } from "next/cache";
+
+import {
+  buildRevenueHorizontalBars,
+  buildRevenuePie,
+  type RevenueGroupRow,
+} from "@/app/(main)/dashboard/crm/_components/crm.config";
 import { getDB } from "@/lib/db";
-import { buildRevenueHorizontalBars, buildRevenuePie, type RevenueGroupRow } from "@/app/(main)/dashboard/crm/_components/crm.config";
 
 type ChartResult = ReturnType<typeof buildRevenuePie>;
 
@@ -13,10 +18,10 @@ function mapRows(rows: any[]): RevenueGroupRow[] {
 
 function buildDateFilter(from?: Date, to?: Date) {
   if (!from && !to) return { clause: "", params: [] as (Date | number)[] };
-  
+
   const params: (Date | number)[] = [];
   let clause = "";
-  
+
   if (from && to) {
     clause = "create_time >= ? AND create_time <= ?";
     params.push(from, to);
@@ -27,7 +32,7 @@ function buildDateFilter(from?: Date, to?: Date) {
     clause = "create_time <= ?";
     params.push(to);
   }
-  
+
   return { clause, params };
 }
 
@@ -36,9 +41,9 @@ export const getRevenueByChannelChart = unstable_cache(
   async (from?: Date, to?: Date): Promise<ChartResult> => {
     const db = getDB();
     const dateFilter = buildDateFilter(from, to);
-    
+
     const whereClause = dateFilter.clause || "1=1";
-    
+
     const [rows] = await db.query<any[]>(
       `
       SELECT COALESCE(kenh_ban, 'Không rõ') AS name,
@@ -48,22 +53,22 @@ export const getRevenueByChannelChart = unstable_cache(
       GROUP BY COALESCE(kenh_ban, 'Không rõ')
       ORDER BY revenue DESC
       `,
-      dateFilter.params
+      dateFilter.params,
     );
 
     return buildRevenuePie(mapRows(rows), "Doanh thu");
   },
   ["crm-revenue-by-channel"],
-  { revalidate: 300 }
+  { revalidate: 300 },
 );
 
 export const getRevenueByBranchBarChart = unstable_cache(
   async (from?: Date, to?: Date, limit: number = 12) => {
     const db = getDB();
     const dateFilter = buildDateFilter(from, to);
-    
+
     const whereClause = dateFilter.clause || "1=1";
-    
+
     const [rows] = await db.query<any[]>(
       `
       SELECT COALESCE(brand, 'Không rõ') AS name,
@@ -74,7 +79,7 @@ export const getRevenueByBranchBarChart = unstable_cache(
       ORDER BY revenue DESC
       LIMIT ?
       `,
-      [...dateFilter.params, limit]
+      [...dateFilter.params, limit],
     );
 
     const mapped: RevenueGroupRow[] = (rows ?? []).map((r) => ({
@@ -85,7 +90,7 @@ export const getRevenueByBranchBarChart = unstable_cache(
     return buildRevenueHorizontalBars(mapped);
   },
   ["crm-revenue-branch-bars"],
-  { revalidate: 300 }
+  { revalidate: 300 },
 );
 
 // ====== Thống kê tổng quan ======
@@ -93,9 +98,9 @@ export const getCRMStats = unstable_cache(
   async (from?: Date, to?: Date) => {
     const db = getDB();
     const dateFilter = buildDateFilter(from, to);
-    
+
     const whereClause = dateFilter.clause || "1=1";
-    
+
     const [rows] = await db.query<any[]>(
       `
       SELECT 
@@ -106,7 +111,7 @@ export const getCRMStats = unstable_cache(
       FROM orders
       WHERE ${whereClause}
       `,
-      dateFilter.params
+      dateFilter.params,
     );
 
     const row = rows[0] || {};
@@ -118,7 +123,7 @@ export const getCRMStats = unstable_cache(
     };
   },
   ["crm-stats"],
-  { revalidate: 300 }
+  { revalidate: 300 },
 );
 
 // ====== Phễu chuyển đổi theo thương hiệu ======
@@ -126,9 +131,9 @@ export const getBrandConversionFunnel = unstable_cache(
   async (from?: Date, to?: Date) => {
     const db = getDB();
     const dateFilter = buildDateFilter(from, to);
-    
+
     const whereClause = dateFilter.clause || "1=1";
-    
+
     const [rows] = await db.query<any[]>(
       `
       SELECT 
@@ -136,15 +141,15 @@ export const getBrandConversionFunnel = unstable_cache(
         COUNT(DISTINCT o.order_ID) AS orders
       FROM orders o
       LEFT JOIN product p ON o.pro_ID = p.pro_ID
-      WHERE ${whereClause.replace('create_time', 'o.create_time')}
+      WHERE ${whereClause.replace("create_time", "o.create_time")}
       GROUP BY COALESCE(p.brand, o.brand_pro, 'Không rõ')
       ORDER BY orders DESC
       LIMIT 5
       `,
-      dateFilter.params
+      dateFilter.params,
     );
 
-    const colors = ['var(--chart-1)', 'var(--chart-2)', 'var(--chart-3)', 'var(--chart-4)', 'var(--chart-5)'];
+    const colors = ["var(--chart-1)", "var(--chart-2)", "var(--chart-3)", "var(--chart-4)", "var(--chart-5)"];
     return (rows ?? []).map((r, idx) => ({
       stage: String(r.brand ?? "Không rõ"),
       value: Number(r.orders) || 0,
@@ -152,7 +157,7 @@ export const getBrandConversionFunnel = unstable_cache(
     }));
   },
   ["crm-brand-funnel"],
-  { revalidate: 300 }
+  { revalidate: 300 },
 );
 
 // ====== Tổng hợp kênh bán ======
@@ -160,9 +165,9 @@ export const getChannelSalesSummary = unstable_cache(
   async (from?: Date, to?: Date) => {
     const db = getDB();
     const dateFilter = buildDateFilter(from, to);
-    
+
     const whereClause = dateFilter.clause || "1=1";
-    
+
     const [rows] = await db.query<any[]>(
       `
       SELECT
@@ -177,7 +182,7 @@ export const getChannelSalesSummary = unstable_cache(
       GROUP BY COALESCE(kenh_ban, 'Không rõ')
       ORDER BY thanh_tien DESC
       `,
-      dateFilter.params
+      dateFilter.params,
     );
 
     return (rows ?? []).map((r) => ({
@@ -190,7 +195,7 @@ export const getChannelSalesSummary = unstable_cache(
     }));
   },
   ["crm-channel-sales-summary"],
-  { revalidate: 300 }
+  { revalidate: 300 },
 );
 
 // ====== Top sản phẩm bán chạy theo số lượng ======
@@ -198,9 +203,9 @@ export const getTopProductsByQuantity = unstable_cache(
   async (from?: Date, to?: Date, limit: number = 10) => {
     const db = getDB();
     const dateFilter = buildDateFilter(from, to);
-    
+
     const whereClause = dateFilter.clause || "1=1";
-    
+
     const [rows] = await db.query<any[]>(
       `
       SELECT 
@@ -212,11 +217,11 @@ export const getTopProductsByQuantity = unstable_cache(
       ORDER BY totalQuantity DESC
       LIMIT ?
       `,
-      [...dateFilter.params, limit]
+      [...dateFilter.params, limit],
     );
 
     const total = (rows ?? []).reduce((sum, r) => sum + (Number(r.totalQuantity) || 0), 0);
-    
+
     return (rows ?? []).map((r) => {
       const quantity = Number(r.totalQuantity) || 0;
       return {
@@ -227,7 +232,7 @@ export const getTopProductsByQuantity = unstable_cache(
     });
   },
   ["crm-top-products-quantity"],
-  { revalidate: 300 }
+  { revalidate: 300 },
 );
 
 // ====== Top sales theo doanh thu ======
@@ -235,9 +240,9 @@ export const getTopSalesByRevenue = unstable_cache(
   async (from?: Date, to?: Date, limit: number = 5) => {
     const db = getDB();
     const dateFilter = buildDateFilter(from, to);
-    
+
     const whereClause = dateFilter.clause || "1=1";
-    
+
     const [rows] = await db.query<any[]>(
       `
       SELECT 
@@ -250,7 +255,7 @@ export const getTopSalesByRevenue = unstable_cache(
       ORDER BY totalRevenue DESC
       LIMIT ?
       `,
-      [...dateFilter.params, limit]
+      [...dateFilter.params, limit],
     );
 
     return (rows ?? []).map((r) => ({
@@ -260,5 +265,5 @@ export const getTopSalesByRevenue = unstable_cache(
     }));
   },
   ["crm-top-sales-revenue"],
-  { revalidate: 300 }
+  { revalidate: 300 },
 );

@@ -28,6 +28,7 @@ npx ts-node --compiler-options '{"module":"CommonJS"}' scripts/create-demo-user.
 ```
 
 User demo:
+
 - Username: `admin`
 - Password: `admin123`
 - Email: `admin@example.com`
@@ -41,6 +42,7 @@ cp .env.example .env
 ```
 
 Cập nhật các biến môi trường:
+
 - `DATABASE_URL`: Connection string đến database
 - `JWT_SECRET`: Secret key để ký JWT (thay đổi trong production)
 
@@ -63,9 +65,9 @@ import { useAuth } from "@/components/auth-provider";
 
 function MyComponent() {
   const { user, logout, isLoading } = useAuth();
-  
+
   if (isLoading) return <div>Loading...</div>;
-  
+
   return (
     <div>
       <p>Welcome, {user?.name}</p>
@@ -81,7 +83,7 @@ function MyComponent() {
 import { UserMenu } from "@/components/user-menu";
 
 // Add to your header/navbar
-<UserMenu />
+<UserMenu />;
 ```
 
 ### Kiểm tra authentication ở server side
@@ -91,11 +93,11 @@ import { getCurrentUser } from "@/lib/auth";
 
 export default async function Page() {
   const user = await getCurrentUser();
-  
+
   if (!user) {
     redirect("/auth/v2/login");
   }
-  
+
   return <div>Welcome, {user.name}</div>;
 }
 ```

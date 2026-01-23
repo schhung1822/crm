@@ -1,5 +1,5 @@
-import { getDB } from "@/lib/db";
 import { userSchema, Users } from "@/app/(main)/customers/_components/schema";
+import { getDB } from "@/lib/db";
 
 export async function getUser(): Promise<Users[]> {
   const db = getDB();

@@ -9,7 +9,8 @@ export default function page() {
         <Lock className="text-primary mx-auto size-12" />
         <h1 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">Truy cập không được phép</h1>
         <p className="text-muted-foreground mt-4">
-          Bạn không có quyền xem nội dung được yêu cầu. Vui lòng liên hệ với quản trị viên trang web nếu bạn cho rằng đây là lỗi.
+          Bạn không có quyền xem nội dung được yêu cầu. Vui lòng liên hệ với quản trị viên trang web nếu bạn cho rằng
+          đây là lỗi.
         </p>
         <div className="mt-6">
           <Link

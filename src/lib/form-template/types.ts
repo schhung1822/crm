@@ -1,21 +1,16 @@
 export type FieldType = "text" | "textarea" | "select" | "email" | "tel";
 
 export type CustomQuestion = {
-  id: string;              // "q1"..."q5"
+  id: string; // "q1"..."q5"
   enabled: boolean;
   label: string;
   type: FieldType;
   required: boolean;
   placeholder?: string;
-  options?: string[];      // cho select
+  options?: string[]; // cho select
 };
 
-export type HiddenFieldKey =
-  | "user_id"
-  | "city"
-  | "role"
-  | "clinic"
-  | "full_name_nv";
+export type HiddenFieldKey = "user_id" | "city" | "role" | "clinic" | "full_name_nv";
 
 export type TemplateTheme = {
   bg: string;

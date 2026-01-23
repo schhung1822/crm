@@ -1,12 +1,8 @@
-"use client"
+"use client";
 
-import { useEffect, useRef, useState } from "react"
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
+import { useEffect, useRef, useState } from "react";
+
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const sections = [
   { id: "overview", label: "Tổng quan hệ thống" },
@@ -20,60 +16,56 @@ const sections = [
   { id: "permission", label: "Phân quyền & trách nhiệm" },
   { id: "audit", label: "Nhật ký & bảo mật" },
   { id: "faq", label: "Câu hỏi thường gặp" },
-]
+];
 
 export default function Page() {
-  const [active, setActive] = useState("overview")
-  const observer = useRef<IntersectionObserver | null>(null)
+  const [active, setActive] = useState("overview");
+  const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
     observer.current = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => e.isIntersecting && setActive(e.target.id))
+        entries.forEach((e) => e.isIntersecting && setActive(e.target.id));
       },
-      { rootMargin: "-40% 0px -50% 0px" }
-    )
+      { rootMargin: "-40% 0px -50% 0px" },
+    );
 
     sections.forEach((s) => {
-      const el = document.getElementById(s.id)
-      el && observer.current?.observe(el)
-    })
+      const el = document.getElementById(s.id);
+      el && observer.current?.observe(el);
+    });
 
-    return () => observer.current?.disconnect()
-  }, [])
+    return () => observer.current?.disconnect();
+  }, []);
 
-  const scrollTo = (id: string) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
+  const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <div className="max-w-[1500px] mx-auto px-10 py-12">
+    <div className="mx-auto max-w-[1500px] px-10 py-12">
       {/* ================= PAGE TITLE ================= */}
       <header className="mb-16 space-y-4 text-center">
-        <h1 className="text-4xl font-bold uppercase">
-          Quy tắc & Hướng dẫn sử dụng
-        </h1>
-        <p className="text-muted-foreground max-w-3xl mx-auto">
-          Tài liệu hướng dẫn chính thức về cách vận hành, khai thác và sử dụng
-          hệ thống CRM do Nextgency phát triển cho EAC.
+        <h1 className="text-4xl font-bold uppercase">Quy tắc & Hướng dẫn sử dụng</h1>
+        <p className="text-muted-foreground mx-auto max-w-3xl">
+          Tài liệu hướng dẫn chính thức về cách vận hành, khai thác và sử dụng hệ thống CRM do Nextgency phát triển cho
+          EAC.
         </p>
       </header>
 
       <div className="flex gap-12">
         {/* ================= SIDEBAR ================= */}
-        <aside className="w-[300px] shrink-0 sticky top-20 h-fit space-y-6">
-          <div className="border rounded-xl p-5">
-            <h3 className="font-semibold mb-3">Nội dung</h3>
+        <aside className="sticky top-20 h-fit w-[300px] shrink-0 space-y-6">
+          <div className="rounded-xl border p-5">
+            <h3 className="mb-3 font-semibold">Nội dung</h3>
             <ul className="space-y-1 text-sm">
               {sections.map((s) => (
                 <li key={s.id}>
                   <button
                     onClick={() => scrollTo(s.id)}
-                    className={`w-full text-left px-3 py-2 rounded-md transition
-                      ${
-                        active === s.id
-                          ? "bg-primary text-primary-foreground"
-                          : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                      }`}
+                    className={`w-full rounded-md px-3 py-2 text-left transition ${
+                      active === s.id
+                        ? "bg-primary text-primary-foreground"
+                        : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                    }`}
                   >
                     {s.label}
                   </button>
@@ -83,7 +75,7 @@ export default function Page() {
           </div>
 
           {/* ===== Document Meta ===== */}
-          <div className="border rounded-xl p-5 text-sm space-y-2">
+          <div className="space-y-2 rounded-xl border p-5 text-sm">
             <div>
               <b>Tác giả:</b> Nextgency
             </div>
@@ -103,14 +95,13 @@ export default function Page() {
         <main className="flex-1 space-y-28">
           <Section id="overview" title="1. Tổng quan hệ thống">
             <p>
-              CRM EAC được xây dựng nhằm tạo ra một hệ thống dữ liệu trung tâm
-              (Single Source of Truth), giúp ban lãnh đạo và các bộ phận liên quan
-              theo dõi toàn bộ hoạt động kinh doanh trên một nền tảng duy nhất.
+              CRM EAC được xây dựng nhằm tạo ra một hệ thống dữ liệu trung tâm (Single Source of Truth), giúp ban lãnh
+              đạo và các bộ phận liên quan theo dõi toàn bộ hoạt động kinh doanh trên một nền tảng duy nhất.
             </p>
 
             <p>
-              Hệ thống không phát sinh dữ liệu gốc mới mà chỉ tiếp nhận dữ liệu
-              từ các hệ thống vận hành hiện có của EAC, bao gồm KiotViet và Zalo OA.
+              Hệ thống không phát sinh dữ liệu gốc mới mà chỉ tiếp nhận dữ liệu từ các hệ thống vận hành hiện có của
+              EAC, bao gồm KiotViet và Zalo OA.
             </p>
 
             <Table
@@ -125,7 +116,7 @@ export default function Page() {
           </Section>
 
           <Section id="principle" title="2. Nguyên tắc sử dụng">
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc space-y-2 pl-6">
               <li>CRM chỉ dùng để xem và phân tích dữ liệu.</li>
               <li>Không chỉnh sửa dữ liệu trực tiếp.</li>
               <li>Dữ liệu có độ trễ theo chu kỳ đồng bộ.</li>
@@ -134,10 +125,7 @@ export default function Page() {
           </Section>
 
           <Section id="sync" title="3. Đồng bộ dữ liệu & kiểm soát sai lệch">
-            <p>
-              Dữ liệu trong CRM không được nhập thủ công mà được đồng bộ tự động
-              theo chu kỳ từ các hệ thống nguồn.
-            </p>
+            <p>Dữ liệu trong CRM không được nhập thủ công mà được đồng bộ tự động theo chu kỳ từ các hệ thống nguồn.</p>
 
             <Table
               headers={["Nguồn dữ liệu", "Kiểu đồng bộ", "Tần suất", "Ghi chú"]}
@@ -148,17 +136,14 @@ export default function Page() {
               ]}
             />
 
-            <p>
-              Trong một số trường hợp, dữ liệu có thể sai lệch tạm thời do:
-            </p>
+            <p>Trong một số trường hợp, dữ liệu có thể sai lệch tạm thời do:</p>
 
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc space-y-2 pl-6">
               <li>Đơn hàng vừa tạo nhưng chưa đồng bộ xong</li>
               <li>Dữ liệu bị chỉnh sửa ở hệ thống nguồn</li>
               <li>Lỗi mạng hoặc gián đoạn API</li>
             </ul>
           </Section>
-
 
           <Section id="orders" title="4. Dữ liệu đơn hàng">
             <Table
@@ -174,8 +159,8 @@ export default function Page() {
 
           <Section id="customers" title="5. Dữ liệu khách hàng & vòng đời CRM">
             <p>
-              Mỗi khách hàng trong CRM được theo dõi xuyên suốt vòng đời từ lần
-              mua đầu tiên cho tới các tương tác sau bán.
+              Mỗi khách hàng trong CRM được theo dõi xuyên suốt vòng đời từ lần mua đầu tiên cho tới các tương tác sau
+              bán.
             </p>
 
             <Table
@@ -188,12 +173,10 @@ export default function Page() {
             />
           </Section>
 
-
-           <Section id="products" title="6. Dữ liệu hàng hóa">
+          <Section id="products" title="6. Dữ liệu hàng hóa">
             <p>
-              Dữ liệu hàng hóa phản ánh toàn bộ danh mục sản phẩm/dịch vụ đang
-              kinh doanh và là nền tảng để phân tích doanh thu, tồn kho và hiệu
-              quả bán hàng.
+              Dữ liệu hàng hóa phản ánh toàn bộ danh mục sản phẩm/dịch vụ đang kinh doanh và là nền tảng để phân tích
+              doanh thu, tồn kho và hiệu quả bán hàng.
             </p>
 
             <Table
@@ -209,8 +192,8 @@ export default function Page() {
 
           <Section id="events" title="7. Dữ liệu sự kiện">
             <p>
-              Dữ liệu sự kiện giúp doanh nghiệp theo dõi hiệu quả các chương trình
-              offline/online và phục vụ hoạt động chăm sóc sau sự kiện.
+              Dữ liệu sự kiện giúp doanh nghiệp theo dõi hiệu quả các chương trình offline/online và phục vụ hoạt động
+              chăm sóc sau sự kiện.
             </p>
 
             <Table
@@ -225,10 +208,7 @@ export default function Page() {
           </Section>
 
           <Section id="reports" title="8. Hệ thống báo cáo & cách đọc số">
-            <p>
-              Các dashboard trong CRM được thiết kế nhằm phục vụ từng nhóm người dùng
-              với mục tiêu khác nhau.
-            </p>
+            <p>Các dashboard trong CRM được thiết kế nhằm phục vụ từng nhóm người dùng với mục tiêu khác nhau.</p>
 
             <Table
               headers={["Dashboard", "Đối tượng xem", "Mục đích"]}
@@ -239,7 +219,6 @@ export default function Page() {
               ]}
             />
           </Section>
-
 
           <Section id="permission" title="9. Phân quyền & trách nhiệm">
             <Table
@@ -253,7 +232,7 @@ export default function Page() {
           </Section>
 
           <Section id="audit" title="10. Nhật ký & bảo mật">
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc space-y-2 pl-6">
               <li>Ghi log đăng nhập</li>
               <li>Ghi log xuất dữ liệu</li>
               <li>Truy vết thay đổi mapping báo cáo</li>
@@ -264,42 +243,30 @@ export default function Page() {
           <Section id="faq" title="11. Câu hỏi thường gặp">
             <Accordion type="single" collapsible>
               <AccordionItem value="1">
-                <AccordionTrigger>
-                  CRM có phải là thể nhập liệu hay sửa đổi không?
-                </AccordionTrigger>
+                <AccordionTrigger>CRM có phải là thể nhập liệu hay sửa đổi không?</AccordionTrigger>
                 <AccordionContent>
-                  Không. CRM chỉ tiếp nhận dữ liệu từ hệ thống nguồn như KiotViet,
-                  Zalo OA hoặc form website.
+                  Không. CRM chỉ tiếp nhận dữ liệu từ hệ thống nguồn như KiotViet, Zalo OA hoặc form website.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="2">
-                <AccordionTrigger>
-                  Vì sao số liệu có lúc bị chênh lệch?
-                </AccordionTrigger>
+                <AccordionTrigger>Vì sao số liệu có lúc bị chênh lệch?</AccordionTrigger>
                 <AccordionContent>
-                  Do độ trễ đồng bộ, dữ liệu chưa đồng bộ xong hoặc thay đổi ở hệ
-                  thống gốc. Độ trễ tối đa là 10 phút.
+                  Do độ trễ đồng bộ, dữ liệu chưa đồng bộ xong hoặc thay đổi ở hệ thống gốc. Độ trễ tối đa là 10 phút.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="3">
-                <AccordionTrigger>
-                  Có xuất được dữ liệu ra Excel không?
-                </AccordionTrigger>
+                <AccordionTrigger>Có xuất được dữ liệu ra Excel không?</AccordionTrigger>
                 <AccordionContent>
-                  Có. Người dùng được phân quyền có thể xuất dữ liệu theo từng
-                  bảng và từng thời gian.
+                  Có. Người dùng được phân quyền có thể xuất dữ liệu theo từng bảng và từng thời gian.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="4">
-                <AccordionTrigger>
-                  Ai chịu trách nhiệm nếu dữ liệu sai?
-                </AccordionTrigger>
+                <AccordionTrigger>Ai chịu trách nhiệm nếu dữ liệu sai?</AccordionTrigger>
                 <AccordionContent>
-                  Bộ phận vận hành hệ thống nguồn chịu trách nhiệm dữ liệu gốc;
-                  CRM chỉ phản ánh lại dữ liệu đó.
+                  Bộ phận vận hành hệ thống nguồn chịu trách nhiệm dữ liệu gốc; CRM chỉ phản ánh lại dữ liệu đó.
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -307,27 +274,27 @@ export default function Page() {
         </main>
       </div>
     </div>
-  )
+  );
 }
 
 /* ================= Components ================= */
 
 function Section({ id, title, children }: any) {
   return (
-    <section id={id} className="space-y-4 scroll-mt-24">
+    <section id={id} className="scroll-mt-24 space-y-4">
       <h2 className="text-2xl font-semibold">{title}</h2>
       <div className="text-foreground/90 space-y-4">{children}</div>
     </section>
-  )
+  );
 }
 
 function Table({ headers, rows }: any) {
   return (
-    <table className="w-full border border-border text-sm">
+    <table className="border-border w-full border text-sm">
       <thead className="bg-muted">
         <tr>
           {headers.map((h: string) => (
-            <th key={h} className="border border-border p-3 text-left font-semibold">
+            <th key={h} className="border-border border p-3 text-left font-semibold">
               {h}
             </th>
           ))}
@@ -337,7 +304,7 @@ function Table({ headers, rows }: any) {
         {rows.map((r: string[], i: number) => (
           <tr key={i} className="hover:bg-muted/50">
             {r.map((c, j) => (
-              <td key={j} className="border border-border p-3">
+              <td key={j} className="border-border border p-3">
                 {c}
               </td>
             ))}
@@ -345,5 +312,5 @@ function Table({ headers, rows }: any) {
         ))}
       </tbody>
     </table>
-  )
+  );
 }

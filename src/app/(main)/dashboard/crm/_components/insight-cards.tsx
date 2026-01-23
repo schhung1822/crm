@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+
 import { Pie, PieChart, Label, Bar, BarChart, CartesianGrid, XAxis, YAxis, LabelList, Cell } from "recharts";
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -44,7 +45,7 @@ export function InsightCards({
 
         <CardContent className="flex-1 pb-4">
           <div className="flex items-center justify-between gap-4">
-            <ChartContainer config={revenueByChannel.config} className="flex-shrink-0 w-[280px] h-[280px]">
+            <ChartContainer config={revenueByChannel.config} className="h-[280px] w-[280px] flex-shrink-0">
               <PieChart>
                 <ChartTooltip
                   cursor={false}
@@ -64,7 +65,11 @@ export function InsightCards({
                       if (viewBox && "cx" in viewBox && "cy" in viewBox) {
                         return (
                           <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle" dominantBaseline="middle">
-                            <tspan x={viewBox.cx} y={viewBox.cy} className="fill-foreground text-xl font-bold tabular-nums">
+                            <tspan
+                              x={viewBox.cx}
+                              y={viewBox.cy}
+                              className="fill-foreground text-xl font-bold tabular-nums"
+                            >
                               {formatVNDCompact(totalChannelRevenue)}
                             </tspan>
                             <tspan x={viewBox.cx} y={(viewBox.cy ?? 0) + 22} className="fill-muted-foreground text-xs">
@@ -79,24 +84,25 @@ export function InsightCards({
                 </Pie>
               </PieChart>
             </ChartContainer>
-            
-            <div className="flex-1 flex flex-col gap-1.5 min-w-0">
+
+            <div className="flex min-w-0 flex-1 flex-col gap-1.5">
               {revenueByChannel.data.map((item) => (
                 <div key={item.source} className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2 min-w-0 flex-1">
-                    <span className="size-3 rounded-full flex-shrink-0" style={{ background: item.fill }} />
-                    <span className="text-[11px] text-muted-foreground truncate">
+                  <div className="flex min-w-0 flex-1 items-center gap-2">
+                    <span className="size-3 flex-shrink-0 rounded-full" style={{ background: item.fill }} />
+                    <span className="text-muted-foreground truncate text-[11px]">
                       {(revenueByChannel.config as any)[item.source]?.label ?? item.source}
                     </span>
                   </div>
-                  <span className="text-[11px] font-medium tabular-nums flex-shrink-0">{formatVNDCompact(item.revenue)}</span>
+                  <span className="flex-shrink-0 text-[11px] font-medium tabular-nums">
+                    {formatVNDCompact(item.revenue)}
+                  </span>
                 </div>
               ))}
             </div>
           </div>
         </CardContent>
-        <CardFooter>
-        </CardFooter>
+        <CardFooter></CardFooter>
       </Card>
 
       {/* Bar ngang: Doanh thu theo chi nhánh */}
@@ -106,7 +112,7 @@ export function InsightCards({
         </CardHeader>
 
         <CardContent className="flex-1 pb-4">
-          <div className="flex flex-wrap gap-2 mb-3">
+          <div className="mb-3 flex flex-wrap gap-2">
             {revenueByBranchBars.data.slice(0, 6).map((item, idx) => {
               const colorKey = `branch-${idx}`;
               const color = (revenueByBranchBars.config as any)[colorKey]?.color || `var(--chart-${(idx % 5) + 1})`;
@@ -138,11 +144,12 @@ export function InsightCards({
                 cursor={false}
                 content={<ChartTooltipContent formatter={(v) => formatVNDCompact(Number(v))} />}
               />
-              
+
               <Bar dataKey="actual" radius={6}>
                 {revenueByBranchBars.data.map((entry, index) => {
                   const colorKey = `branch-${index}`;
-                  const color = (revenueByBranchBars.config as any)[colorKey]?.color || `var(--chart-${(index % 5) + 1})`;
+                  const color =
+                    (revenueByBranchBars.config as any)[colorKey]?.color || `var(--chart-${(index % 5) + 1})`;
                   return <Cell key={`cell-${index}`} fill={color} />;
                 })}
                 <LabelList
@@ -156,8 +163,7 @@ export function InsightCards({
           </ChartContainer>
         </CardContent>
 
-        <CardFooter>
-        </CardFooter>
+        <CardFooter></CardFooter>
       </Card>
     </div>
   );

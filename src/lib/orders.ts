@@ -57,11 +57,11 @@ export async function getChannels(options?: GetChannelsOptions): Promise<Channel
     ORDER BY create_time DESC
     LIMIT ? OFFSET ?
   `,
-    [...params, limit, offset]
+    [...params, limit, offset],
   );
 
   return (rows ?? []).map((r) =>
-  channelSchema.parse({
+    channelSchema.parse({
       order_ID: String(r.order_ID),
       brand: String(r.brand ?? ""),
       create_time: r.create_time ? new Date(r.create_time) : new Date(0),
@@ -80,6 +80,6 @@ export async function getChannels(options?: GetChannelsOptions): Promise<Channel
       pro_ID: String(r.pro_ID ?? ""),
       name_pro: String(r.name_pro ?? ""),
       brand_pro: String(r.brand_pro ?? ""),
-    })
+    }),
   );
 }

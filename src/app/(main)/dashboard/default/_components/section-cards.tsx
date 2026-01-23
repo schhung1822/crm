@@ -1,15 +1,9 @@
-import { TrendingUp, TrendingDown } from "lucide-react";
 import { memo } from "react";
 
+import { TrendingUp, TrendingDown } from "lucide-react";
+
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardAction,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 type SectionCardsProps = {
   stats: {

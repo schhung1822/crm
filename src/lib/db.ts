@@ -1,5 +1,5 @@
 // src/lib/db.ts
-import mysql, { Pool } from 'mysql2/promise';
+import mysql, { Pool } from "mysql2/promise";
 
 let pool: Pool; // KHÔNG để | null nữa
 

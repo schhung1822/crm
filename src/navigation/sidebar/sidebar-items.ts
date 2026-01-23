@@ -107,11 +107,11 @@ export const sidebarItems: NavGroup[] = [
       },
       {
         title: "Thông báo",
-        url: "/auth",
+        url: "#",
         icon: Bell,
         subItems: [
-          { title: "Cập nhật", url: "/thong-bao/cap-nhap", newTab: true },
-          { title: "Dịch vụ", url: "/thong-bao/dich-vu", newTab: true },
+          { title: "Cập nhật", url: "/noti/update-notifications" },
+          { title: "Dịch vụ", url: "/noti/service-notifications" },
         ],
       },
     ],

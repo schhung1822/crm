@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis, Legend } from "recharts";
 
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -45,7 +46,7 @@ export const ChartAreaInteractive = React.memo(function ChartAreaInteractive({
         orders: { label: "Đơn hàng", color: tpl.orders },
         revenue: { label: "Doanh thu", color: tpl.revenue },
       }) satisfies ChartConfig,
-    [tpl.orders, tpl.revenue]
+    [tpl.orders, tpl.revenue],
   );
 
   const staticChartData: ChartPoint[] = [{ date: new Date().toISOString(), orders: 0, revenue: 0 }];
@@ -103,7 +104,14 @@ export const ChartAreaInteractive = React.memo(function ChartAreaInteractive({
             />
 
             <YAxis yAxisId="left" tickLine={false} axisLine={false} width={40} />
-            <YAxis yAxisId="right" orientation="right" tickLine={false} axisLine={false} width={40} tickFormatter={formatVNDShort}/>
+            <YAxis
+              yAxisId="right"
+              orientation="right"
+              tickLine={false}
+              axisLine={false}
+              width={40}
+              tickFormatter={formatVNDShort}
+            />
 
             <Legend wrapperStyle={{ paddingTop: "20px" }} />
 

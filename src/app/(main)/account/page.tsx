@@ -1,18 +1,20 @@
 "use client";
 
 import { useState } from "react";
+
+import { Shield, KeyRound, UserPlus, User, Mail, Phone, LogOut } from "lucide-react";
+import { toast } from "sonner";
+
 import { useAuth } from "@/components/auth-provider";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
-import { toast } from "sonner";
-import { Shield, KeyRound, UserPlus, User, Mail, Phone, LogOut } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getInitials } from "@/lib/utils";
 
 export default function AccountPage() {
@@ -111,9 +113,7 @@ export default function AccountPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Quản lý tài khoản</h1>
-        <p className="text-muted-foreground mt-2">
-          Quản lý thông tin tài khoản và bảo mật
-        </p>
+        <p className="text-muted-foreground mt-2">Quản lý thông tin tài khoản và bảo mật</p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -122,9 +122,9 @@ export default function AccountPage() {
           <Card className="h-full">
             <CardContent className="space-y-6">
               <div className="flex flex-col items-center space-y-4">
-                <Avatar className="h-24 w-24 rounded-lg rounded-full bg-black">
+                <Avatar className="h-24 w-24 rounded-full rounded-lg bg-black">
                   <AvatarImage src={user?.avatar || ""} alt={user?.name || user?.username || ""} />
-                  <AvatarFallback className="rounded-lg text-2xl bg-black">
+                  <AvatarFallback className="rounded-lg bg-black text-2xl">
                     {getInitials(user?.name || user?.username || "U")}
                   </AvatarFallback>
                 </Avatar>
@@ -140,7 +140,7 @@ export default function AccountPage() {
 
               <div className="space-y-4">
                 <div className="space-y-1">
-                  <Label className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Label className="text-muted-foreground flex items-center gap-2 text-xs">
                     <User className="h-3.5 w-3.5" />
                     Tên đăng nhập
                   </Label>
@@ -148,7 +148,7 @@ export default function AccountPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <Label className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Label className="text-muted-foreground flex items-center gap-2 text-xs">
                     <Mail className="h-3.5 w-3.5" />
                     Email
                   </Label>
@@ -156,7 +156,7 @@ export default function AccountPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <Label className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Label className="text-muted-foreground flex items-center gap-2 text-xs">
                     <Phone className="h-3.5 w-3.5" />
                     Số điện thoại
                   </Label>
@@ -190,75 +190,65 @@ export default function AccountPage() {
               )}
             </TabsList>
 
-        <TabsContent value="change-password">
-          <Card>
-            <CardHeader>
-              <CardTitle>Đổi mật khẩu</CardTitle>
-              <CardDescription>
-                Cập nhật mật khẩu của bạn để bảo mật tài khoản
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleChangePassword} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="currentPassword">Mật khẩu hiện tại</Label>
-                  <Input
-                    id="currentPassword"
-                    type="password"
-                    placeholder="Nhập mật khẩu hiện tại"
-                    value={passwordForm.currentPassword}
-                    onChange={(e) =>
-                      setPasswordForm({ ...passwordForm, currentPassword: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="newPassword">Mật khẩu mới</Label>
-                  <Input
-                    id="newPassword"
-                    type="password"
-                    placeholder="Nhập mật khẩu mới (tối thiểu 6 ký tự)"
-                    value={passwordForm.newPassword}
-                    onChange={(e) =>
-                      setPasswordForm({ ...passwordForm, newPassword: e.target.value })
-                    }
-                    required
-                    minLength={6}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Xác nhận mật khẩu mới</Label>
-                  <Input
-                    id="confirmPassword"
-                    type="password"
-                    placeholder="Nhập lại mật khẩu mới"
-                    value={passwordForm.confirmPassword}
-                    onChange={(e) =>
-                      setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-                <Button type="submit" disabled={isLoading}>
-                  {isLoading ? "Đang xử lý..." : "Đổi mật khẩu"}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-        </TabsContent>
+            <TabsContent value="change-password">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Đổi mật khẩu</CardTitle>
+                  <CardDescription>Cập nhật mật khẩu của bạn để bảo mật tài khoản</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleChangePassword} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="currentPassword">Mật khẩu hiện tại</Label>
+                      <Input
+                        id="currentPassword"
+                        type="password"
+                        placeholder="Nhập mật khẩu hiện tại"
+                        value={passwordForm.currentPassword}
+                        onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="newPassword">Mật khẩu mới</Label>
+                      <Input
+                        id="newPassword"
+                        type="password"
+                        placeholder="Nhập mật khẩu mới (tối thiểu 6 ký tự)"
+                        value={passwordForm.newPassword}
+                        onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
+                        required
+                        minLength={6}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="confirmPassword">Xác nhận mật khẩu mới</Label>
+                      <Input
+                        id="confirmPassword"
+                        type="password"
+                        placeholder="Nhập lại mật khẩu mới"
+                        value={passwordForm.confirmPassword}
+                        onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
+                        required
+                      />
+                    </div>
+                    <Button type="submit" disabled={isLoading}>
+                      {isLoading ? "Đang xử lý..." : "Đổi mật khẩu"}
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+            </TabsContent>
 
             {user?.role === "admin" && (
               <TabsContent value="create-user">
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Shield className="h-5 w-5 text-primary" />
+                      <Shield className="text-primary h-5 w-5" />
                       Tạo tài khoản mới
                     </CardTitle>
-                    <CardDescription>
-                      Chức năng dành cho quản trị viên. Tạo tài khoản người dùng mới.
-                    </CardDescription>
+                    <CardDescription>Chức năng dành cho quản trị viên. Tạo tài khoản người dùng mới.</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <form onSubmit={handleCreateUser} className="space-y-4">
@@ -269,9 +259,7 @@ export default function AccountPage() {
                             id="username"
                             placeholder="Tên đăng nhập"
                             value={createForm.username}
-                            onChange={(e) =>
-                              setCreateForm({ ...createForm, username: e.target.value })
-                            }
+                            onChange={(e) => setCreateForm({ ...createForm, username: e.target.value })}
                             required
                           />
                         </div>
@@ -282,9 +270,7 @@ export default function AccountPage() {
                             type="email"
                             placeholder="email@example.com"
                             value={createForm.email}
-                            onChange={(e) =>
-                              setCreateForm({ ...createForm, email: e.target.value })
-                            }
+                            onChange={(e) => setCreateForm({ ...createForm, email: e.target.value })}
                             required
                           />
                         </div>
@@ -297,9 +283,7 @@ export default function AccountPage() {
                             id="name"
                             placeholder="Nguyễn Văn A"
                             value={createForm.name}
-                            onChange={(e) =>
-                              setCreateForm({ ...createForm, name: e.target.value })
-                            }
+                            onChange={(e) => setCreateForm({ ...createForm, name: e.target.value })}
                           />
                         </div>
                         <div className="space-y-2">
@@ -308,9 +292,7 @@ export default function AccountPage() {
                             id="phone"
                             placeholder="0123456789"
                             value={createForm.phone}
-                            onChange={(e) =>
-                              setCreateForm({ ...createForm, phone: e.target.value })
-                            }
+                            onChange={(e) => setCreateForm({ ...createForm, phone: e.target.value })}
                           />
                         </div>
                       </div>
@@ -323,9 +305,7 @@ export default function AccountPage() {
                             type="password"
                             placeholder="Mật khẩu (tối thiểu 6 ký tự)"
                             value={createForm.password}
-                            onChange={(e) =>
-                              setCreateForm({ ...createForm, password: e.target.value })
-                            }
+                            onChange={(e) => setCreateForm({ ...createForm, password: e.target.value })}
                             required
                             minLength={6}
                           />
@@ -334,9 +314,7 @@ export default function AccountPage() {
                           <Label htmlFor="role">Vai trò</Label>
                           <Select
                             value={createForm.role}
-                            onValueChange={(value) =>
-                              setCreateForm({ ...createForm, role: value })
-                            }
+                            onValueChange={(value) => setCreateForm({ ...createForm, role: value })}
                           >
                             <SelectTrigger>
                               <SelectValue placeholder="Chọn vai trò" />

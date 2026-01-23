@@ -2,12 +2,13 @@ import { ReactNode } from "react";
 
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { NavigationLoading  } from "@/components/route-loading";
+
+import { AuthProvider } from "@/components/auth-provider";
+import { NavigationLoading } from "@/components/route-loading";
 import { Toaster } from "@/components/ui/sonner";
 import { APP_CONFIG } from "@/config/app-config";
 import { getPreference } from "@/server/server-actions";
 import { PreferencesStoreProvider } from "@/stores/preferences/preferences-provider";
-import { AuthProvider } from "@/components/auth-provider";
 import { THEME_MODE_VALUES, THEME_PRESET_VALUES, type ThemePreset, type ThemeMode } from "@/types/preferences/theme";
 
 import "./globals.css";

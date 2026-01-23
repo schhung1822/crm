@@ -1,17 +1,19 @@
 "use client";
 
+import { useState } from "react";
+
+import { useRouter } from "next/navigation";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 
+import { useAuth } from "@/components/auth-provider";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useAuth } from "@/components/auth-provider";
 
 const FormSchema = z.object({
   email: z.string().min(1, { message: "Please enter username or email." }),
@@ -23,7 +25,7 @@ export function LoginForm() {
   const router = useRouter();
   const { refreshUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -35,7 +37,7 @@ export function LoginForm() {
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     setIsLoading(true);
-    
+
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
@@ -54,10 +56,10 @@ export function LoginForm() {
         toast.success("Login successful!", {
           description: `Welcome back, ${result.user?.name || result.user?.username}!`,
         });
-        
+
         // Refresh user data in AuthProvider
         await refreshUser();
-        
+
         // Redirect to home page
         router.push("/");
         router.refresh();
@@ -86,13 +88,13 @@ export function LoginForm() {
             <FormItem>
               <FormLabel>Tên đăng nhập hoặc Email</FormLabel>
               <FormControl>
-                <Input 
-                  id="email" 
-                  type="text" 
-                  placeholder="Nhập tên đăng nhập hoặc email của bạn" 
-                  autoComplete="username" 
+                <Input
+                  id="email"
+                  type="text"
+                  placeholder="Nhập tên đăng nhập hoặc email của bạn"
+                  autoComplete="username"
                   disabled={isLoading}
-                  {...field} 
+                  {...field}
                 />
               </FormControl>
               <FormMessage />

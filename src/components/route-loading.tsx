@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+
 import { usePathname, useSearchParams } from "next/navigation";
 
 declare global {
@@ -16,7 +17,7 @@ export function NavigationLoading({
   minShowMs = 300,
 }: {
   text?: string;
-  maxMs?: number;     // fail-safe: quá X ms sẽ tự tắt
+  maxMs?: number; // fail-safe: quá X ms sẽ tự tắt
   minShowMs?: number; // đã hiện thì tối thiểu hiện X ms
 }) {
   const pathname = usePathname();
@@ -99,16 +100,16 @@ export function NavigationLoading({
   if (!show) return null;
 
   return (
-    <div className="fixed right-8 bottom-8 z-[9999] nav-toast-in">
-      <div className="flex items-center gap-2 rounded-full border bg-background/90 px-3 py-1.5 text-sm shadow backdrop-blur">
-        <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+    <div className="nav-toast-in fixed right-8 bottom-8 z-[9999]">
+      <div className="bg-background/90 flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm shadow backdrop-blur">
+        <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-500" />
         <span className="font-medium">{text}</span>
 
         {/* dots animation */}
         <span className="ml-1 inline-flex gap-1">
-          <span className="h-1 w-1 rounded-full bg-foreground/50 dot-bounce" />
-          <span className="h-1 w-1 rounded-full bg-foreground/50 dot-bounce delay-1" />
-          <span className="h-1 w-1 rounded-full bg-foreground/50 dot-bounce delay-2" />
+          <span className="bg-foreground/50 dot-bounce h-1 w-1 rounded-full" />
+          <span className="bg-foreground/50 dot-bounce h-1 w-1 rounded-full delay-1" />
+          <span className="bg-foreground/50 dot-bounce h-1 w-1 rounded-full delay-2" />
         </span>
       </div>
     </div>

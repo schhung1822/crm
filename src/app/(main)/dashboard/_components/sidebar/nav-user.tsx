@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+
 import { EllipsisVertical, CircleUser, CreditCard, LogOut, Bell } from "lucide-react";
 
+import { useAuth } from "@/components/auth-provider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -15,7 +17,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { getInitials } from "@/lib/utils";
-import { useAuth } from "@/components/auth-provider";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -28,7 +29,7 @@ export function NavUser() {
     return (
       <SidebarMenu>
         <SidebarMenuItem>
-          <div className="h-12 animate-pulse rounded-lg bg-muted" />
+          <div className="bg-muted h-12 animate-pulse rounded-lg" />
         </SidebarMenuItem>
       </SidebarMenu>
     );
@@ -93,7 +94,7 @@ export function NavUser() {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/thong-bao/cap-nhap" className="flex items-center gap-2">
+                <Link href="/noti/service-notifications" className="flex items-center gap-2">
                   <Bell className="h-4 w-4" />
                   <span>Thông báo</span>
                 </Link>

@@ -5,6 +5,7 @@
 Đã cập nhật hệ thống để sử dụng bảng `template` hiện có trong database của bạn:
 
 ### 1. Prisma Schema (prisma/schema.prisma)
+
 ```prisma
 model FormTemplate {
   id_temp     String   @id @default(uuid())
@@ -20,6 +21,7 @@ model FormTemplate {
 ```
 
 ### 2. Repository Functions (src/lib/form-template/repo.ts)
+
 - `getTemplateBySlug()`: Parse JSON từ string và convert isActive ("1"/"0") sang boolean
 - `upsertTemplate()`: Stringify config thành JSON string
 - `ensureDefaultTemplate()`: Tạo template mặc định với isActive = "1"
@@ -27,6 +29,7 @@ model FormTemplate {
 ## 🔧 Các bước tiếp theo
 
 ### 1. Restart VS Code hoặc đóng tất cả terminal/dev server
+
 Hiện có nhiều process Node đang chạy làm khóa file Prisma. Sau khi restart:
 
 ```bash
@@ -35,32 +38,36 @@ npx prisma generate
 ```
 
 ### 2. Kiểm tra kết nối database
+
 Đảm bảo file `.env` có DATABASE_URL đúng:
+
 ```env
 DATABASE_URL="mysql://user:password@103.97.126.211:3306/EAC"
 ```
 
 ### 3. Test template
+
 ```bash
 cd crm
 npm run dev
 ```
 
 Truy cập:
+
 - Admin: `http://localhost:3000/admin/templates/eac-checkin`
 - Public: `http://localhost:3000/t/eac-checkin`
 
 ## 📋 Mapping Fields
 
-| Bảng template | Prisma Model | TypeScript Type |
-|---------------|--------------|-----------------|
-| id_temp       | id_temp      | string (UUID)   |
-| slug          | slug         | string          |
-| name          | name         | string          |
-| isActive      | isActive     | string ("1"/"0")|
-| configJson    | configJson   | string (JSON)   |
-| create_time   | create_time  | DateTime        |
-| update_time   | update_time  | DateTime        |
+| Bảng template | Prisma Model | TypeScript Type  |
+| ------------- | ------------ | ---------------- |
+| id_temp       | id_temp      | string (UUID)    |
+| slug          | slug         | string           |
+| name          | name         | string           |
+| isActive      | isActive     | string ("1"/"0") |
+| configJson    | configJson   | string (JSON)    |
+| create_time   | create_time  | DateTime         |
+| update_time   | update_time  | DateTime         |
 
 ## ⚠️ Lưu ý
 
@@ -72,8 +79,9 @@ Truy cập:
 ## 🧪 Test Query SQL
 
 Kiểm tra template trong database:
+
 ```sql
-SELECT id_temp, slug, name, isActive, 
+SELECT id_temp, slug, name, isActive,
        LEFT(configJson, 100) as config_preview,
        create_time, update_time
 FROM template
@@ -81,6 +89,7 @@ WHERE slug = 'eac-checkin';
 ```
 
 Insert template mẫu nếu chưa có:
+
 ```sql
 INSERT INTO template (id_temp, slug, name, isActive, configJson)
 VALUES (

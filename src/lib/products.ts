@@ -1,5 +1,5 @@
-import { getDB } from "@/lib/db";
 import { productSchema, Product } from "@/app/(main)/products/_components/schema";
+import { getDB } from "@/lib/db";
 
 export async function getProducts(): Promise<Product[]> {
   const db = getDB();
@@ -9,7 +9,7 @@ export async function getProducts(): Promise<Product[]> {
     SELECT 
       pro_ID, name, brand, class, gia_ban, gia_von, property
     FROM product
-    `
+    `,
   );
 
   return (rows ?? []).map((r) =>
@@ -21,6 +21,6 @@ export async function getProducts(): Promise<Product[]> {
       gia_ban: Number(r.gia_ban) || 0,
       gia_von: Number(r.gia_von) || 0,
       property: r.property ? String(r.property) : "",
-    })
+    }),
   );
 }
