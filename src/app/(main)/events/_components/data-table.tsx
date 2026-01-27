@@ -210,7 +210,7 @@ export function DataTable({ data: initialData }: { data: Academy[] }) {
         </div>
         <div className="flex items-center gap-2">
           <DataTableViewOptions table={table} />
-          <Link className="cursor-pointer" href="./admin/templates/eac-checkin">
+          <Link className="cursor-pointer" href="/admin/templates/edit">
             <Button className="cursor-pointer" variant="outline" size="sm">
               <LayoutTemplate />
               <span className="hidden lg:inline">Quản lý template</span>

@@ -13,6 +13,15 @@ const nextConfig = {
       },
     ];
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "statics.pancake.vn",
+        pathname: "/**",
+      },
+    ],
+  },
 }
 
 export default nextConfig

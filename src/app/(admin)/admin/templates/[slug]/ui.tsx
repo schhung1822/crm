@@ -87,7 +87,7 @@ function ImageUploadField({
 
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-medium text-foreground">
+      <label className="block text-sm font-medium !text-black dark:!text-white">
         {label}
       </label>
       <div className="space-y-2">
@@ -129,7 +129,7 @@ function ImageUploadField({
 function ColorInput({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-medium text-foreground">
+      <label className="block text-sm font-medium !text-black dark:!text-white">
         {label}
       </label>
       <div className="flex items-center gap-2">
@@ -156,7 +156,7 @@ function ToggleField({
 }) {
   return (
     <div className="hover:bg-muted/30 flex items-center justify-between rounded-md px-1 py-2.5 transition-colors">
-      <label className="cursor-pointer text-sm font-medium text-foreground">
+      <label className="cursor-pointer text-sm font-medium !text-black dark:!text-white">
         {label}
       </label>
       <Switch checked={checked} onCheckedChange={onChange} />
@@ -175,6 +175,7 @@ export default function AdminTemplateEditor({
 }) {
   const [config, setConfig] = useState<FormTemplateConfig>(initialConfig);
   const [saving, setSaving] = useState(false);
+  const [templateSlug, setTemplateSlug] = useState(slug);
 
   const update = (patch: Partial<FormTemplateConfig>) => setConfig((s) => ({ ...s, ...patch }));
 
@@ -183,7 +184,8 @@ export default function AdminTemplateEditor({
   async function onSave() {
     try {
       setSaving(true);
-      await saveTemplateAction(slug, initialName, config);
+      const nextSlug = templateSlug.trim();
+      await saveTemplateAction(slug, nextSlug, initialName, config);
       alert("Đã lưu template thành công!");
     } catch (error) {
         alert("Lỗi khi lưu template");
@@ -209,7 +211,7 @@ export default function AdminTemplateEditor({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => window.open(`/t/${slug}`, "_blank")}
+              onClick={() => window.open(`/t/${templateSlug}`, "_blank")}
               className="cursor-pointer gap-2"
             >
               <Eye className="h-4 w-4" />
@@ -264,7 +266,7 @@ export default function AdminTemplateEditor({
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-2">
-                      <label className="text-foreground block text-sm font-medium">Chọn template</label>
+                      <label className="block text-sm font-medium !text-black dark:!text-white">Chọn template</label>
                       <Select
                         value={config.templateStyle ?? "default"}
                         onValueChange={(value: TemplateStyle) => update({ templateStyle: value })}
@@ -273,7 +275,7 @@ export default function AdminTemplateEditor({
                           <SelectValue placeholder="Chọn kiểu giao diện" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="default">Mặc định</SelectItem>
+                          <SelectItem value="default">Bong bóng Hồng</SelectItem>
                           <SelectItem value="starry">Bầu trời sao</SelectItem>
                         </SelectContent>
                       </Select>
@@ -301,6 +303,19 @@ export default function AdminTemplateEditor({
                           placeholder="VD: Check in sự kiện EAC Summit 2024"
                         />
                       </div>
+                      <div className="space-y-2">
+                        <label className="block text-sm font-medium !text-black dark:!text-white">
+                          URL trang check-in
+                        </label>
+                        <Input
+                          value={templateSlug}
+                          onChange={(e) => setTemplateSlug(e.target.value)}
+                          placeholder="VD: eac-checkin"
+                        />
+                        <p className="text-xs text-muted-foreground">
+                          Link: /t/{templateSlug || "..."}
+                        </p>
+                      </div>
                     </CardContent>
                   </Card>
 
@@ -318,7 +333,7 @@ export default function AdminTemplateEditor({
                         onChange={(url) => update({ header: { ...config.header, headingImageUrl: url } })}
                       />
                       <div className="space-y-2">
-                        <label className="block text-sm font-medium ">
+                        <label className="block text-sm font-medium !text-black dark:!text-white">
                           Alt text cho ảnh
                         </label>
                         <Input
@@ -337,7 +352,7 @@ export default function AdminTemplateEditor({
                         Màu sắc chủ đạo
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-4">
+                    <CardContent className="space-y-4 text-black dark:text-white">
                       <ColorInput
                         label="Màu chính (Primary)"
                         value={config.theme.primary}
@@ -370,12 +385,12 @@ export default function AdminTemplateEditor({
                 <TabsContent value="fields" className="mt-0 space-y-5">
                   <Card className="border-2">
                     <CardHeader>
-                      <CardTitle className="flex items-center gap-2 text-base text-foreground">
+                      <CardTitle className="flex items-center gap-2 text-base text-black dark:text-white">
                         <FormInput className="h-4 w-4" />
                         Trường dữ liệu cơ bản
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-0.5">
+                    <CardContent className="space-y-0.5 text-black dark:text-white">
                       <ToggleField
                         label="Hiện trường: Họ và tên"
                         checked={config.fields.full_name.enabled}
@@ -454,7 +469,7 @@ export default function AdminTemplateEditor({
                           </CardHeader>
                           <CardContent className="space-y-4">
                             <div className="space-y-2">
-                              <label className="block text-sm font-medium text-foreground">
+                              <label className="block text-sm font-medium !text-black dark:!text-white">
                                 Nhãn câu hỏi
                               </label>
                               <Input
@@ -469,7 +484,7 @@ export default function AdminTemplateEditor({
                             </div>
 
                             <div className="space-y-2">
-                              <label className="block text-sm font-medium text-foreground">
+                              <label className="block text-sm font-medium !text-black dark:!text-white">
                                 Loại input
                               </label>
                               <Select
@@ -504,7 +519,7 @@ export default function AdminTemplateEditor({
                             />
 
                             <div className="space-y-2">
-                              <label className="block text-sm font-medium text-foreground">
+                              <label className="block text-sm font-medium !text-black dark:!text-white">
                                 Placeholder
                               </label>
                               <Input
@@ -520,9 +535,7 @@ export default function AdminTemplateEditor({
 
                             {q.type === "select" && (
                               <div className="space-y-2">
-                                <label
-                                  className="block text-sm font-medium text-foreground"
-                                >
+                                <label className="block text-sm font-medium !text-black dark:!text-white">
                                   Các lựa chọn (mỗi dòng 1 option)
                                 </label>
                                 <Textarea
@@ -558,7 +571,7 @@ export default function AdminTemplateEditor({
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="space-y-2">
-                        <label className="block text-sm font-medium text-foreground">
+                        <label className="block text-sm font-medium !text-black dark:!text-white">
                           Dòng chữ trên (VD: to attend the launch event)
                         </label>
                         <Input
@@ -568,7 +581,7 @@ export default function AdminTemplateEditor({
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="block text-sm font-medium text-foreground">
+                        <label className="block text-sm font-medium !text-black dark:!text-white">
                           Tiêu đề chính (VD: SGA Renew Peel)
                         </label>
                         <Input
@@ -578,7 +591,7 @@ export default function AdminTemplateEditor({
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="block text-sm font-medium text-foreground">
+                        <label className="block text-sm font-medium !text-black dark:!text-white">
                           Khẩu hiệu (VD: Đa tầng Tác Động...)
                         </label>
                         <Input
@@ -588,7 +601,7 @@ export default function AdminTemplateEditor({
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="block text-sm font-medium text-foreground">
+                        <label className="block text-sm font-medium !text-black dark:!text-white">
                           Tổ chức bởi (VD: organized by...)
                         </label>
                         <Input
@@ -600,7 +613,7 @@ export default function AdminTemplateEditor({
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="block text-sm font-medium text-foreground">
+                        <label className="block text-sm font-medium !text-black dark:!text-white">
                           URL Logo 1
                         </label>
                         <Input
@@ -610,7 +623,7 @@ export default function AdminTemplateEditor({
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="block text-sm font-medium text-foreground">
+                        <label className="block text-sm font-medium !text-black dark:!text-white">
                           URL Logo 2
                         </label>
                         <Input
@@ -620,7 +633,7 @@ export default function AdminTemplateEditor({
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="block text-sm font-medium text-foreground">
+                        <label className="block text-sm font-medium !text-black dark:!text-white">
                           Dòng chữ dưới (VD: We would be honored...)
                         </label>
                         <Input
@@ -667,7 +680,7 @@ export default function AdminTemplateEditor({
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="space-y-2">
-                        <label className="block text-sm font-medium text-foreground">
+                        <label className="block text-sm font-medium !text-black dark:!text-white">
                           Tiêu đề
                         </label>
                         <Input
@@ -676,7 +689,7 @@ export default function AdminTemplateEditor({
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="block text-sm font-medium text-foreground">
+                        <label className="block text-sm font-medium !text-black dark:!text-white">
                           Mô tả
                         </label>
                         <Input
@@ -747,7 +760,7 @@ export default function AdminTemplateEditor({
                     <CardContent className="space-y-4">
                       <div className="grid grid-cols-3 gap-3">
                         <div className="space-y-2">
-                          <label className="block text-sm font-medium text-foreground">
+                          <label className="block text-sm font-medium !text-black dark:!text-white">
                             Ngày
                           </label>
                           <Input
@@ -757,7 +770,7 @@ export default function AdminTemplateEditor({
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="block text-sm font-medium text-foreground">
+                          <label className="block text-sm font-medium !text-black dark:!text-white">
                             Tháng
                           </label>
                           <Input
@@ -767,7 +780,7 @@ export default function AdminTemplateEditor({
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="block text-sm font-medium text-foreground">
+                          <label className="block text-sm font-medium !text-black dark:!text-white">
                             Năm
                           </label>
                           <Input
@@ -778,7 +791,7 @@ export default function AdminTemplateEditor({
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className="block text-sm font-medium text-foreground">
+                        <label className="block text-sm font-medium !text-black dark:!text-white">
                           Giờ
                         </label>
                         <Input
@@ -799,7 +812,7 @@ export default function AdminTemplateEditor({
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="space-y-2">
-                        <label className="block text-sm font-medium text-foreground">
+                        <label className="block text-sm font-medium !text-black dark:!text-white">
                           Tên địa điểm
                         </label>
                         <Input
@@ -809,7 +822,7 @@ export default function AdminTemplateEditor({
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="block text-sm font-medium text-foreground">
+                        <label className="block text-sm font-medium !text-black dark:!text-white">
                           Dòng 1
                         </label>
                         <Input
@@ -819,7 +832,7 @@ export default function AdminTemplateEditor({
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="block text-sm font-medium text-foreground">
+                        <label className="block text-sm font-medium !text-black dark:!text-white">
                           Dòng 2
                         </label>
                         <Input
