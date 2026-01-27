@@ -18,6 +18,7 @@ export const academySchema = z.object({
   voucher: z.string(),
   event_name: z.string(),
   user_id: z.string(),
+  oa_interest: z.string(),
 });
 
 export type Academy = z.infer<typeof academySchema>;

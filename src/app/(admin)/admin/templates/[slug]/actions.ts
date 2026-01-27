@@ -1,10 +1,15 @@
 "use server";
 
-import { upsertTemplate } from "@/lib/form-template/repo";
+import { updateTemplateBySlug } from "@/lib/form-template/repo";
 import type { FormTemplateConfig } from "@/lib/form-template/types";
 
-export async function saveTemplateAction(slug: string, name: string, config: FormTemplateConfig) {
+export async function saveTemplateAction(
+  slug: string,
+  nextSlug: string,
+  name: string,
+  config: FormTemplateConfig
+) {
   // TODO: nếu CRM bạn có auth, check role admin ở đây
-  await upsertTemplate(slug, name, config);
+  await updateTemplateBySlug(slug, nextSlug, name, config);
   return { ok: true };
 }

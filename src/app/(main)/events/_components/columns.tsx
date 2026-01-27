@@ -1,6 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { EllipsisVertical, CircleHelp } from "lucide-react";
-import { z } from "zod";
+import { EllipsisVertical } from "lucide-react";
 
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Button } from "@/components/ui/button";
@@ -13,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { academySchema, Academy } from "./schema";
+import { Academy } from "./schema";
 import { TableCellViewer } from "./table-cell-viewer";
 
 export const dashboardColumns: ColumnDef<Academy>[] = [
@@ -46,7 +45,11 @@ export const dashboardColumns: ColumnDef<Academy>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Tên" />,
-    cell: ({ row }) => <TableCellViewer item={row.original} />,
+    cell: ({ row }) => (
+          <div className="max-w-[300px] truncate">
+            <TableCellViewer item={row.original} />
+          </div>
+        ),
     enableSorting: false,
     enableHiding: true,
     meta: { label: "Tên" },
@@ -77,7 +80,7 @@ export const dashboardColumns: ColumnDef<Academy>[] = [
     accessorKey: "role",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Sự kiện" />,
     cell: ({ row }) => (
-      <span className="bg-secondary/10 border-secondary/50 rounded-md border px-4 py-1.5 font-mono text-xs">
+      <span className="rounded-md border border-pink-500/40 bg-pink-500/10 px-2 py-1 text-xs font-medium text-pink-700">
         {row.original.event_name}
       </span>
     ),
@@ -114,6 +117,30 @@ export const dashboardColumns: ColumnDef<Academy>[] = [
     enableSorting: false,
     enableHiding: true,
     meta: { label: "Voucher" },
+  },
+
+  // Quan tâm OA
+  {
+    accessorKey: "oa_interest",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Quan tâm OA" />,
+    cell: ({ row }) => {
+      const value = row.original.oa_interest;
+      const isInterested = value === "Quan tâm";
+      return (
+        <span
+          className={
+            isInterested
+              ? "rounded-md border border-emerald-500/40 bg-emerald-500/10 px-2 py-1 text-xs font-medium text-emerald-700"
+              : "border-muted-foreground/30 bg-muted text-muted-foreground rounded-md border px-2 py-1 text-xs font-medium"
+          }
+        >
+          {value}
+        </span>
+      );
+    },
+    enableSorting: false,
+    enableHiding: true,
+    meta: { label: "Quan tâm OA" },
   },
 
   // User ID
