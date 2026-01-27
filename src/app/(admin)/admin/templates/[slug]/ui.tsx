@@ -1,6 +1,11 @@
+/* eslint-disable max-lines */
+/* eslint-disable prettier/prettier */
+/* eslint-disable security/detect-object-injection */
 "use client";
 
 import React, { useMemo, useState } from "react";
+
+import NextImage from "next/image";
 
 import {
   Palette,
@@ -11,7 +16,7 @@ import {
   Eye,
   Upload,
   X,
-  Image,
+  Image as ImageIcon,
   List,
   Calendar,
   MapPin,
@@ -26,7 +31,7 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import type { FormTemplateConfig, FieldType } from "@/lib/form-template/types";
+import type { FormTemplateConfig, FieldType, TemplateStyle } from "@/lib/form-template/types";
 
 import { saveTemplateAction } from "./actions";
 
@@ -113,7 +118,7 @@ function ImageUploadField({
         <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
         {value && (
           <div className="bg-muted/30 rounded-md border p-2">
-            <img src={value} alt="Preview" className="mx-auto max-h-32 object-contain" />
+            <NextImage src={value} alt="Preview" width={320} height={160} className="mx-auto max-h-32 object-contain" />
           </div>
         )}
       </div>
@@ -179,10 +184,11 @@ export default function AdminTemplateEditor({
     try {
       setSaving(true);
       await saveTemplateAction(slug, initialName, config);
-      alert("✅ Đã lưu template thành công!");
+      alert("Đã lưu template thành công!");
     } catch (error) {
-      alert("❌ Lỗi khi lưu template");
-    } finally {
+        alert("Lỗi khi lưu template");
+        console.error(error);
+      } finally {
       setSaving(false);
     }
   }
@@ -252,6 +258,30 @@ export default function AdminTemplateEditor({
                 <TabsContent value="theme" className="mt-0 space-y-5">
                   <Card className="border-2">
                     <CardHeader>
+                      <CardTitle className="text-foreground flex items-center gap-2 text-base">
+                        <Palette className="h-4 w-4" />
+                        Kiểu giao diện
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <label className="text-foreground block text-sm font-medium">Chọn template</label>
+                      <Select
+                        value={config.templateStyle ?? "default"}
+                        onValueChange={(value: TemplateStyle) => update({ templateStyle: value })}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Chọn kiểu giao diện" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="default">Mặc định</SelectItem>
+                          <SelectItem value="starry">Bầu trời sao</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="border-2">
+                    <CardHeader>
                       <CardTitle className="flex items-center gap-1 text-base text-foreground">
                         <Calendar className="h-4 w-4" />
                         Tên sự kiện
@@ -277,18 +307,18 @@ export default function AdminTemplateEditor({
                   <Card className="border-2">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2 text-base text-foreground">
-                        <Image className="h-4 w-4" />
+                        <ImageIcon className="h-4 w-4" />
                         Ảnh heading
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-4">
+                    <CardContent className="space-y-4 text-foreground">
                       <ImageUploadField
                         label="Ảnh tiêu đề (Heading)"
                         value={config.header.headingImageUrl}
                         onChange={(url) => update({ header: { ...config.header, headingImageUrl: url } })}
                       />
                       <div className="space-y-2">
-                        <label className="block text-sm font-medium text-foreground">
+                        <label className="block text-sm font-medium ">
                           Alt text cho ảnh
                         </label>
                         <Input
@@ -478,7 +508,7 @@ export default function AdminTemplateEditor({
                                 Placeholder
                               </label>
                               <Input
-                                value={q.placeholder || ""}
+                                value={q.placeholder ?? ""}
                                 onChange={(e) => {
                                   const next = [...config.questions];
                                   next[idx] = { ...q, placeholder: e.target.value };
@@ -496,7 +526,7 @@ export default function AdminTemplateEditor({
                                   Các lựa chọn (mỗi dòng 1 option)
                                 </label>
                                 <Textarea
-                                  value={(q.options || []).join("\n")}
+                                  value={(q.options ?? []).join("\n")}
                                   onChange={(e) => {
                                     const options = e.target.value
                                       .split("\n")
@@ -574,7 +604,7 @@ export default function AdminTemplateEditor({
                           URL Logo 1
                         </label>
                         <Input
-                          value={config.infoEvent.logo1Url || ""}
+                          value={config.infoEvent.logo1Url ?? ""}
                           onChange={(e) => update({ infoEvent: { ...config.infoEvent, logo1Url: e.target.value } })}
                           placeholder="https://example.com/logo1.png"
                         />
@@ -584,7 +614,7 @@ export default function AdminTemplateEditor({
                           URL Logo 2
                         </label>
                         <Input
-                          value={config.infoEvent.logo2Url || ""}
+                          value={config.infoEvent.logo2Url ?? ""}
                           onChange={(e) => update({ infoEvent: { ...config.infoEvent, logo2Url: e.target.value } })}
                           placeholder="https://example.com/logo2.png"
                         />
@@ -652,6 +682,56 @@ export default function AdminTemplateEditor({
                         <Input
                           value={config.footer.dressCodeDesc}
                           onChange={(e) => update({ footer: { ...config.footer, dressCodeDesc: e.target.value } })}
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <ColorInput
+                          label="Màu 1"
+                          value={config.footer.dressDots.white}
+                          onChange={(v) =>
+                            update({
+                              footer: {
+                                ...config.footer,
+                                dressDots: { ...config.footer.dressDots, white: v },
+                              },
+                            })
+                          }
+                        />
+                        <ColorInput
+                          label="Màu 2"
+                          value={config.footer.dressDots.whitePink}
+                          onChange={(v) =>
+                            update({
+                              footer: {
+                                ...config.footer,
+                                dressDots: { ...config.footer.dressDots, whitePink: v },
+                              },
+                            })
+                          }
+                        />
+                        <ColorInput
+                          label="Màu 3"
+                          value={config.footer.dressDots.pink}
+                          onChange={(v) =>
+                            update({
+                              footer: {
+                                ...config.footer,
+                                dressDots: { ...config.footer.dressDots, pink: v },
+                              },
+                            })
+                          }
+                        />
+                        <ColorInput
+                          label="Màu 4"
+                          value={config.footer.dressDots.black}
+                          onChange={(v) =>
+                            update({
+                              footer: {
+                                ...config.footer,
+                                dressDots: { ...config.footer.dressDots, black: v },
+                              },
+                            })
+                          }
                         />
                       </div>
                     </CardContent>
@@ -756,7 +836,7 @@ export default function AdminTemplateEditor({
           </div>
 
           {/* Right Side - Preview */}
-          <div className="from-muted/20 via-background to-muted/30 scrollbar-thin scrollbar-thumb-muted-foreground/20 scrollbar-track-transparent hover:scrollbar-thumb-muted-foreground/30 overflow-y-auto bg-gradient-to-br">
+          <div className="from-muted/20 via-background to-muted/30 scrollbar-thin scrollbar-thumb-muted-foreground/20 scrollbar-track-transparent hover:scrollbar-thumb-muted-foreground/30 overflow-y-auto bg-linear-to-br">
             <div className="w-full">
               <TemplateRenderer config={previewConfig} />
             </div>

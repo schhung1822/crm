@@ -43,19 +43,20 @@ function Block({ title, children }: { title: string; children: React.ReactNode }
 }
 
 /* ---------- Component ---------- */
+// eslint-disable-next-line complexity
 export function TableCellViewer({ item }: { item: z.infer<typeof academySchema> }) {
   const isMobile = useIsMobile();
 
   return (
     <Drawer direction={isMobile ? "bottom" : "right"}>
       <DrawerTrigger asChild>
-        <Button variant="link" className="w-fit px-0 text-left text-white hover:text-white">
+        <Button variant="link" className="text-foreground hover:text-foreground w-fit px-0 text-left">
           {item.name}
         </Button>
       </DrawerTrigger>
 
       {/* Drawer 400px – full height desktop */}
-      <DrawerContent className="h-[100vh] sm:ml-auto sm:max-w-[400px]">
+      <DrawerContent className="h-screen sm:ml-auto sm:max-w-[400px]">
         {/* ===== HEADER ===== */}
         <DrawerHeader className="bg-background/95 sticky top-0 z-10 border-b backdrop-blur">
           <div className="min-w-0">

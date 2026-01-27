@@ -2,6 +2,7 @@ import { FormTemplateConfig } from "./types";
 
 export const defaultConfig: FormTemplateConfig = {
   webhookUrl: "https://nextg.nextgency.vn/webhook/EAC-dang-ky",
+  templateStyle: "default",
   theme: {
     bg: "#fde7f1",
     card: "rgba(255,255,255,.92)",

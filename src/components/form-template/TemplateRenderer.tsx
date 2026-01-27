@@ -86,6 +86,34 @@ export default function TemplateRenderer({ config }: Props) {
     [config],
   );
 
+  const templateStyle = config.templateStyle ?? "default";
+  const staticStars = useMemo(
+    () => [
+      { top: "12%", left: "18%", delay: "0.2s" },
+      { top: "28%", left: "72%", delay: "0.6s" },
+      { top: "8%", left: "48%", delay: "1s" },
+      { top: "42%", left: "12%", delay: "1.4s" },
+      { top: "55%", left: "65%", delay: "1.8s" },
+      { top: "68%", left: "28%", delay: "2.2s" },
+      { top: "22%", left: "84%", delay: "2.6s" },
+      { top: "76%", left: "44%", delay: "3s" },
+      { top: "34%", left: "36%", delay: "3.4s" },
+      { top: "16%", left: "62%", delay: "3.8s" },
+      { top: "62%", left: "10%", delay: "4.2s" },
+      { top: "48%", left: "88%", delay: "4.6s" },
+      { top: "86%", left: "20%", delay: "5s" },
+      { top: "6%", left: "30%", delay: "5.4s" },
+      { top: "24%", left: "56%", delay: "5.8s" },
+      { top: "38%", left: "8%", delay: "6.2s" },
+      { top: "72%", left: "78%", delay: "6.6s" },
+      { top: "82%", left: "52%", delay: "7s" },
+      { top: "10%", left: "8%", delay: "7.4s" },
+      { top: "58%", left: "40%", delay: "7.8s" },
+    ],
+    [],
+  );
+  const shootingStars = useMemo(() => Array.from({ length: 10 }, (_, idx) => idx), []);
+
   // ===== behavior: fill userid + prefill city/role =====
   useEffect(() => {
     const q = new URLSearchParams(window.location.search);
@@ -210,8 +238,98 @@ export default function TemplateRenderer({ config }: Props) {
 
   const buttonText = submitting ? "Đang gửi..." : "Gửi thông tin";
 
+  const starryCss =
+    templateStyle === "starry"
+      ? `
+        .template-starry{
+          background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+        }
+        .template-starry .page{background:transparent;position:relative;z-index:2}
+        .template-starry .container{position:relative;z-index:2}
+        .template-starry .bubble{display:none}
+        .template-starry .stars,
+        .template-starry .static-stars,
+        .template-starry .moon{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+        .template-starry .stars{height:120%;transform:rotate(-45deg)}
+        .template-starry .card{
+          background:rgba(14,20,30,.82);
+          box-shadow:0 30px 80px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.06);
+          backdrop-filter:blur(6px);
+        }
+        .template-starry .card-head{background:linear-gradient(135deg,#1f3b63,#2b5a8e)}
+        .template-starry .title{color:#eaf2ff;text-shadow:0 2px 16px rgba(0,0,0,.6)}
+        .template-starry .subtitle{color:#c7d8f5}
+        .template-starry label{color:#dbe7ff}
+        .template-starry .input,
+        .template-starry select,
+        .template-starry textarea{
+          background:rgba(9,14,22,.85);
+          border:1px solid rgba(90,140,210,.35);
+          color:#eaf2ff;
+        }
+        .template-starry .input:focus,
+        .template-starry select:focus,
+        .template-starry textarea:focus{
+          border-color:#6aa8ff;
+          box-shadow:0 0 0 4px rgba(106,168,255,.25);
+        }
+        .template-starry .btn{
+          background:linear-gradient(135deg,#4b8bff,#7cc3ff);
+          box-shadow:0 12px 26px rgba(75,139,255,.35);
+        }
+        .template-starry .desc,
+        .template-starry .info_event,
+        .template-starry .footer-note,
+        .template-starry .mota,
+        .template-starry h2{color:#cfe2ff}
+        .template-starry .event-footer{
+          background:linear-gradient(90deg,#19314e,#2c5a8e);
+          color:#eaf2ff;
+          box-shadow:0 18px 40px rgba(0,0,0,.35);
+        }
+        .template-starry .dot{box-shadow:0 0 12px rgba(255,255,255,.3)}
+        .template-starry .star{
+          --star-color:#fff;--star-tail-length:6em;--star-tail-height:2px;--star-width:calc(var(--star-tail-length)/6);
+          --fall-duration:9s;--tail-fade-duration:var(--fall-duration);
+          position:absolute;top:var(--top-offset);left:0;width:var(--star-tail-length);height:var(--star-tail-height);
+          color:var(--star-color);background:linear-gradient(45deg,currentColor,transparent);border-radius:50%;
+          filter:drop-shadow(0 0 6px currentColor);transform:translate3d(104em,0,0);
+          animation:fall var(--fall-duration) var(--fall-delay) linear infinite,
+            tail-fade var(--tail-fade-duration) var(--fall-delay) ease-out infinite;
+        }
+        @media (prefers-reduced-motion: no-preference){
+          .template-starry .star::before,.template-starry .star::after{
+            position:absolute;content:'';top:0;left:calc(var(--star-width)/-2);width:var(--star-width);height:100%;
+            background:linear-gradient(45deg,transparent,currentColor,transparent);border-radius:inherit;animation:blink 2s linear infinite;
+          }
+          .template-starry .star::before{transform:rotate(45deg)}
+          .template-starry .star::after{transform:rotate(-45deg)}
+        }
+        @keyframes fall{to{transform:translate3d(-30em,35em,0)}}
+        @keyframes tail-fade{0%,50%{width:var(--star-tail-length);opacity:1}70%,80%{width:0;opacity:.4}100%{width:0;opacity:0}}
+        @keyframes blink{50%{opacity:.6}}
+        .template-starry .star:nth-child(1){--star-tail-length:6em;--top-offset:36vh;--fall-duration:8s;--fall-delay:1s}
+        .template-starry .star:nth-child(2){--star-tail-length:4em;--top-offset:32vh;--fall-duration:12s;--fall-delay:1.2s}
+        .template-starry .star:nth-child(3){--star-tail-length:5em;--top-offset:36vh;--fall-duration:10s;--fall-delay:1.5s}
+        .template-starry .star:nth-child(4){--star-tail-length:4.5em;--top-offset:16vh;--fall-duration:8s;--fall-delay:.2s}
+        .template-starry .star:nth-child(5){--star-tail-length:6em;--top-offset:32vh;--fall-duration:12s;--fall-delay:0s}
+        .template-starry .star:nth-child(6){--star-tail-length:5.5em;--top-offset:28vh;--fall-duration:6s;--fall-delay:1.6s}
+        .template-starry .star:nth-child(7){--star-tail-length:2.2em;--top-offset:10vh;--fall-duration:8s;--fall-delay:2.8s}
+        .template-starry .star:nth-child(8){--star-tail-length:4.8em;--top-offset:2vh;--fall-duration:11s;--fall-delay:1.7s}
+        .template-starry .star:nth-child(9){--star-tail-length:3em;--top-offset:23vh;--fall-duration:7s;--fall-delay:.4s}
+        .template-starry .star:nth-child(10){--star-tail-length:5em;--top-offset:8vh;--fall-duration:9s;--fall-delay:3.1s}
+        .template-starry .static-star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:twinkle 3s infinite ease-in-out}
+        @keyframes twinkle{0%,100%{opacity:.3}50%{opacity:1}}
+        .template-starry .moon{top:10%;right:15%;left:auto;width:80px;height:80px;border-radius:50%;background:#f5f3ce;
+          box-shadow:0 0 20px #f5f3ce,0 0 40px #f5f3ce,0 0 60px #f5f3ce;animation:moonGlow 4s ease-in-out infinite alternate}
+        @media (max-width:480px){.template-starry .moon{top:-5%;right:20%}}
+        @keyframes moonGlow{0%{box-shadow:0 0 20px #f5f3ce,0 0 40px #f5f3ce,0 0 60px #f5f3ce}
+          100%{box-shadow:0 0 30px #f5f3ce,0 0 60px #f5f3ce,0 0 90px #f5f3ce}}
+      `
+      : "";
+
   return (
-    <div style={themeVars} className="min-h-screen">
+    <div style={themeVars} className={`min-h-screen ${templateStyle === "starry" ? "template-starry" : ""}`}>
       {/* CSS giữ nguyên vibe, nhưng dùng CSS variables từ config */}
       <style>{`
         :root{
@@ -261,8 +379,12 @@ export default function TemplateRenderer({ config }: Props) {
         .heading{max-width:400px;display:block;margin:0 auto 18px;position:relative;z-index:3}
         .card{
           position:relative;z-index:10;background:var(--card);border-radius:26px;
-          box-shadow:0 35px 90px rgba(236,95,164,.28),inset 0 0 0 1px rgba(255,255,255,.6);
+          box-shadow:0 35px 90px rgba(236,95,164,.3),inset 0 0 0 1px rgba(255,255,255,.7);
           overflow:hidden;max-width:540px;margin:0 auto;
+        }
+        .card::after{
+          content:"";position:absolute;inset:0;border-radius:26px;pointer-events:none;
+          box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);
         }
         .card-head{padding:30px 28px 18px;background:linear-gradient(90deg,var(--primary-2),var(--primary))}
         .title{margin:0 0 6px;font-size:26px;font-weight:900;text-align:center;color:#fff;letter-spacing:.5px;text-transform:uppercase}
@@ -281,6 +403,7 @@ export default function TemplateRenderer({ config }: Props) {
           background:linear-gradient(135deg,var(--primary),var(--primary-2));
           box-shadow:0 10px 20px rgba(236,95,164,.45);transition:.15s;margin-bottom:16px
         }
+        .btn:hover{transform:translateY(-1px);box-shadow:0 16px 28px rgba(236,95,164,.45)}
         .btn:disabled{opacity:.6;cursor:not-allowed}
         .footer-note{padding:0 36px 24px;font-size:12px;line-height:18px;color:#9b5473;text-align:center;font-style:italic}
         .desc{font-size:18px;font-weight:500;color:#dd4b8a;text-align:center;margin:0 0 20px}
@@ -292,6 +415,7 @@ export default function TemplateRenderer({ config }: Props) {
           margin-top:24px;padding:20px 24px 22px;
           background:linear-gradient(90deg,${config.footer.gradientFrom},${config.footer.gradientTo});
           border-radius:22px;color:${config.footer.textColor};z-index:5;position:relative;
+          box-shadow:0 22px 50px rgba(236,95,164,.25), inset 0 0 0 1px rgba(255,255,255,.35);
         }
         .event-inner{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         .event-col{flex:1;font-size:12px;line-height:1.4}
@@ -331,7 +455,28 @@ export default function TemplateRenderer({ config }: Props) {
           .dress-dots{justify-content:center}
           h2{font-size:36px;font-weight:800;margin:0}
         }
+        ${starryCss}
       `}</style>
+
+      {templateStyle === "starry" && (
+        <>
+          <div className="static-stars">
+            {staticStars.map((star, index) => (
+              <span
+                key={`static-${index}`}
+                className="static-star"
+                style={{ top: star.top, left: star.left, animationDelay: star.delay }}
+              />
+            ))}
+          </div>
+          <div className="moon" />
+          <div className="stars">
+            {shootingStars.map((idx) => (
+              <div key={`star-${idx}`} className="star" />
+            ))}
+          </div>
+        </>
+      )}
 
       <div className="page">
         <div className="container">

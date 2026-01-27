@@ -41,6 +41,8 @@ export type FooterConfig = {
   placeLine2: string;
 };
 
+export type TemplateStyle = "default" | "starry";
+
 export type HeaderConfig = {
   headingImageUrl: string;
   headingAlt: string;
@@ -71,6 +73,7 @@ export type TemplateFieldsConfig = {
 
 export type FormTemplateConfig = {
   webhookUrl: string;
+  templateStyle?: TemplateStyle;
   theme: TemplateTheme;
   header: HeaderConfig;
   infoEvent: InfoEventConfig;

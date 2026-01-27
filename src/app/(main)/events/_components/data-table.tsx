@@ -1,12 +1,10 @@
 "use client";
-
 import * as React from "react";
 
 import Link from "next/link";
 
-import { Download, Search, LayoutTemplate } from "lucide-react";
+import { Download, LayoutTemplate, Search } from "lucide-react";
 import { toast } from "sonner";
-import { z } from "zod";
 
 import { DataTable as DataTableNew } from "@/components/data-table/data-table";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
@@ -15,14 +13,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ExportDialog, type ExportFormat, type DateRange } from "@/components/ui/export-dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { useDataTableInstance } from "@/hooks/use-data-table-instance";
-import { exportData, filterDataByDateRange } from "@/lib/export-utils";
+import { exportData } from "@/lib/export-utils";
 
 import { dashboardColumns } from "./columns";
-import { academySchema, Academy } from "./schema";
+import { EventsSummary } from "./events-summary";
+import { Academy } from "./schema";
+
+const colorPalette = ["#22c55e", "#3b82f6", "#f59e0b", "#a855f7", "#ec4899", "#14b8a6", "#f97316"];
 
 export function DataTable({ data: initialData }: { data: Academy[] }) {
   const [data, setData] = React.useState<Academy[]>(() => initialData);
@@ -31,72 +30,103 @@ export function DataTable({ data: initialData }: { data: Academy[] }) {
   const [renderKey, setRenderKey] = React.useState(0);
   const [exportDialogOpen, setExportDialogOpen] = React.useState(false);
   const [isExporting, setIsExporting] = React.useState(false);
-
-  // Get unique event names
   const eventNames = React.useMemo(() => {
     const names = new Set(data.map((item) => item.event_name).filter(Boolean));
-    console.log("Event names found:", Array.from(names));
     return Array.from(names).sort();
   }, [data]);
 
   const filteredData = React.useMemo(() => {
     let filtered = data;
 
-    console.log("Filtering - selectedEvent:", selectedEvent, "Total data:", data.length);
-
-    // Filter by event name
     if (selectedEvent !== "all") {
       filtered = filtered.filter((item) => item.event_name === selectedEvent);
-      console.log("After event filter:", filtered.length);
     }
 
-    // Filter by search term
     if (searchTerm.trim()) {
       const term = searchTerm.toLowerCase();
       filtered = filtered.filter(
         (item) =>
           item.name.toLowerCase().includes(term) ||
           item.phone.toLowerCase().includes(term) ||
-          item.email.toLowerCase().includes(term),
+          item.email.toLowerCase().includes(term) ||
+          item.user_id.toLowerCase().includes(term) ||
+          item.oa_interest.toLowerCase().includes(term),
       );
-      console.log("After search filter:", filtered.length);
     }
 
-    console.log("Final filtered data:", filtered.length);
     return filtered;
   }, [data, searchTerm, selectedEvent]);
 
-  const columns = withDndColumn(dashboardColumns);
+  const totalCheckins = filteredData.length;
+  const totalOaInterested = React.useMemo(
+    () => filteredData.filter((item) => item.oa_interest === "Quan tâm").length,
+    [filteredData],
+  );
 
+  const nghềData = React.useMemo(() => {
+    const counts = new Map<string, number>();
+    filteredData.forEach((item) => {
+      const key = (item.q2 || "Không rõ").trim() || "Không rõ";
+      counts.set(key, (counts.get(key) ?? 0) + 1);
+    });
+    const rows = Array.from(counts.entries())
+      .map(([name, value]) => ({ name, value }))
+      .sort((a, b) => b.value - a.value);
+
+    const top = rows.slice(0, 6);
+    const rest = rows.slice(6).reduce((acc, cur) => acc + cur.value, 0);
+    if (rest > 0) {
+      top.push({ name: "Khác", value: rest });
+    }
+
+    return top.map((item, index) => ({
+      ...item,
+      fill: colorPalette[index % colorPalette.length],
+    }));
+  }, [filteredData]);
+
+  const eventRatioData = React.useMemo(() => {
+    const counts = new Map<string, number>();
+    filteredData.forEach((item) => {
+      const key = (item.event_name || "Không rõ").trim() || "Không rõ";
+      counts.set(key, (counts.get(key) ?? 0) + 1);
+    });
+    const rows = Array.from(counts.entries())
+      .map(([name, value]) => ({ name, value }))
+      .sort((a, b) => b.value - a.value);
+
+    const top = rows.slice(0, 6);
+    const rest = rows.slice(6).reduce((acc, cur) => acc + cur.value, 0);
+    if (rest > 0) {
+      top.push({ name: "Khác", value: rest });
+    }
+
+    return top.map((item, index) => ({
+      ...item,
+      fill: colorPalette[index % colorPalette.length],
+    }));
+  }, [filteredData]);
+
+  const columns = withDndColumn(dashboardColumns);
   const table = useDataTableInstance({
     data: filteredData,
     columns,
     getRowId: (row) => row.phone.toString(),
   });
 
-  // Force table to update when filters change
   React.useEffect(() => {
     table.resetRowSelection();
     table.setPageIndex(0);
     setRenderKey((prev) => prev + 1);
-  }, [selectedEvent, searchTerm]);
+  }, [selectedEvent, searchTerm, table]);
 
-  // Handle export
   const handleExport = React.useCallback(
     (format: ExportFormat, dateRange: DateRange) => {
       setIsExporting(true);
+      void dateRange;
 
       try {
-        // Filter by date range if provided (assuming there's a date field)
-        // You can change 'created_at' to the appropriate date field name
         const dataToExport = filteredData;
-
-        // If your data has a date field, uncomment this:
-        // if (dateRange.from || dateRange.to) {
-        //   dataToExport = filterDataByDateRange(filteredData, 'created_at', dateRange);
-        // }
-
-        // Define headers for export
         const headers = {
           name: "Tên",
           phone: "Số điện thoại",
@@ -114,14 +144,12 @@ export function DataTable({ data: initialData }: { data: Academy[] }) {
           voucher: "Voucher",
           event_name: "Tên sự kiện",
           user_id: "User ID",
+          oa_interest: "Quan tâm OA",
         };
-
-        // Generate filename
         const eventName = selectedEvent !== "all" ? `_${selectedEvent}` : "";
         const dateStr = new Date().toISOString().split("T")[0];
         const filename = `events${eventName}_${dateStr}`;
 
-        // Export data
         exportData({
           format,
           data: dataToExport,
@@ -143,6 +171,13 @@ export function DataTable({ data: initialData }: { data: Academy[] }) {
 
   return (
     <div className="flex w-full flex-col gap-6">
+      <EventsSummary
+        totalCheckins={totalCheckins}
+        totalOaInterested={totalOaInterested}
+        nghềData={nghềData}
+        eventRatioData={eventRatioData}
+      />
+
       <div className="flex items-center justify-between gap-4">
         <div className="flex flex-1 items-center gap-2">
           <div className="relative max-w-sm flex-1">
