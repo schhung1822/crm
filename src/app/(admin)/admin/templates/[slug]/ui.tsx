@@ -258,7 +258,7 @@ export default function AdminTemplateEditor({
 
               <div className="p-6">
                 <TabsContent value="theme" className="mt-0 space-y-5">
-                  <Card className="border-2">
+                  <Card className="border-2 bg-background">
                     <CardHeader>
                       <CardTitle className="text-foreground flex items-center gap-2 text-base">
                         <Palette className="h-4 w-4" />
@@ -282,7 +282,7 @@ export default function AdminTemplateEditor({
                     </CardContent>
                   </Card>
 
-                  <Card className="border-2">
+                  <Card className="border-2 bg-background">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-1 text-base text-foreground">
                         <Calendar className="h-4 w-4" />
@@ -319,7 +319,7 @@ export default function AdminTemplateEditor({
                     </CardContent>
                   </Card>
 
-                  <Card className="border-2">
+                  <Card className="border-2 bg-background">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2 text-base text-foreground">
                         <ImageIcon className="h-4 w-4" />
@@ -345,7 +345,7 @@ export default function AdminTemplateEditor({
                     </CardContent>
                   </Card>
 
-                  <Card className="border-2">
+                  <Card className="border-2 bg-background">
                     <CardHeader className="pb-3">
                       <CardTitle className="flex items-center gap-2 text-base text-foreground">
                         <Palette className="h-4 w-4" />
@@ -383,7 +383,7 @@ export default function AdminTemplateEditor({
                 </TabsContent>
 
                 <TabsContent value="fields" className="mt-0 space-y-5">
-                  <Card className="border-2">
+                  <Card className="border-2 bg-background">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2 text-base text-black dark:text-white">
                         <FormInput className="h-4 w-4" />
@@ -450,7 +450,7 @@ export default function AdminTemplateEditor({
                     </h3>
                     <div className="space-y-5">
                       {config.questions.slice(0, 5).map((q, idx) => (
-                        <Card key={q.id} className="border-2">
+                        <Card key={q.id} className="border-2 bg-background">
                           <CardHeader>
                             <div className="flex items-center justify-between">
                               <CardTitle className="flex items-center gap-2 text-base text-foreground">
@@ -562,7 +562,7 @@ export default function AdminTemplateEditor({
                 </TabsContent>
 
                 <TabsContent value="footer" className="mt-0 space-y-5">
-                  <Card className="border-2">
+                  <Card className="border-2 bg-background">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2 text-base text-foreground">
                         <FileText className="h-4 w-4" />
@@ -645,7 +645,7 @@ export default function AdminTemplateEditor({
                     </CardContent>
                   </Card>
 
-                  <Card className="border-2">
+                  <Card className="border-2 bg-background">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2 text-base text-foreground">
                         <Palette className="h-4 w-4" />
@@ -671,7 +671,7 @@ export default function AdminTemplateEditor({
                     </CardContent>
                   </Card>
 
-                  <Card className="border-2">
+                  <Card className="border-2 bg-background">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2 text-base text-foreground">
                         <FileText className="h-4 w-4" />
@@ -750,7 +750,7 @@ export default function AdminTemplateEditor({
                     </CardContent>
                   </Card>
 
-                  <Card className="border-2">
+                  <Card className="border-2 bg-background">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2 text-base text-foreground">
                         <Calendar className="h-4 w-4" />
@@ -803,7 +803,7 @@ export default function AdminTemplateEditor({
                     </CardContent>
                   </Card>
 
-                  <Card className="border-2">
+                  <Card className="border-2 bg-background">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2 text-base text-foreground">
                         <MapPin className="h-4 w-4" />
